@@ -47,4 +47,5 @@ TakuVaultの最大の特徴は、素材を単に保存するだけでなく、 W
 * データベース: PostgreSQL
 * デプロイ先: Render（Web：Dockerデプロイ）
 * ストレージ / ライブラリ: ActiveStorage, 本番ストレージ：Cloudflare R2（S3互換）を利用予定
+=======
 <<<<<<< HEAD
