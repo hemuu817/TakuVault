@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 TRPGセッションツール向け、クラウド素材保管庫「TakuVault」
 ##サービス概要
 TakuVault は、TRPGセッションツールで使用した背景・カットイン・BGM等の素材をクラウド上に保存し、 「どのセッション / どのシーン / どの役割で使った素材か（Where used）」を逆引きできる素材保管庫です。 ※MVPでは Cocofoliaのみ を対象にし、部屋連携は room_urlの参照保存（同期やAPI連携は行わない）とします。
@@ -31,4 +33,4 @@ TakuVaultの最大の特徴は、素材を単に保存するだけでなく、 W
 * データベース: PostgreSQL
 * デプロイ先: Render（Web：Dockerデプロイ）
 * ストレージ / ライブラリ: ActiveStorage, 本番ストレージ：Cloudflare R2（S3互換）を利用予定
-
+<<<<<<< HEAD
