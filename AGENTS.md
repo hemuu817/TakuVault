@@ -54,3 +54,26 @@ X クラウド前提：#21〜#22
 G 変換（MVP外）：#23〜#26
 H Docs：#27
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
+
+## Issue snapshot（Codex向け）
+
+- GitHub Issueの受け入れ条件は、GitHub Actionsで `automation/issue-snapshot` ブランチにスナップショット化する。
+- Codexは判断材料として、必ず以下を参照すること（GitHub Webではなく、ローカルのGit参照を使う）。
+
+### 参照手順（checkout不要）
+1) スナップショットを取得
+   git fetch origin automation/issue-snapshot
+
+2) 全体一覧
+   git show origin/automation/issue-snapshot:docs/issues_snapshot.md
+
+3) 個別Issue（例：#13）
+   git show origin/automation/issue-snapshot:docs/issues/0013.md
+
+### 推奨：worktreeで参照専用ディレクトリを作る
+git fetch origin automation/issue-snapshot
+git worktree add ../TakuVault-issue-snapshot origin/automation/issue-snapshot
+
+以後、Codexは ../TakuVault-issue-snapshot を開いて `docs/issues_snapshot.md` と `docs/issues/*.md` を読む。
+
+（後片付け）git worktree remove ../TakuVault-issue-snapshot
