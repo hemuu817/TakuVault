@@ -113,9 +113,8 @@ jobs:
             ((.title // "") | gsub("\\|"; "\\\\|") | gsub("\r?\n"; " ")) +
             " | \(.state) | \(.updatedAt) | \(.url) | " +
             "[local](issues/\(.number|lpad(4;\"0\")).md) |"
-JQ
-
-          jq -r -f /tmp/index.jq /tmp/issues.json >> "${INDEX_PATH}"
+            JQ
+            jq -r -f /tmp/index.jq /tmp/issues.json >> "${INDEX_PATH}"
 
       - name: Commit & push (only if changed)
         run: |
