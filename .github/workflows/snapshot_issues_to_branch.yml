@@ -50,7 +50,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          export GH_REPO="${GITHUB_REPOSITORY}"
 
           mkdir -p docs
           rm -rf "${ISSUE_DIR}"
@@ -58,6 +57,7 @@ jobs:
 
           # 1) Issue一覧を取得（インデックス生成に使用）
           gh issue list \
+            --repo "${GITHUB_REPOSITORY}" \
             --state all \
             --limit 1000 \
             --search "sort:updated-desc" \
@@ -70,7 +70,7 @@ jobs:
             pad="$(printf "%04d" "${num}")"
             out="${ISSUE_DIR}/${pad}.md"
 
-            issue_json="$(gh issue view "${num}" --json number,title,state,updatedAt,url,labels,body)"
+            issue_json="$(gh issue view "${num}" --repo "${GITHUB_REPOSITORY}" --json number,title,state,updatedAt,url,labels,body)"
 
             title="$(jq -r '.title // ""' <<< "${issue_json}")"
             state="$(jq -r '.state // ""' <<< "${issue_json}")"
@@ -112,7 +112,7 @@ jobs:
             "| \(.number) | " +
             ((.title // "") | gsub("\\|"; "\\\\|") | gsub("\r?\n"; " ")) +
             " | \(.state) | \(.updatedAt) | \(.url) | " +
-            "[local](docs/issues/\(.number|lpad(4;\"0\")).md) |"
+            "[local](issues/\(.number|lpad(4;\"0\")).md) |"
 JQ
 
           jq -r -f /tmp/index.jq /tmp/issues.json >> "${INDEX_PATH}"
