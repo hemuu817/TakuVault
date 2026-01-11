@@ -1,0 +1,127 @@
+name: Snapshot issues (list + body) to branch
+
+on:
+  schedule:
+    # JST 00:10 = UTC 15:10（GitHub ActionsのcronはUTC基準）
+    - cron: "10 15 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: snapshot-issues
+  cancel-in-progress: true
+
+env:
+  SNAPSHOT_BRANCH: automation/issue-snapshot
+  INDEX_PATH: docs/issues_snapshot.md
+  ISSUE_DIR: docs/issues
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout default branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Switch to snapshot branch (create if missing)
+        run: |
+          set -euo pipefail
+          git fetch origin "${SNAPSHOT_BRANCH}" || true
+
+          if git show-ref --verify --quiet "refs/remotes/origin/${SNAPSHOT_BRANCH}"; then
+            git switch -c "${SNAPSHOT_BRANCH}" --track "origin/${SNAPSHOT_BRANCH}" || git switch "${SNAPSHOT_BRANCH}"
+          else
+            git switch -c "${SNAPSHOT_BRANCH}"
+          fi
+
+      - name: Generate issue snapshot files (index + per-issue body)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p docs
+          rm -rf "${ISSUE_DIR}"
+          mkdir -p "${ISSUE_DIR}"
+
+          # 1) Issue一覧を取得（インデックス生成に使用）
+          gh issue list \
+            --repo "${GITHUB_REPOSITORY}" \
+            --state all \
+            --limit 1000 \
+            --search "sort:updated-desc" \
+            --json number,title,state,updatedAt,url \
+            > /tmp/issues.json
+
+          # 2) 各Issueの本文（受け入れ条件）をファイル化
+          #    1 Issue = 1 file（0001.mdのようにゼロ埋め）
+          jq -r 'sort_by(.number) | .[].number' /tmp/issues.json | while read -r num; do
+            pad="$(printf "%04d" "${num}")"
+            out="${ISSUE_DIR}/${pad}.md"
+
+            issue_json="$(gh issue view "${num}" --repo "${GITHUB_REPOSITORY}" --json number,title,state,updatedAt,url,labels,body)"
+
+            title="$(jq -r '.title // ""' <<< "${issue_json}")"
+            state="$(jq -r '.state // ""' <<< "${issue_json}")"
+            updated="$(jq -r '.updatedAt // ""' <<< "${issue_json}")"
+            url="$(jq -r '.url // ""' <<< "${issue_json}")"
+            labels="$(jq -r '[.labels[].name] | join(", ")' <<< "${issue_json}" 2>/dev/null || echo "")"
+            body="$(jq -r '.body // ""' <<< "${issue_json}")"
+
+            {
+              printf "# Issue #%s: %s\n\n" "${num}" "${title}"
+              printf -- "- URL: %s\n" "${url}"
+              printf -- "- State: %s\n" "${state}"
+              printf -- "- UpdatedAt: %s\n" "${updated}"
+              printf -- "- Labels: %s\n\n" "${labels}"
+              echo "## Body"
+              echo
+              printf "%s\n" "${body}"
+              echo
+            } > "${out}"
+          done
+
+          # 3) インデックス（一覧）を生成（ローカルファイルリンク付き）
+          {
+            echo "# Issue snapshot"
+            echo
+            echo "_Generated (UTC): $(date -u +'%Y-%m-%dT%H:%M:%SZ')_"
+            echo
+            echo "| # | Title | State | UpdatedAt | URL | Local |"
+            echo "|---:|---|---|---|---|---|"
+          } > "${INDEX_PATH}"
+
+          cat > /tmp/index.jq <<'JQ'
+          def lpad($len; $ch):
+            tostring
+            | ( $len - length ) as $n
+            | if $n > 0 then ($ch * $n) + . else . end;
+
+          sort_by(.number)[] |
+            "| \(.number) | " +
+            ((.title // "") | gsub("\\|"; "\\\\|") | gsub("\r?\n"; " ")) +
+            " | \(.state) | \(.updatedAt) | \(.url) | " +
+            "[local](issues/\(.number|lpad(4;\"0\")).md) |"
+          JQ
+          
+          jq -r -f /tmp/index.jq /tmp/issues.json >> "${INDEX_PATH}"
+
+      - name: Commit & push (only if changed)
+        run: |
+          set -euo pipefail
+          git add "${INDEX_PATH}" "${ISSUE_DIR}"
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: snapshot issues (list + body)"
+          git push origin "HEAD:${SNAPSHOT_BRANCH}"
+

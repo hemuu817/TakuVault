@@ -56,7 +56,6 @@ H Docs：0025 : 0026
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
 
 ## Issue snapshot (Codex reading rules)
-
 - Snapshot entrypoints (source of truth in this repo):
   - REQUIRED: docs/issues/*.md
   - OPTIONAL: docs/issues_snapshot.md (if present, use as a quick index)
@@ -85,9 +84,3 @@ H Docs：0025 : 0026
 ### Source of truth
 - 受け入れ条件の正本: GitHub Issue 本文
 - Codex が参照する一次情報: snapshot worktree 内のファイル
-  - docs/issues_snapshot.md
-  - docs/issues/*.md
-
-### How to open (required)
-- 原則 `bin/codex-with-snapshot` で起動し、snapshot worktree を最新化した上で作業する。
-- Codex はネットワーク前提で `git fetch` を要求しない（環境差で失敗しやすいため）。
