@@ -56,7 +56,6 @@ H Docs：0025 : 0026
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
 
 ## Issue snapshot (Codex reading rules)
-<<<<<<< HEAD
 - Source of truth in this repo:
   - REQUIRED: docs/issues/*.md
   - OPTIONAL: docs/issues_snapshot.md (if present, use as a quick index only)
@@ -87,33 +86,3 @@ H Docs：0025 : 0026
 ### Source of truth
 - 受け入れ条件の正本: GitHub Issue 本文
 - Codex が参照する一次情報: snapshot worktree 内のファイル
-=======
-- Snapshot entrypoints (source of truth in this repo):
-  - REQUIRED: docs/issues/*.md
-  - OPTIONAL: docs/issues_snapshot.md (if present, use as a quick index)
-
-- At the start of every task, do the following checks first:
-  1) `git rev-parse --abbrev-ref HEAD`
-  2) `ls -la docs || true`
-  3) `ls -la docs/issues | head || true`
-
-- Reading strategy:
-  - If `docs/issues_snapshot.md` exists, show its first 80 lines:
-    - `sed -n '1,80p' docs/issues_snapshot.md`
-  - If it does NOT exist, proceed by reading files under `docs/issues/*.md` directly.
-
-- Scope control (important):
-  - Ignore mistaken issues by file number:
-    - Ignore: docs/issues/0002.md - 0005.md
-  - Ignore conversion MVP-out issues:
-    - Ignore: docs/issues/0036.md - 0040.md
-  - Read the remaining files as "in-scope", unless the user says otherwise.
-
-- If `docs/issues/` is missing:
-  - Stop and report that the current checkout does not include issue snapshots.
-  - Do not proceed with assumptions.
-
-### Source of truth
-- 受け入れ条件の正本: GitHub Issue 本文
-- Codex が参照する一次情報: snapshot worktree 内のファイル
->>>>>>> origin/docs/agents
