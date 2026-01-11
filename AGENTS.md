@@ -56,13 +56,6 @@ H Docs：#27
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
 
 ## Issue snapshot (Codex reading rules)
-<<<<<<< Updated upstream
-- Source of truth in this repo:
-  - REQUIRED: docs/issues/*.md
-  - OPTIONAL: docs/issues_snapshot.md (if present, use as a quick index only)
-=======
->>>>>>> Stashed changes
-
 - Source of truth in this repo:
   - REQUIRED: docs/issues/*.md
   - OPTIONAL: docs/issues_snapshot.md (if present, use as a quick index only)
@@ -75,12 +68,8 @@ H Docs：#27
 - Reading strategy:
   - If `docs/issues_snapshot.md` exists:
     - `sed -n '1,80p' docs/issues_snapshot.md`
-<<<<<<< Updated upstream
-  - If it does NOT exist, proceed by reading `docs/issues/*.md` directly.
-=======
   - If it does NOT exist:
     - Proceed by reading `docs/issues/*.md` directly.
->>>>>>> Stashed changes
 
 - Scope control (important):
   - Ignore mistaken issues:
