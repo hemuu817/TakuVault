@@ -44,33 +44,43 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
 - 手動QA：D&D動作確認（ブラウザ依存のため）
 
 ## Issue一覧（正本はGitHub Issues #1〜#27）
-A 基盤：#1〜#3
-B 認証・認可：#4〜#6
-C セッション&シーン：#7〜#8
-D Asset+Usage核：#9〜#16
-E 検索：#17〜#19
-F タグ：#20
-X クラウド前提：#21〜#22
-G 変換（MVP外）：#23〜#26
-H Docs：#27
+A 基盤(0001)：0006〜0008
+B 認証・認可(0009)：0010〜0012
+C セッション&シーン(0013)：0014〜0015, 0041
+D Asset+Usage核(0017)：0018〜0024, 0042
+E 検索(0027)：0028〜0030
+F タグ(0031)：0031
+X クラウド保管(0032)：0033〜0033
+G 変換（MVP外）(0036)：0037〜0040
+H Docs：0025 : 0026
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
 
 ## Issue snapshot (Codex reading rules)
-
-- Snapshot entrypoints:
-  - docs/issues_snapshot.md
-  - docs/issues/*.md
+- Snapshot entrypoints (source of truth in this repo):
+  - REQUIRED: docs/issues/*.md
+  - OPTIONAL: docs/issues_snapshot.md (if present, use as a quick index)
 
 - At the start of every task, do the following checks first:
-  1) `test -f docs/issues_snapshot.md`
-  2) `sed -n '1,80p' docs/issues_snapshot.md`
-  3) `ls -la docs/issues | head`
+  1) `git rev-parse --abbrev-ref HEAD`
+  2) `ls -la docs || true`
+  3) `ls -la docs/issues | head || true`
+
+- Reading strategy:
+  - If `docs/issues_snapshot.md` exists, show its first 80 lines:
+    - `sed -n '1,80p' docs/issues_snapshot.md`
+  - If it does NOT exist, proceed by reading files under `docs/issues/*.md` directly.
 
 - Scope control (important):
-  - Treat MVP issues as: #1 and #6–#27 only.
-  - Ignore #2–#5 (mistaken issues).
-  - Ignore #28+ unless the user explicitly asks.
+  - Ignore mistaken issues by file number:
+    - Ignore: docs/issues/0002.md - 0005.md
+  - Ignore conversion MVP-out issues:
+    - Ignore: docs/issues/0036.md - 0040.md
+  - Read the remaining files as "in-scope", unless the user says otherwise.
 
-- If snapshot files are missing:
-  - Stop and report that the current checkout does not include snapshots.
+- If `docs/issues/` is missing:
+  - Stop and report that the current checkout does not include issue snapshots.
   - Do not proceed with assumptions.
+
+### Source of truth
+- 受け入れ条件の正本: GitHub Issue 本文
+- Codex が参照する一次情報: snapshot worktree 内のファイル
