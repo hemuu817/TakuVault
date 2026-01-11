@@ -55,17 +55,22 @@ G 変換（MVP外）：#23〜#26
 H Docs：#27
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
 
-## Issue snapshot（Codex向け）
+## Issue snapshot (Codex reading rules)
 
-- GitHub Issueの受け入れ条件は、GitHub Actionsで `automation/issue-snapshot` ブランチにスナップショット化する。
-- Codexは判断材料として、必ず以下を参照すること（GitHub Webではなく、ローカルのGit参照を使う）。
-
-### Source of truth
-- 受け入れ条件の正本: GitHub Issue 本文
-- Codex が参照する一次情報: snapshot worktree 内のファイル
+- Snapshot entrypoints:
   - docs/issues_snapshot.md
   - docs/issues/*.md
 
-### How to open (required)
-- 原則 `bin/codex-with-snapshot` で起動し、snapshot worktree を最新化した上で作業する。
-- Codex はネットワーク前提で `git fetch` を要求しない（環境差で失敗しやすいため）。
+- At the start of every task, do the following checks first:
+  1) `test -f docs/issues_snapshot.md`
+  2) `sed -n '1,80p' docs/issues_snapshot.md`
+  3) `ls -la docs/issues | head`
+
+- Scope control (important):
+  - Treat MVP issues as: #1 and #6–#27 only.
+  - Ignore #2–#5 (mistaken issues).
+  - Ignore #28+ unless the user explicitly asks.
+
+- If snapshot files are missing:
+  - Stop and report that the current checkout does not include snapshots.
+  - Do not proceed with assumptions.
