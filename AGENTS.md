@@ -44,10 +44,10 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
 - 手動QA：D&D動作確認（ブラウザ依存のため）
 
 ## Issue一覧（正本はGitHub Issues #1〜#27）
-A 基盤(0001)：0006~0008
+A 基盤(0001)：0006〜0008
 B 認証・認可(0009)：0010〜0012
 C セッション&シーン(0013)：0014〜0015, 0041
-D Asset+Usage核(0017)：0018~0024, 0042
+D Asset+Usage核(0017)：0018〜0024, 0042
 E 検索(0027)：0028〜0030
 F タグ(0031)：0031
 X クラウド保管(0032)：0033〜0033
