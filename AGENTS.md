@@ -44,15 +44,15 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
 - 手動QA：D&D動作確認（ブラウザ依存のため）
 
 ## Issue一覧（正本はGitHub Issues #1〜#27）
-A 基盤：#1〜#3
-B 認証・認可：#4〜#6
-C セッション&シーン：#7〜#8
-D Asset+Usage核：#9〜#16
-E 検索：#17〜#19
-F タグ：#20
-X クラウド前提：#21〜#22
-G 変換（MVP外）：#23〜#26
-H Docs：#27
+A 基盤(#1)：#6~#8
+B 認証・認可(#9)：#10〜#12
+C セッション&シーン(#13)：#14〜#15, #41
+D Asset+Usage核(#17)：#18~#24, #42
+E 検索(#27)：#28〜#30
+F タグ(#31)：#31
+X クラウド保管(32)：#33〜#33
+G 変換（MVP外）(#36)：#37〜#40
+H Docs：#25 : #26
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
 
 ## Issue snapshot（Codex向け）
