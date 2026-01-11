@@ -54,3 +54,23 @@ X クラウド前提：#21〜#22
 G 変換（MVP外）：#23〜#26
 H Docs：#27
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
+
+## Issue snapshot (Codex reading rules)
+
+- Snapshot entrypoints:
+  - docs/issues_snapshot.md
+  - docs/issues/*.md
+
+- At the start of every task, do the following checks first:
+  1) `test -f docs/issues_snapshot.md`
+  2) `sed -n '1,80p' docs/issues_snapshot.md`
+  3) `ls -la docs/issues | head`
+
+- Scope control (important):
+  - Treat MVP issues as: #1 and #6–#27 only.
+  - Ignore #2–#5 (mistaken issues).
+  - Ignore #28+ unless the user explicitly asks.
+
+- If snapshot files are missing:
+  - Stop and report that the current checkout does not include snapshots.
+  - Do not proceed with assumptions.
