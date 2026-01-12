@@ -114,7 +114,6 @@ jobs:
               " | \(.state) | \(.updatedAt) | \(.url) | " +
               "[local](issues/\(.number|lpad(4;"0")).md) |"
           JQ
-
           
           jq -r -f /tmp/index.jq /tmp/issues.json >> "${INDEX_PATH}"
 
