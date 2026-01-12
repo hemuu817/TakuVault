@@ -49,11 +49,19 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -euo pipefail
 
-          mkdir -p docs
-          rm -rf "${ISSUE_DIR}"
-          mkdir -p "${ISSUE_DIR}"
+          set -euo pipefail
+          
+          # 生成物の置き場は必ず作る（ここは安全）
+          mkdir -p -- "$(dirname "${INDEX_PATH}")"
+          
+          # 安全ガード：ISSUE_DIRが想定通りでないなら即死
+          [ -n "${ISSUE_DIR:-}" ] || { echo "ISSUE_DIR is empty"; exit 1; }
+          [ "${ISSUE_DIR}" = "docs/issues" ] || { echo "ISSUE_DIR unexpected: ${ISSUE_DIR}"; exit 1; }
+          
+          rm -rf -- "${ISSUE_DIR}"
+          mkdir -p -- "${ISSUE_DIR}"
+
 
           # 1) Issue一覧を取得（インデックス生成に使用）
           gh issue list \
@@ -76,7 +84,7 @@ jobs:
             state="$(jq -r '.state // ""' <<< "${issue_json}")"
             updated="$(jq -r '.updatedAt // ""' <<< "${issue_json}")"
             url="$(jq -r '.url // ""' <<< "${issue_json}")"
-            labels="$(jq -r '[.labels[].name] | join(", ")' <<< "${issue_json}" 2>/dev/null || echo "")"
+            labels="$(jq -r '(.labels // []) | map(.name) | join(", ")' <<< "${issue_json}")"
             body="$(jq -r '.body // ""' <<< "${issue_json}")"
 
             {
@@ -120,7 +128,7 @@ jobs:
       - name: Commit & push (only if changed)
         run: |
           set -euo pipefail
-          git add "${INDEX_PATH}" "${ISSUE_DIR}"
+          git add -A "${INDEX_PATH}" "${ISSUE_DIR}"
           git diff --cached --quiet && exit 0
           git commit -m "chore: snapshot issues (list + body)"
           git push origin "HEAD:${SNAPSHOT_BRANCH}"
