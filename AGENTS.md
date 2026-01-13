@@ -33,7 +33,7 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
 
 ## DB整合性（固定）
 - UNIQUE(asset_id, session_id, scene_id, role)
-- scenes：UNIQUE(session_id) WHERE is_default=true（default_scene一意）
+- scenes：scenes：UNIQUE(session_id, position)（position=1 が default_scene を担保。is_default は使わない）
 - 複合FK：usages(session_id, scene_id) -> scenes(session_id, id)
 - 複合FK成立条件：scenes に UNIQUE(session_id, id)
 
@@ -43,7 +43,7 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
 - システム：複数選択アップロード→複数Asset作成（CI安定担保）
 - 手動QA：D&D動作確認（ブラウザ依存のため）
 
-## Issue一覧（正本はGitHub Issues #1〜#27）
+## Issue一覧
 A 基盤(0001)：0006〜0008
 B 認証・認可(0009)：0010〜0012
 C セッション&シーン(0013)：0014〜0015, 0041
@@ -54,6 +54,11 @@ X クラウド保管(0033)：0034〜0035
 G 変換（MVP外）(0036)：0037〜0040
 H Docs(0025) : 0026
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
+- 正本: GitHub Issue 本文
+- ローカル参照の一次情報: docs/issues/*.md
+- 「Issue番号（#xx）」は再編でズレうるため、AGENTS.mdに固定レンジ（#1〜#27等）は書かない
+- 対応表（INDEX）は docs/issues_snapshot.md を正本とする（GitHub #xx ↔ ローカルID/内部ID）
+- Issue番号(#xx)と内部ID（例：(20) や A-1〜）がズレた場合は、docs/issues_snapshot.md を先に更新してから作業する
 
 ## Issue snapshot (Codex reading rules)
 - Source of truth in this repo:
@@ -72,10 +77,11 @@ H Docs(0025) : 0026
     - Proceed by reading `docs/issues/*.md` directly.
 
 - Scope control (important):
-  - Ignore mistaken issues:
+  - Ignore mistaken issues (if present):
     - Ignore: docs/issues/0002.md - 0005.md
-  - Ignore MVP-out conversion issues:
-    - Ignore: docs/issues/0036.md - 0040.md
+  - Ignore MVP-out issues:
+    - Prefer: ignore issues explicitly labeled "MVP外" / "out of scope" in docs/issues_snapshot.md
+    - Fallback: Ignore legacy conversion range docs/issues/0036.md - 0040.md (if still present)
   - Everything else under docs/issues is in-scope unless the user says otherwise.
 
 - If `docs/issues/` is missing or empty:
