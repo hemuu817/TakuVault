@@ -61,19 +61,20 @@ H Docs(0025) : 0026
 - Issue番号(#xx)と内部ID（例：(20) や A-1〜）がズレた場合は、docs/issues_snapshot.md を先に更新してから作業する
 
 ## Issue snapshot (Codex reading rules)
-- Snapshot entrypoints (source of truth in this repo):
+- Source of truth in this repo:
   - REQUIRED: docs/issues/*.md
-  - OPTIONAL: docs/issues_snapshot.md (if present, use as a quick index)
+  - OPTIONAL: docs/issues_snapshot.md (if present, use as a quick index only)
 
-- At the start of every task, do the following checks first:
-  1) `git rev-parse --abbrev-ref HEAD`
+- At the start of every task, run these checks first (must not fail the task):
+  1) `git rev-parse --abbrev-ref HEAD || true`
   2) `ls -la docs || true`
   3) `ls -la docs/issues | head || true`
 
 - Reading strategy:
-  - If `docs/issues_snapshot.md` exists, show its first 80 lines:
+  - If `docs/issues_snapshot.md` exists:
     - `sed -n '1,80p' docs/issues_snapshot.md`
-  - If it does NOT exist, proceed by reading files under `docs/issues/*.md` directly.
+  - If it does NOT exist:
+    - Proceed by reading `docs/issues/*.md` directly.
 
 - Scope control (important):
   - Ignore mistaken issues (if present):
@@ -83,9 +84,10 @@ H Docs(0025) : 0026
     - Fallback: Ignore legacy conversion range docs/issues/0036.md - 0040.md (if still present)
   - Everything else under docs/issues is in-scope unless the user says otherwise.
 
-- If `docs/issues/` is missing:
+- If `docs/issues/` is missing or empty:
   - Stop and report that the current checkout does not include issue snapshots.
   - Do not proceed with assumptions.
+
 
 ### Source of truth
 - 受け入れ条件の正本: GitHub Issue 本文
