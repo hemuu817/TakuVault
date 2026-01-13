@@ -10,10 +10,9 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Bundler cache
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
 COPY . .
 
-CMD ["bash", "-lc", "rm -f tmp/pids/server.pid && bin/rails s -b 0.0.0.0"]
+CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bin/rails s -b 0.0.0.0 -p 3000"]
