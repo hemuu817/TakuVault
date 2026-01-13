@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-01-13T10:32:59Z_
+_Generated (UTC): 2026-01-13T15:38:23Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -20,7 +20,7 @@ _Generated (UTC): 2026-01-13T10:32:59Z_
 | 14 | (7) Session CRUD(cocofolia固定+room_url参照) | OPEN | 2026-01-12T13:59:50Z | https://github.com/hemuu817/TakuVault/issues/14 | [local](issues/0014.md) |
 | 15 | (8) Scene CRUD+position | OPEN | 2026-01-12T14:00:35Z | https://github.com/hemuu817/TakuVault/issues/15 | [local](issues/0015.md) |
 | 16 | Epic D : Asset + Usage（Where used核） | OPEN | 2026-01-11T17:29:41Z | https://github.com/hemuu817/TakuVault/issues/16 | [local](issues/0016.md) |
-| 17 | (9) データモデル確定(ER/制約/Index) | CLOSED | 2026-01-12T07:45:04Z | https://github.com/hemuu817/TakuVault/issues/17 | [local](issues/0017.md) |
+| 17 | (9) データモデル確定(ER/制約/Index) | CLOSED | 2026-01-13T10:44:14Z | https://github.com/hemuu817/TakuVault/issues/17 | [local](issues/0017.md) |
 | 18 | (10) Usage割当ルール決定(spike) | OPEN | 2026-01-12T15:31:06Z | https://github.com/hemuu817/TakuVault/issues/18 | [local](issues/0018.md) |
 | 19 | (11) Asset CRUD(ActiveStorage) | OPEN | 2026-01-12T09:31:47Z | https://github.com/hemuu817/TakuVault/issues/19 | [local](issues/0019.md) |
 | 20 | (12) Asset kind | OPEN | 2026-01-12T16:14:53Z | https://github.com/hemuu817/TakuVault/issues/20 | [local](issues/0020.md) |
@@ -40,14 +40,15 @@ _Generated (UTC): 2026-01-13T10:32:59Z_
 | 34 | (22) 本番ストレージ構成（ActiveStorage + S3等） | OPEN | 2026-01-12T11:58:50Z | https://github.com/hemuu817/TakuVault/issues/34 | [local](issues/0034.md) |
 | 35 | (23) 容量/ファイル上限方針（固定値でOK） | OPEN | 2026-01-12T18:34:43Z | https://github.com/hemuu817/TakuVault/issues/35 | [local](issues/0035.md) |
 | 36 | Epic G : 変換（MVP外） | OPEN | 2025-12-27T17:48:13Z | https://github.com/hemuu817/TakuVault/issues/36 | [local](issues/0036.md) |
-| 37 | (24) 変換方式検証（spike） | OPEN | 2025-12-27T18:08:44Z | https://github.com/hemuu817/TakuVault/issues/37 | [local](issues/0037.md) |
-| 38 | (25)動画→ジョブ投入→進捗/結果（非同期） | OPEN | 2025-12-27T18:09:13Z | https://github.com/hemuu817/TakuVault/issues/38 | [local](issues/0038.md) |
-| 39 | (26)変換後APNG/MP3自動登録 | OPEN | 2025-12-27T18:09:22Z | https://github.com/hemuu817/TakuVault/issues/39 | [local](issues/0039.md) |
-| 40 | (27) 変換完了後の割当導線 | OPEN | 2025-12-27T18:09:38Z | https://github.com/hemuu817/TakuVault/issues/40 | [local](issues/0040.md) |
+| 37 | (24) 変換方式検証（spike） | OPEN | 2026-01-13T10:47:47Z | https://github.com/hemuu817/TakuVault/issues/37 | [local](issues/0037.md) |
+| 38 | (25)動画→ジョブ投入→進捗/結果（非同期） | OPEN | 2026-01-13T10:47:58Z | https://github.com/hemuu817/TakuVault/issues/38 | [local](issues/0038.md) |
+| 39 | (26)変換後APNG/MP3自動登録 | OPEN | 2026-01-13T10:48:02Z | https://github.com/hemuu817/TakuVault/issues/39 | [local](issues/0039.md) |
+| 40 | (27) 変換完了後の割当導線 | OPEN | 2026-01-13T10:48:13Z | https://github.com/hemuu817/TakuVault/issues/40 | [local](issues/0040.md) |
 | 41 | 画面一覧＆画面遷移図 | CLOSED | 2026-01-09T08:32:00Z | https://github.com/hemuu817/TakuVault/issues/41 | [local](issues/0041.md) |
 | 42 | (17) Demo用seed & 初期データ | OPEN | 2026-01-13T09:21:38Z | https://github.com/hemuu817/TakuVault/issues/42 | [local](issues/0042.md) |
 | 61 | (22)RSpecの設定 | OPEN | 2026-01-12T09:35:18Z | https://github.com/hemuu817/TakuVault/issues/61 | [local](issues/0061.md) |
 | 65 | (22)タグスイッチ絞り込み（Tag filter） | OPEN | 2026-01-13T09:50:44Z | https://github.com/hemuu817/TakuVault/issues/65 | [local](issues/0065.md) |
-| 68 | (28)素材詳細のモーダル化 | OPEN | 2026-01-13T10:31:04Z | https://github.com/hemuu817/TakuVault/issues/68 | [local](issues/0068.md) |
-| 69 | (29)素材アップロードのモーダル化 | OPEN | 2026-01-13T10:31:15Z | https://github.com/hemuu817/TakuVault/issues/69 | [local](issues/0069.md) |
-| 70 | (30)フッター＋静的ページ群 | OPEN | 2026-01-13T10:31:30Z | https://github.com/hemuu817/TakuVault/issues/70 | [local](issues/0070.md) |
+| 68 | (28)素材詳細のモーダル化 | OPEN | 2026-01-13T10:48:21Z | https://github.com/hemuu817/TakuVault/issues/68 | [local](issues/0068.md) |
+| 69 | (29)素材アップロードのモーダル化 | OPEN | 2026-01-13T10:48:28Z | https://github.com/hemuu817/TakuVault/issues/69 | [local](issues/0069.md) |
+| 70 | (30)フッター＋静的ページ群 | OPEN | 2026-01-13T10:48:37Z | https://github.com/hemuu817/TakuVault/issues/70 | [local](issues/0070.md) |
+| 71 | (31)パスワードリセット機能 | OPEN | 2026-01-13T11:07:17Z | https://github.com/hemuu817/TakuVault/issues/71 | [local](issues/0071.md) |
