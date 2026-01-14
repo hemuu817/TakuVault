@@ -4,28 +4,57 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      # POSTGRES_DB は「初期作成用」なので dev でも良いが、test は Rails 側で作れる前提にする
       POSTGRES_DB: taku_vault_development
     volumes:
       - pg_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d taku_vault_development"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 3s
       timeout: 5s
       retries: 10
 
+
   web:
     build: .
-    depends_on:
-      db:
-        condition: service_healthy
-    ports:
-      - "3000:3000"
-    environment:
-      RAILS_ENV: development
-      DATABASE_URL: postgres://postgres:postgres@db:5432/taku_vault_development
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
     volumes:
       - .:/app
       - bundle:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      RAILS_ENV: development
+      # できれば DATABASE_URL 固定より、POSTGRES_* に寄せて database.yml で env 切替させるのが安全
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    depends_on:
+      db:
+        condition: service_healthy
+    init: true
+
+  worker:
+    profiles: ["worker"]
+    build: .
+    command: bash -c "bundle exec rails jobs:work"
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+    environment:
+      RAILS_ENV: development
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    depends_on:
+      db:
+        condition: service_healthy
+    init: true
+
 
 volumes:
   pg_data:
