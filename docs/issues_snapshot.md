@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-01-13T16:53:44Z_
+_Generated (UTC): 2026-01-14T15:36:06Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -9,8 +9,8 @@ _Generated (UTC): 2026-01-13T16:53:44Z_
 | 3 | Repo初期セットアップ | CLOSED | 2025-12-27T17:32:51Z | https://github.com/hemuu817/TakuVault/issues/3 | [local](issues/0003.md) |
 | 4 | 開発環境統一化 | CLOSED | 2025-12-27T17:33:06Z | https://github.com/hemuu817/TakuVault/issues/4 | [local](issues/0004.md) |
 | 5 | 初回デプロイ（staging） | CLOSED | 2025-12-27T17:33:20Z | https://github.com/hemuu817/TakuVault/issues/5 | [local](issues/0005.md) |
-| 6 | (1)初期セットアップ | OPEN | 2026-01-12T09:27:14Z | https://github.com/hemuu817/TakuVault/issues/6 | [local](issues/0006.md) |
-| 7 | (2) 開発環境 | OPEN | 2026-01-12T09:27:36Z | https://github.com/hemuu817/TakuVault/issues/7 | [local](issues/0007.md) |
+| 6 | (1)初期セットアップ | OPEN | 2026-01-14T12:38:52Z | https://github.com/hemuu817/TakuVault/issues/6 | [local](issues/0006.md) |
+| 7 | (2) 開発環境 | OPEN | 2026-01-14T13:02:05Z | https://github.com/hemuu817/TakuVault/issues/7 | [local](issues/0007.md) |
 | 8 | (3) 初回デプロイ(staging) | OPEN | 2026-01-12T09:28:03Z | https://github.com/hemuu817/TakuVault/issues/8 | [local](issues/0008.md) |
 | 9 | Epic B : 認証・認可 | OPEN | 2026-01-11T16:44:14Z | https://github.com/hemuu817/TakuVault/issues/9 | [local](issues/0009.md) |
 | 10 | (4) Devise登録/ログイン | OPEN | 2026-01-12T10:33:21Z | https://github.com/hemuu817/TakuVault/issues/10 | [local](issues/0010.md) |
