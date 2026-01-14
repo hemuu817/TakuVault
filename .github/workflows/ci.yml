@@ -79,18 +79,18 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v4
+        
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
 
       - name: Prepare DB
         run: bin/rails db:prepare
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/taku_vault_test
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
 
       - name: Run tests
         env:
