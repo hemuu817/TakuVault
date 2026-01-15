@@ -36,7 +36,6 @@ services:
     init: true
 
   worker:
-    profiles: ["worker"]
     build: .
     command: bash -c "bundle exec rails jobs:work"
     volumes:
@@ -48,10 +47,11 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      depends_on:
+    depends_on:
       db:
         condition: service_healthy
     init: true
+
 
 
 volumes:

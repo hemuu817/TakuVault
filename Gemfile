@@ -43,6 +43,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # minitest
+  gem "minitest", "< 6"
 end
 
 group :development do
