@@ -1,4 +1,4 @@
-# ADR-0007：Where used ツリー遅延ロード契約（Session/Scene/Usage）
+# ADR-0010：Where used ツリー遅延ロード契約（Session/Scene/Usage）
 
 Status: Proposed
 
