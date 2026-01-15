@@ -1,4 +1,4 @@
-# ADR-0005 所有権の正本（source of truth）と混在禁止
+# ADR-0007 所有権の正本（source of truth）と混在禁止
 
 ## 決定
 - Session/Asset/Tag は `user_id` が正本
