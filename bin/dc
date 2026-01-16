@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+is_web_running() {
+  docker compose ps --services --filter status=running 2>/dev/null | grep -qx 'web' && return 0
+  docker compose ps --status running --services 2>/dev/null | grep -qx 'web' && return 0
+  return 1
+}
+
+if ! is_web_running; then
+  echo "web container is not running."
+  echo "Start: docker compose up -d"
+  echo "Or run one-off: bin/dcr <command>"
+  exit 1
+fi
+
+TTY_FLAG=""
+if ! [ -t 1 ]; then
+  TTY_FLAG="-T"
+fi
+
+# $TTY_FLAG is either empty or "-T"
+# shellcheck disable=SC2086
+exec docker compose exec $TTY_FLAG web "$@"

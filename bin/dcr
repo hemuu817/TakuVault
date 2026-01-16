@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+TTY_FLAG=""
+if ! [ -t 1 ]; then
+  TTY_FLAG="-T"
+fi
+
+# shellcheck disable=SC2086
+exec docker compose run --rm $TTY_FLAG web "$@"
