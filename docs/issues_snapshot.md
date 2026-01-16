@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-01-15T15:38:48Z_
+_Generated (UTC): 2026-01-16T15:36:05Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -9,9 +9,9 @@ _Generated (UTC): 2026-01-15T15:38:48Z_
 | 3 | Repo初期セットアップ | CLOSED | 2025-12-27T17:32:51Z | https://github.com/hemuu817/TakuVault/issues/3 | [local](issues/0003.md) |
 | 4 | 開発環境統一化 | CLOSED | 2025-12-27T17:33:06Z | https://github.com/hemuu817/TakuVault/issues/4 | [local](issues/0004.md) |
 | 5 | 初回デプロイ（staging） | CLOSED | 2025-12-27T17:33:20Z | https://github.com/hemuu817/TakuVault/issues/5 | [local](issues/0005.md) |
-| 6 | (1)初期セットアップ | OPEN | 2026-01-14T12:38:52Z | https://github.com/hemuu817/TakuVault/issues/6 | [local](issues/0006.md) |
-| 7 | (2) 開発環境 | OPEN | 2026-01-14T13:02:05Z | https://github.com/hemuu817/TakuVault/issues/7 | [local](issues/0007.md) |
-| 8 | (3) 初回デプロイ(staging) | OPEN | 2026-01-15T13:45:27Z | https://github.com/hemuu817/TakuVault/issues/8 | [local](issues/0008.md) |
+| 6 | (1)初期セットアップ | CLOSED | 2026-01-15T19:18:06Z | https://github.com/hemuu817/TakuVault/issues/6 | [local](issues/0006.md) |
+| 7 | (2) 開発環境 | CLOSED | 2026-01-15T19:18:08Z | https://github.com/hemuu817/TakuVault/issues/7 | [local](issues/0007.md) |
+| 8 | (3) 初回デプロイ(staging) | CLOSED | 2026-01-15T19:18:04Z | https://github.com/hemuu817/TakuVault/issues/8 | [local](issues/0008.md) |
 | 9 | Epic B : 認証・認可 | OPEN | 2026-01-11T16:44:14Z | https://github.com/hemuu817/TakuVault/issues/9 | [local](issues/0009.md) |
 | 10 | (5) Devise登録/ログイン | OPEN | 2026-01-15T12:24:58Z | https://github.com/hemuu817/TakuVault/issues/10 | [local](issues/0010.md) |
 | 11 | (7) 認可方式固定(Pundit等) | OPEN | 2026-01-15T12:25:20Z | https://github.com/hemuu817/TakuVault/issues/11 | [local](issues/0011.md) |
@@ -37,8 +37,8 @@ _Generated (UTC): 2026-01-15T15:38:48Z_
 | 31 | Epic F : タグ機能 | OPEN | 2026-01-12T09:40:08Z | https://github.com/hemuu817/TakuVault/issues/31 | [local](issues/0031.md) |
 | 32 | (24) タグ付け（Tag + AssetTag） | OPEN | 2026-01-15T12:37:15Z | https://github.com/hemuu817/TakuVault/issues/32 | [local](issues/0032.md) |
 | 33 | Epic X : クラウド保管 | OPEN | 2026-01-12T11:44:11Z | https://github.com/hemuu817/TakuVault/issues/33 | [local](issues/0033.md) |
-| 34 | (26) 本番ストレージ構成（ActiveStorage + S3等） | OPEN | 2026-01-15T14:19:46Z | https://github.com/hemuu817/TakuVault/issues/34 | [local](issues/0034.md) |
-| 35 | (27) 容量/ファイル上限方針（固定値でOK） | OPEN | 2026-01-15T12:39:36Z | https://github.com/hemuu817/TakuVault/issues/35 | [local](issues/0035.md) |
+| 34 | (26) 本番ストレージ構成（ActiveStorage + S3等） | OPEN | 2026-01-15T15:58:21Z | https://github.com/hemuu817/TakuVault/issues/34 | [local](issues/0034.md) |
+| 35 | (27) 容量/ファイル上限方針 | OPEN | 2026-01-15T18:56:46Z | https://github.com/hemuu817/TakuVault/issues/35 | [local](issues/0035.md) |
 | 36 | Epic G : 変換（MVP外） | OPEN | 2025-12-27T17:48:13Z | https://github.com/hemuu817/TakuVault/issues/36 | [local](issues/0036.md) |
 | 37 | (28) 変換方式検証（spike） | OPEN | 2026-01-15T12:39:50Z | https://github.com/hemuu817/TakuVault/issues/37 | [local](issues/0037.md) |
 | 38 | (29)動画→ジョブ投入→進捗/結果（非同期） | OPEN | 2026-01-15T12:40:01Z | https://github.com/hemuu817/TakuVault/issues/38 | [local](issues/0038.md) |
