@@ -14,7 +14,6 @@ services:
       timeout: 5s
       retries: 10
 
-
   web:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b 0.0.0.0"
@@ -26,6 +25,7 @@ services:
 
     environment:
       RAILS_ENV: development
+      RACK_ENV: development
       POSTGRES_HOST: ${POSTGRES_HOST:-db}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
@@ -36,13 +36,13 @@ services:
     init: true
 
   worker:
+    profiles: ["jobs"]
     build: .
     command: bash -c "bundle exec rails jobs:work"
     volumes:
       - .:/app
       - bundle:/usr/local/bundle
     environment:
-      RAILS_ENV: development
       POSTGRES_HOST: ${POSTGRES_HOST:-db}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
