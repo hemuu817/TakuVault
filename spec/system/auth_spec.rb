@@ -44,6 +44,4 @@ it "ログイン失敗でエラーが出る（Turboでも崩れない）" do
   expect(page).to have_field("user_email", with: "u@example.com")
   expect(page).to have_field("user_password")
 end
-
-
 end

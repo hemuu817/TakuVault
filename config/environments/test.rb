@@ -67,5 +67,4 @@ Rails.application.configure do
 
   # HostAuthorization: request spec のデフォルト host を許可
   config.hosts << "www.example.com"
-
 end

@@ -40,12 +40,12 @@ RSpec.describe "Devise status", type: :request do
   it "ログイン成功は303" do
     post_sign_in(email: user.email, password: "password")
     # Accept either 302 (Found) or 303 (See Other) depending on app middleware
-    expect([302, 303]).to include(response.status)
+    expect([ 302, 303 ]).to include(response.status)
   end
 
   it "ログイン失敗は422" do
     post_sign_in(email: user.email, password: "wrong")
     # Depending on request/accept headers and Turbo handling, failure may re-render (200)
-    expect([200, 422]).to include(response.status)
+    expect([ 200, 422 ]).to include(response.status)
   end
 end
