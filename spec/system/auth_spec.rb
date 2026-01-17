@@ -42,7 +42,6 @@ it "ログイン失敗でエラーが出る（Turboでも崩れない）" do
 
   # “POSTが走って画面が再描画された”ことをもう一段担保したい場合（任意）
   expect(page).to have_field("user_email", with: "u@example.com")
-  # JS/Turbo behavior (clearing password) depends on driver; only assert presence here
   expect(page).to have_field("user_password")
 end
 
