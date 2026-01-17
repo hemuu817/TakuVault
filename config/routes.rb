@@ -10,5 +10,5 @@ Rails.application.routes.draw do
 
   resources :assets, only: [ :index ]
 
-  root "home#index"
+  root to: "assets#index"
 end
