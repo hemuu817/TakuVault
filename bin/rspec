@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 必ず test 環境で rspec を実行するためのラッパー
+docker compose exec \
+  -e RAILS_ENV=test \
+  -e RACK_ENV=test \
+  web \
+  bundle exec rspec "$@"
