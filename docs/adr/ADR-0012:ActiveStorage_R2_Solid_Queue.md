@@ -7,6 +7,7 @@ Accepted
 - ADR-0005 は「一般方針（DB-backed + worker 常時稼働）」の正本。
 - 本ADR（ADR-0012）は **Rails 7.2.3 前提で“具体実装を確定する”正本** とする。
 - Issue本文には具体実装（adapter名・コマンド・envキー詳細）を再掲せず、本ADRを参照する。
+- 本番（preview、`RAILS_ENV=production`）では、Active Storage の service key を **`:r2`** に固定し、Cloudflare R2 を永続ストレージの正本とする。
 
 ## 決定（曖昧語なし）
 - 永続ストレージ：Cloudflare R2（S3互換）を ActiveStorage の正とする
@@ -53,6 +54,9 @@ Accepted
 - `db/queue_schema.rb`
 - `bin/jobs`
 
+### R2互換性（addressing style）
+- R2のS3互換差異による事故を避けるため、**path-style**（`force_path_style: true`）を採用する。
+
 ## Render 起動コマンド（固定）
 - Web Service：アプリ起動（(3)で確定したもの）
 - Worker Service：`bin/jobs start`
@@ -61,6 +65,13 @@ Accepted
 - Web/Worker のスレッド数と DB pool の整合を取ること（不一致は `ActiveRecord::ConnectionTimeoutError` の原因）
   - `RAILS_MAX_THREADS` と `database.yml pool`（または `DATABASE_URL?pool=`）の整合を必ず確認する
 - worker停止時は `purge_later` が滞留する（= 削除整合が壊れる）。workerは常時稼働を前提とする。
+
+### 本番のジョブ基盤（Active Storageのpurge_later / analyze成立条件）
+- 本番（preview、`RAILS_ENV=production`）では、Active Storage の `analyze` / `purge_later` を処理するため、ジョブ基盤を **用意必須**とする。
+- キューバックエンドは **Solid Queue（DB-backed）** とする。
+- Renderは **Web + Worker の2プロセス**運用とし、Workerの起動コマンドは **`bin/jobs start`** に固定する。
+- MVPでは、Active Storage関連ジョブは **default queue に統一**する。
+- Workerが停止している場合、purge/analysisジョブが滞留し、ストレージのクリーンアップが完了しない（＝削除整合が崩れる）。
 
 ## 受け入れ条件（Yes/No）
 - [ ] worker が稼働し、`purge_later` が滞留しない（ログで確認可能）
