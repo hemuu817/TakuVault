@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-01-17T15:30:22Z_
+_Generated (UTC): 2026-01-18T15:18:45Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -13,9 +13,9 @@ _Generated (UTC): 2026-01-17T15:30:22Z_
 | 7 | (2) 開発環境 | CLOSED | 2026-01-15T19:18:08Z | https://github.com/hemuu817/TakuVault/issues/7 | [local](issues/0007.md) |
 | 8 | (3) 初回デプロイ(staging) | CLOSED | 2026-01-15T19:18:04Z | https://github.com/hemuu817/TakuVault/issues/8 | [local](issues/0008.md) |
 | 9 | Epic B : 認証・認可 | OPEN | 2026-01-11T16:44:14Z | https://github.com/hemuu817/TakuVault/issues/9 | [local](issues/0009.md) |
-| 10 | (5) Devise登録/ログイン | OPEN | 2026-01-16T16:59:50Z | https://github.com/hemuu817/TakuVault/issues/10 | [local](issues/0010.md) |
-| 11 | (7) 認可方式固定(Pundit等) | OPEN | 2026-01-15T12:25:20Z | https://github.com/hemuu817/TakuVault/issues/11 | [local](issues/0011.md) |
-| 12 | (8) 所有権の強制化（全リソース） | OPEN | 2026-01-15T12:25:31Z | https://github.com/hemuu817/TakuVault/issues/12 | [local](issues/0012.md) |
+| 10 | (5) Devise登録/ログイン | CLOSED | 2026-01-17T18:45:53Z | https://github.com/hemuu817/TakuVault/issues/10 | [local](issues/0010.md) |
+| 11 | (7) 認可方式固定(Pundit等) | CLOSED | 2026-01-18T09:31:56Z | https://github.com/hemuu817/TakuVault/issues/11 | [local](issues/0011.md) |
+| 12 | (8) 所有権の強制化（全リソース） | OPEN | 2026-01-18T13:15:34Z | https://github.com/hemuu817/TakuVault/issues/12 | [local](issues/0012.md) |
 | 13 | Epic C : セッション & シーン | OPEN | 2026-01-11T17:29:56Z | https://github.com/hemuu817/TakuVault/issues/13 | [local](issues/0013.md) |
 | 14 | (10) Session CRUD(cocofolia固定+room_url参照) | OPEN | 2026-01-15T12:49:27Z | https://github.com/hemuu817/TakuVault/issues/14 | [local](issues/0014.md) |
 | 15 | (11) Scene CRUD+position | OPEN | 2026-01-15T12:49:47Z | https://github.com/hemuu817/TakuVault/issues/15 | [local](issues/0015.md) |
