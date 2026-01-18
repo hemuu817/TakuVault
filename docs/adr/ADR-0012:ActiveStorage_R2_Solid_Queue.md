@@ -13,9 +13,13 @@ Accepted
 - 永続ストレージ：Cloudflare R2（S3互換）を ActiveStorage の正とする
 - アップロード：Direct Upload 不採用（サーバ経由 multipart で統一）
 - Job基盤：Solid Queue（DB-backed）を採用し、workerを常時稼働させる
+- Solid Queue のDB方針：**primary DB に同居**（queue DB は分離しない）
 - Render構成：Web Service + Worker Service の2プロセス構成に固定する
 - migrate方式：Renderの Pre-Deploy Command で `bin/rails db:migrate` を実行（方式固定）
+  - ※ Solid Queue は primary同居のため、queue DB 分離前提の `db:prepare` は採用しない
+  - ※ primary同居のため `db:prepare` は正本にしない
 - URL host：`APP_HOST` を必須化し、productionで `default_url_options[:host]` を設定する
+
 
 ## 必須依存
 - S3互換（R2）を ActiveStorage の service として使うため、`aws-sdk-s3` を導入する
@@ -51,8 +55,11 @@ Accepted
 ## Solid Queue（導入成果物）
 - `config/queue.yml`
 - `config/recurring.yml`
-- `db/queue_schema.rb`
 - `bin/jobs`
+- `db/migrate/*solid_queue*`（Solid Queue 用テーブル作成 migration）
+
+※ MVPでは Solid Queue を **primary DB に同居**させるため、`db/queue_schema.rb` を最終成果物として採用しない。
+
 
 ### R2互換性（addressing style）
 - R2のS3互換差異による事故を避けるため、**path-style**（`force_path_style: true`）を採用する。
