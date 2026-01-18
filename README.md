@@ -56,11 +56,15 @@ MVPでは、アップロード時に以下の上限をサーバ側で判定し�
 - 本番（preview、`RAILS_ENV=production`）では Active Storage は **Cloudflare R2**（service key `:r2`）を使用します。
 
 ## バックグラウンドジョブ（必須）
-- キュー基盤：Solid Queue（DB-backed）
+- キュー基盤：Solid Queue（DB-backed、**primary DB 同居**）
 - Renderは2プロセス運用：
   - Web（Rails）
   - Worker（`bin/jobs start`）
-- `purge_later` / `analyze` はWorker前提です。Worker停止時はジョブが滞留し、ストレージ削除・解析が完了しません。
+- `purge_later` / `analyze` はWorker前提です。Worker停止時はジョブが滞留し、削除・解析が完了しません。
+
+## DBマイグレーション
+- マイグレーションはコンテナ内で実行します（正本：`docker compose exec web bin/rails db:migrate`）。
+
 
 ### 算定ルール
 * 総容量（500MB）は、ユーザーが所有する **Asset原本（ActiveStorageの添付ファイル）合計**で算定します。
