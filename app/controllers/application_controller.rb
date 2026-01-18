@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   PUNDIT_EXCLUDED_CONTROLLERS = %w[rails/health rails/pwa].freeze
   PUNDIT_POLICY_SCOPED_ACTIONS = %w[index search uncategorized].freeze
 
-  
+
   # -----------------------------------------------------------------------------
   # Pundit運用ルール（Issue #11で固定）
   #
