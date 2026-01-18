@@ -46,14 +46,21 @@ TakuVaultの最大の特徴は、素材を単に保存するだけでなく、 W
 * 素材の検索(現状はRansackを利用予定)・フィルタリング・ソート機能の実装
 
 ## 容量・アップロード上限（Quota）
-
 MVPでは、アップロード時に以下の上限をサーバ側で判定し、**1つでも違反があれば全体を拒否（all-or-nothing / fail-closed）**します。
-
 * 1ファイル上限：50MB（10進。50,000,000 bytes）
 * 総容量上限：500MB（10進。500,000,000 bytes。**ユーザー単位 / Asset原本合計**）
 * 1回のアップロード上限：30ファイル（複数ファイル選択1回あたり）
 * 1回のアップロード合計上限：200MB（10進。200,000,000 bytes。複数ファイル選択1回あたり）
 
+## ストレージ（preview / 本番）
+- 本番（preview、`RAILS_ENV=production`）では Active Storage は **Cloudflare R2**（service key `:r2`）を使用します。
+
+## バックグラウンドジョブ（必須）
+- キュー基盤：Solid Queue（DB-backed）
+- Renderは2プロセス運用：
+  - Web（Rails）
+  - Worker（`bin/jobs start`）
+- `purge_later` / `analyze` はWorker前提です。Worker停止時はジョブが滞留し、ストレージ削除・解析が完了しません。
 
 ### 算定ルール
 * 総容量（500MB）は、ユーザーが所有する **Asset原本（ActiveStorageの添付ファイル）合計**で算定します。
