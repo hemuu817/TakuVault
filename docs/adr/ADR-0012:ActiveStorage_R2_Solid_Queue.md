@@ -93,4 +93,4 @@ Accepted
 
 ## 参照
 - ADR-0005：job基盤の採用方針（一般方針）
-- ADR-0008：単一環境（preview）方針
+- ADR-0011：単一環境（preview）方針
