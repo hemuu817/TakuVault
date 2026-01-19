@@ -14,7 +14,7 @@ MVPリリース条件を **Phase 0 完了 + Phase 1（最小Where used）完了*
 Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage, Cloudflare R2
 
 ## MVP必須（固定）
-- （共通）認証：Devise（パスワードリセットを含む）
+- （共通）認証：Devise（MVPでは Recoverable を導入しない。passwords ルートは出さない）
 - （共通）認可：Pundit等で方式固定（全CRUDで policy_scope/authorize、所有権徹底）
 - （共通）DB優先：DB制約を正とし、モデルバリデーション“依存”で整合性を担保しない（補助としては可）
 
@@ -29,8 +29,8 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
   - 許可 Content-Type / 拡張子 / サイズ上限は **サーバ側で拒否**（クライアント依存NG）
 
 - （Phase 0）クラウド永続化（Cloudflare R2）
-  - staging相当でR2永続化を確認（再デプロイ後も参照できる）
-  - バケット分割（stg/prod混入なし）等の運用要件は Issue/ADR を正本とする
+  - preview（Render単一環境、`RAILS_ENV=production`）でR2永続化を確認（再デプロイ後も参照できる）
+  - staging/prod の環境分離・バケット分割は MVP 必須にしない（将来の別Issue/別ADRで扱う）
 
 - （Phase 0）削除整合性
   - Asset削除後は参照不能（画面・直アクセス双方）
@@ -75,18 +75,16 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
 - 複合FK：usages(session_id, scene_id) -> scenes(session_id, id)
 - 複合FK成立条件：scenes に UNIQUE(session_id, id)
 
-## テスト最低ライン（固定）
-- テスト基盤：RSpec（先にセットアップしてから実装に入る）
-- モデル：添付必須、サイズ、Content-Type/拡張子、DB制約
-- ポリシー：所有権（他人のAsset/Session/Usageにアクセスできない）
-- システム：複数ファイル選択アップロード → 複数Asset作成（CI安定担保）
-- 手動QA：
-  - アップロード → 一覧/詳細参照 → 削除 → 再参照不可
-  - staging相当でR2永続化（再デプロイ後も参照できる）
+- RSpec は MVP の必須要件にしない（非タスク）
+  - ただし既存CIがテストを要求する場合は、既存を壊さない範囲で維持する（新規に整備しない）
+- 手動QA（最低ライン）：
+  - ログイン → アップロード → 一覧/詳細参照 → 削除 → 再参照不可
+  - preview（Render単一環境）で R2 永続化（再デプロイ後も参照できる）
+  - 認可境界：他人のURL直打ちが通らない（一覧/詳細/削除）
 
 ## Issue一覧
-A 基盤(0001)：0006〜0008, 0061  
-B 認証・認可(0009)：0010〜0012, 0071  
+A 基盤(0001)：0006〜0008  
+B 認証・認可(0009)：0010〜0012  
 C セッション&シーン(0013)：0014〜0015, 0041  
 D Asset+Usage核(0017)：0018〜0024, 0042  
 E 検索(0027)：0028〜0030  
@@ -94,7 +92,7 @@ F タグ(0031)：0032, 0065
 X クラウド保管(0033)：0034〜0035  
 G 変換（MVP外）(0036)：0037〜0040  
 H Docs(0025)：0026  
-Z その他（MVP外候補）：0068〜0070  
+Z その他（MVP外候補）：0061, 0068〜0071  
 
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
 - 正本: GitHub Issue 本文（AC/DoD/テスト観点）
