@@ -45,6 +45,11 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
+  # request spec で sign_in/sign_out を「本当にログインさせる」ため
+  config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # controller spec を使う場合だけ（request spec には入れない）
+  config.include Devise::Test::ControllerHelpers, type: :controller
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 
