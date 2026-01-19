@@ -89,5 +89,4 @@ class AssetsController < ApplicationController
   def log_rejection(reason, details = {})
     Rails.logger.info({ event: "asset_upload_rejected", reason: reason, **details })
   end
-
 end
