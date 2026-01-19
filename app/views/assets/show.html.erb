@@ -1,0 +1,16 @@
+<h1>素材詳細</h1>
+
+<p>表示名: <%= @asset.display_name %></p>
+<p>元ファイル名: <%= @asset.original_filename %></p>
+
+<% if @asset.file.attached? %>
+  <p>
+    <%= link_to "ダウンロード",
+                rails_blob_path(@asset.file, disposition: "attachment") %>
+  </p>
+<% end %>
+
+<p>
+  <%= link_to "編集", edit_asset_path(@asset) %>
+  <%= link_to "一覧へ戻る", assets_path %>
+</p>
