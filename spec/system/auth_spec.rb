@@ -30,7 +30,7 @@ RSpec.describe "Auth", type: :system do
 
 # spec/system/auth_spec.rb
 it "ログイン失敗でエラーが出る（Turboでも崩れない）" do
-  User.create!(email: "u@example.com", password: "password")
+  create(:user, email: "u@example.com")
 
   visit new_user_session_path
   fill_in "user_email", with: "u@example.com"

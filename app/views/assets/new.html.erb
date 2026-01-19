@@ -1,0 +1,19 @@
+<h1>素材アップロード</h1>
+
+<% if @error_message.present? %>
+  <p><%= @error_message %></p>
+<% end %>
+
+<%= form_with model: @asset, url: assets_path do |form| %>
+  <div>
+    <%= form.label :files, "ファイルを選択" %>
+    <%= form.file_field :files,
+                        multiple: true,
+                        direct_upload: false,
+                        include_hidden: false %>
+  </div>
+
+  <div>
+    <%= form.submit "アップロード" %>
+  </div>
+<% end %>

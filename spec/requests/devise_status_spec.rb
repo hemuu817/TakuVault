@@ -2,7 +2,7 @@ require "rails_helper"
 require "cgi"
 
 RSpec.describe "Devise status", type: :request do
-  let!(:user) { User.create!(email: "req@example.com", password: "password") }
+  let!(:user) { create(:user, email: "req@example.com") }
 
   before { host! "www.example.com" } # HostAuthorization対策（test.rbで許可済みなら安定）
 

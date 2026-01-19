@@ -1,0 +1,10 @@
+<%= form_with model: asset do |form| %>
+  <div>
+    <%= form.label :display_name, "表示名" %>
+    <%= form.text_field :display_name %>
+  </div>
+
+  <div>
+    <%= form.submit "更新" %>
+  </div>
+<% end %>
