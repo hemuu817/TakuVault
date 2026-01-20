@@ -24,21 +24,23 @@ class AssetsController < ApplicationController
     files = Array(params.dig(:asset, :files)).reject(&:blank?)
     if files.empty?
       log_rejection(:no_files)
-      @error_message = "ファイルが選択されていません。"
+      flash.now[:alert] = "ファイルが選択されていません。"
       return render(:new, status: :unprocessable_entity)
     end
 
     if files.size > Assets::UploadValidator::MAX_FILES_PER_UPLOAD
       log_rejection(:too_many_files, count: files.size)
-      @error_message = "ファイル数が上限を超えています。"
+      flash.now[:alert] = "ファイル数が上限を超えています。"
       return render(:new, status: :unprocessable_entity)
     end
 
     result = Assets::BulkCreate.call(user: current_user, files: files)
     if result.success?
-      redirect_to assets_path, notice: "#{result.assets.count}件の素材をアップロードしました。"
+      redirect_to new_asset_path,
+                  notice: "アップロードしました（#{files.size}件）",
+                  status: :see_other
     else
-      @error_message = error_message_for(result.error)
+      flash.now[:alert] = error_message_for(result.error)
       render :new, status: :unprocessable_entity
     end
   end
