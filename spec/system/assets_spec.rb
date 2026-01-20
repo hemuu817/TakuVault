@@ -24,6 +24,11 @@ RSpec.describe "Assets", type: :system do
     ]
     click_button "アップロード"
 
+    expect(page).to have_current_path(new_asset_path, ignore_query: true)
+    expect(page).to have_content("アップロードしました")
+
+    click_link "一覧へ戻る"
+
     expect(page).to have_content("素材一覧")
     expect(page).to have_content("valid.png")
     expect(page).to have_content("valid2.png")
