@@ -65,8 +65,12 @@ class AssetsController < ApplicationController
   def destroy
     @asset = policy_scope(Asset).find(params[:id])
     authorize(@asset)
-    @asset.destroy!
-    redirect_to assets_path, notice: "素材を削除しました。"
+    @asset.destroy
+    if @asset.destroyed?
+      redirect_to assets_path, notice: "素材を削除しました。"
+    else
+      redirect_to assets_path, alert: "素材の削除に失敗しました。"
+    end
   end
 
   private

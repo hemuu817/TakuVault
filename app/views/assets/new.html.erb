@@ -1,8 +1,6 @@
 <h1>素材アップロード</h1>
 
-<% if @error_message.present? %>
-  <p><%= @error_message %></p>
-<% end %>
+<%= link_to "一覧へ戻る", assets_path %>
 
 <%= form_with model: @asset, url: assets_path do |form| %>
   <div>
