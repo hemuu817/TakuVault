@@ -175,4 +175,14 @@ Z その他（MVP外候補）：0061, 0068〜0071
 ### Source of truth
 - MVPスコープの正本: 本AGENTS.md（Phase 0/Phase 1/Deferred）
 - 受け入れ条件の正本: GitHub Issue 本文
-- Codex が参照する一次情報: snapshot worktree 内のファイル
+- 対応表（INDEX）の正本: docs/issues_snapshot.md
+- 進捗（Done / In progress / BLOCKED）の正本: Git のリモート追跡ブランチ origin/main
+
+#### 進捗判断ルール（軽量運用）
+- origin/main に入っている変更のみを Done とみなす。
+- origin/main に入っていない進捗は「未完了」と断定せず unknown 扱いとする。
+- unknown のまま前提（存在するモデル/テーブル/ルート/設定）を推測で変更しない。
+- Issue番号は PRタイトル または squash後のコミットメッセージ先頭に `(xx)` 形式で付ける（追跡のため）。
+
+
+
