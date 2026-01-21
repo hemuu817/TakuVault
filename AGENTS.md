@@ -176,13 +176,14 @@ Z その他（MVP外候補）：0061, 0068〜0071
 - MVPスコープの正本: 本AGENTS.md（Phase 0/Phase 1/Deferred）
 - 受け入れ条件の正本: GitHub Issue 本文
 - 対応表（INDEX）の正本: docs/issues_snapshot.md
-- 進捗（Done / In progress / BLOCKED）の正本: Git のリモート追跡ブランチ origin/main
+- 進捗（Done）の正本: docs/issues_snapshot.md の State=CLOSED
+- 運用: docs/issues_snapshot.md は毎日最新化する。最新化されていない場合は unknown 扱いとする（推測で前提変更しない）。
+- Issue を CLOSE してよい条件: main に反映済み（マージ済み）＋最低限の手動確認が通った場合のみ。
 
-#### 進捗判断ルール（軽量運用）
-- origin/main に入っている変更のみを Done とみなす。
-- origin/main に入っていない進捗は「未完了」と断定せず unknown 扱いとする。
-- unknown のまま前提（存在するモデル/テーブル/ルート/設定）を推測で変更しない。
-- Issue番号は PRタイトル または squash後のコミットメッセージ先頭に `(xx)` 形式で付ける（追跡のため）。
+
+#### Done 判定ルール（軽量運用）
+- Issue を CLOSE してよい条件は「main に反映済み（マージ済み）＋最低限の手動確認が通った」のみ。
+- OPEN は未完了と断定せず、unknown / in progress / blocked を内包する扱いとする（追加ログは要求しない）。
 
 
 
