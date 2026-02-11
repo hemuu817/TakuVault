@@ -18,7 +18,8 @@ module Assets
     end
 
     def call
-      validation = UploadValidator.new(files: @files).call
+      files = normalized_files
+      validation = UploadValidator.new(files: files).call
       return Result.new(error: validation.error) unless validation.ok?
 
       assets = []
@@ -27,14 +28,14 @@ module Assets
         current_total = current_total_bytes
         incoming_total = validation.total_bytes
 
-        if current_total + incoming_total > UploadValidator::MAX_TOTAL_BYTES
+        if current_total + incoming_total > UploadValidator::MAX_USER_TOTAL_BYTES
           log_rejection(:total_capacity_exceeded,
                         current_total: current_total,
                         incoming_total: incoming_total)
           raise TotalCapacityExceeded
         end
 
-        @files.each do |file|
+        files.each do |file|
           asset = Asset.new(
             user: @user,
             original_filename: file.original_filename,
@@ -55,6 +56,10 @@ module Assets
     end
 
     private
+
+    def normalized_files
+      Array(@files).reject(&:blank?)
+    end
 
     def current_total_bytes
       ActiveStorage::Attachment
