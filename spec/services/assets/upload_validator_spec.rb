@@ -22,6 +22,40 @@ RSpec.describe Assets::UploadValidator do
     expect(result.total_bytes).to be > 0
   end
 
+  it "files が nil の場合は拒否する" do
+    result = described_class.new(files: nil).call
+
+    expect(result.ok?).to be(false)
+    expect(result.error).to eq(:no_files)
+  end
+
+  it "files が空配列の場合は拒否する" do
+    result = described_class.new(files: []).call
+
+    expect(result.ok?).to be(false)
+    expect(result.error).to eq(:no_files)
+  end
+
+  it "1回の件数上限を超えると拒否する" do
+    stub_const("Assets::UploadValidator::MAX_FILES_PER_UPLOAD", 1)
+    second_file = Rack::Test::UploadedFile.new(
+      Rails.root.join("spec/fixtures/files/valid.png"),
+      "image/png"
+    )
+
+    result = described_class.new(files: [ valid_file, second_file ]).call
+
+    expect(result.ok?).to be(false)
+    expect(result.error).to eq(:too_many_files)
+  end
+
+  it "アップロードファイル型でない要素が含まれる場合は拒否する" do
+    result = described_class.new(files: [ "not-uploaded-file" ]).call
+
+    expect(result.ok?).to be(false)
+    expect(result.error).to eq(:invalid_file_param)
+  end
+
   it "実体MIMEと拡張子が一致しない場合は拒否する" do
     result = described_class.new(files: [ fake_png ]).call
 
@@ -39,7 +73,7 @@ RSpec.describe Assets::UploadValidator do
   end
 
   it "1回合計上限を超えると拒否する" do
-    stub_const("Assets::UploadValidator::MAX_TOTAL_BYTES_PER_UPLOAD", 1)
+    stub_const("Assets::UploadValidator::MAX_UPLOAD_TOTAL_BYTES", 1)
 
     result = described_class.new(files: [ valid_file ]).call
 
