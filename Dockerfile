@@ -3,6 +3,7 @@ FROM ruby:3.4.8-bookworm
 RUN apt-get update -qq && apt-get install -y --no-install-recommends \
     build-essential \
     git \
+    ripgrep \
     libpq-dev \
     postgresql-client \
     libvips \

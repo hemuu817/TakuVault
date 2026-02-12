@@ -17,6 +17,11 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
 - （共通）認証：Devise（MVPでは Recoverable を導入しない。passwords ルートは出さない）
 - （共通）認可：Pundit等で方式固定（全CRUDで policy_scope/authorize、所有権徹底）
 - （共通）DB優先：DB制約を正とし、モデルバリデーション“依存”で整合性を担保しない（補助としては可）
+  - （重要）「(8) 所有権の強制化（全リソース）」（GitHub #12 / docs/issues/0012.md）は **単独で先に完了させるIssueではない**。
+    - 理由：対象のモデル/テーブル/コントローラが未作成の段階では実装不能。
+    - 扱い：**横断チェックリスト**として、各リソース実装IssueのDoDに「policy_scope起点 + authorize徹底（fail-closed）」を必ず含めて満たしていく。
+    - したがって #12 は、Phase 0/1 の各Issueが進むにつれて順次“満たされていく”前提で運用する（#12単独着手で詰まらないようにする）。
+
 
 - （Phase 0）Asset CRUD（ActiveStorage）
   - Asset：**1ファイル=1Asset**（has_one_attached）
@@ -94,6 +99,30 @@ G 変換（MVP外）(0036)：0037〜0040
 H Docs(0025)：0026  
 Z その他（MVP外候補）：0061, 0068〜0071  
 
+## 作業順序（固定：この順で進める）
+※「Issue番号（#xx）」はズレうるため、**Local（docs/issues/xxxx.md）を主キー**として参照する。GitHub # は issues_snapshot の対応表に従う。
+
+### Phase 0（最優先：AssetがR2に永続保存できるまで）
+1. docs/issues/0019.md（GitHub #19）(14) Asset CRUD(ActiveStorage)
+2. docs/issues/0035.md（GitHub #35）(27) 容量/ファイル上限方針（#19に密結合。サーバ側で拒否）
+3. docs/issues/0024.md（GitHub #24）(19) Asset削除整合性
+4. docs/issues/0034.md（GitHub #34）(26) 本番ストレージ構成（ActiveStorage + R2、preview=production単一環境で永続化確認）
+- 余力枠：docs/issues/0020.md（GitHub #20）(15) Asset kind（Phase 0 DoD 必須ではない）
+
+### Phase 1（次点：最小Where used）
+5. docs/issues/0014.md（GitHub #14）(10) Session CRUD（room_url保存/参照、http/httpsのみ）
+6. docs/issues/0015.md（GitHub #15）(11) Scene（default_scene自動作成、position=1固定、削除不可）
+7. docs/issues/0018.md（GitHub #18）(13) Usage割当ルール決定(spike)（ADRで既決なら“確認→反映”で完了扱い）
+8. docs/issues/0021.md（GitHub #21）(16) Usage作成（Asset詳細→default_sceneへ role付きで **1件** 付与）
+9. docs/issues/0022.md（GitHub #22）(17) Asset詳細Where used（Usage一覧表示）
+
+### Deferred（MVPリリース要件に含めない）
+- 検索/絞り込み/ソート：docs/issues/0027.md〜0030.md（GitHub #27〜#30）
+- タグ：docs/issues/0031.md〜0032.md（GitHub #31〜#32）ほか
+- 未整理（Usage0）ビュー：docs/issues/0030.md（GitHub #30）
+- 変換：docs/issues/0036.md〜0040.md（GitHub #36〜#40）
+
+
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
 - 正本: GitHub Issue 本文（AC/DoD/テスト観点）
 - ローカル参照の一次情報: docs/issues/*.md
@@ -123,6 +152,12 @@ Z その他（MVP外候補）：0061, 0068〜0071
   - If it does NOT exist:
     - Proceed by reading `docs/issues/*.md` directly.
 
+- Dependency gate (must):
+  - If the target issue requires models/tables/controllers that do not exist yet, do NOT “silently create prerequisites” inside the issue unless the issue explicitly includes them.
+  - Instead, stop and report "BLOCKED by missing prerequisites" and point to the dependency issue in docs/issues/ and issues_snapshot.
+  - Example:
+    - docs/issues/0021.md（GitHub #21 Usage作成）は Session/Scene が前提。sessions/scenes が未存在なら、docs/issues/0014.md（#14）→ docs/issues/0015.md（#15）を先に実装する。
+
 - Scope control (important):
   - Ignore mistaken issues (if present):
     - Ignore: docs/issues/0002.md - 0005.md
@@ -140,4 +175,15 @@ Z その他（MVP外候補）：0061, 0068〜0071
 ### Source of truth
 - MVPスコープの正本: 本AGENTS.md（Phase 0/Phase 1/Deferred）
 - 受け入れ条件の正本: GitHub Issue 本文
-- Codex が参照する一次情報: snapshot worktree 内のファイル
+- 対応表（INDEX）の正本: docs/issues_snapshot.md
+- 進捗（Done）の正本: docs/issues_snapshot.md の State=CLOSED
+- 運用: docs/issues_snapshot.md は毎日最新化する。最新化されていない場合は unknown 扱いとする（推測で前提変更しない）。
+- Issue を CLOSE してよい条件: main に反映済み（マージ済み）＋最低限の手動確認が通った場合のみ。
+
+
+#### Done 判定ルール（軽量運用）
+- Issue を CLOSE してよい条件は「main に反映済み（マージ済み）＋最低限の手動確認が通った」のみ。
+- OPEN は未完了と断定せず、unknown / in progress / blocked を内包する扱いとする（追加ログは要求しない）。
+
+
+
