@@ -46,9 +46,29 @@ RSpec.describe "Assets", type: :request do
       get assets_path
       expect(response).to have_http_status(:ok)
     end
+
+    it "shows only owned assets" do
+      create_asset_for(user, filename: "owner_only.png")
+      create_asset_for(other, filename: "other_user.png")
+
+      login_via_http!(user)
+      get assets_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("owner_only.png")
+      expect(response.body).not_to include("other_user.png")
+    end
   end
 
   describe "GET /assets/:id" do
+    it "redirects to sign in when not logged in" do
+      asset = create_asset_for(user)
+
+      get asset_path(asset)
+
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
     it "returns 404 when accessing someone else's asset" do
       other_asset = create_asset_for(other)
 
@@ -64,7 +84,80 @@ RSpec.describe "Assets", type: :request do
     end
   end
 
+  describe "GET /assets/new" do
+    it "redirects to sign in when not logged in" do
+      get new_asset_path
+
+      expect(response).to redirect_to(new_user_session_path)
+    end
+  end
+
+  describe "POST /assets" do
+    it "redirects to sign in when not logged in" do
+      post assets_path, params: { asset: { files: [ build_uploaded_file ] } }
+
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it "returns 422 when no files are provided" do
+      login_via_http!(user)
+
+      post assets_path, params: { asset: { files: [] } }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it "returns 422 when files count exceeds the limit" do
+      stub_const("Assets::UploadValidator::MAX_FILES_PER_UPLOAD", 1)
+      login_via_http!(user)
+
+      post assets_path, params: {
+        asset: { files: [ build_uploaded_file("a.png"), build_uploaded_file("b.png") ] }
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+
+    it "returns 422 when bulk create rejects the upload" do
+      login_via_http!(user)
+      allow(Assets::BulkCreate).to receive(:call)
+        .and_return(Assets::BulkCreate::Result.new(error: :invalid_content_type))
+
+      post assets_path, params: { asset: { files: [ build_uploaded_file("a.png") ] } }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
+
+  describe "GET /assets/:id/edit" do
+    it "redirects to sign in when not logged in" do
+      asset = create_asset_for(user)
+
+      get edit_asset_path(asset)
+
+      expect(response).to redirect_to(new_user_session_path)
+    end
+  end
+
   describe "PATCH /assets/:id" do
+    it "redirects to sign in when not logged in" do
+      asset = create_asset_for(user)
+
+      patch asset_path(asset), params: { asset: { display_name: "new" } }
+
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it "falls back to original_filename when display_name is blank" do
+      asset = create_asset_for(user, filename: "keep_name.png")
+
+      login_via_http!(user)
+      patch asset_path(asset), params: { asset: { display_name: "" } }
+
+      expect(response).to redirect_to(asset_path(asset))
+      expect(asset.reload.display_name).to eq("keep_name.png")
+    end
+
     it "returns 404 when updating someone else's asset" do
       other_asset = create_asset_for(other)
 
@@ -81,6 +174,14 @@ RSpec.describe "Assets", type: :request do
   end
 
   describe "DELETE /assets/:id" do
+    it "redirects to sign in when not logged in" do
+      asset = create_asset_for(user)
+
+      delete asset_path(asset)
+
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
     it "returns 404 when deleting someone else's asset" do
       other_asset = create_asset_for(other)
 

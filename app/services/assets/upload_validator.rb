@@ -1,9 +1,9 @@
 module Assets
   class UploadValidator
     MAX_FILE_BYTES = 50_000_000
-    MAX_TOTAL_BYTES = 500_000_000
+    MAX_USER_TOTAL_BYTES = 500_000_000
     MAX_FILES_PER_UPLOAD = 30
-    MAX_TOTAL_BYTES_PER_UPLOAD = 200_000_000
+    MAX_UPLOAD_TOTAL_BYTES = 200_000_000
 
     ALLOWED_CONTENT_TYPES = %w[
       image/png
@@ -34,12 +34,25 @@ module Assets
     end
 
     def call
+      files = normalized_files
+      return reject(:no_files) if files.empty?
+      if files.size > MAX_FILES_PER_UPLOAD
+        return reject(:too_many_files, count: files.size, max: MAX_FILES_PER_UPLOAD)
+      end
+
       total_bytes = 0
 
-      @files.each do |file|
+      files.each do |file|
+        unless uploaded_file_like?(file)
+          return reject(:invalid_file_param, class_name: file.class.name)
+        end
+
         total_bytes += file.size
         if file.size > MAX_FILE_BYTES
           return reject(:file_too_large, filename: file.original_filename, size: file.size)
+        end
+        if total_bytes > MAX_UPLOAD_TOTAL_BYTES
+          return reject(:total_bytes_over_limit, total_bytes: total_bytes)
         end
 
         detected_mime = detect_mime(file)
@@ -52,14 +65,20 @@ module Assets
         end
       end
 
-      if total_bytes > MAX_TOTAL_BYTES_PER_UPLOAD
-        return reject(:total_bytes_over_limit, total_bytes: total_bytes)
-      end
-
       Result.new(ok?: true, total_bytes: total_bytes)
     end
 
     private
+
+    def normalized_files
+      Array(@files).reject(&:blank?)
+    end
+
+    def uploaded_file_like?(file)
+      file.respond_to?(:size) &&
+        file.respond_to?(:original_filename) &&
+        file.respond_to?(:tempfile)
+    end
 
     def detect_mime(file)
       Marcel::MimeType.for(file.tempfile)
