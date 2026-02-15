@@ -26,6 +26,10 @@ RSpec.describe "Pundit authorization handling", type: :request do
         head :ok
       end
 
+      def uncategorized
+        head :ok
+      end
+
       def dev_error
         raise Pundit::AuthorizationNotPerformedError
       end
@@ -37,6 +41,7 @@ RSpec.describe "Pundit authorization handling", type: :request do
     Rails.application.routes.draw do
       get "/test_pundit" => "test_pundit#index"
       get "/test_pundit_ok" => "test_pundit#show"
+      get "/test_pundit_uncategorized" => "test_pundit#uncategorized"
       get "/test_pundit_dev_error" => "test_pundit#dev_error"
     end
 
@@ -50,7 +55,21 @@ RSpec.describe "Pundit authorization handling", type: :request do
     expect(response).to have_http_status(:not_found)
   end
 
+  it "raises AuthorizationNotPerformedError when verify_authorized is enabled" do
+    expect { get "/test_pundit_ok", headers: headers }
+      .to raise_error(Pundit::AuthorizationNotPerformedError)
+  end
+
+  it "raises PolicyScopingNotPerformedError when verify_policy_scoped is enabled" do
+    expect { get "/test_pundit_uncategorized", headers: headers }
+      .to raise_error(Pundit::PolicyScopingNotPerformedError)
+  end
+
   it "does not enforce verify_* when disabled" do
+    allow_any_instance_of(TestPunditController)
+      .to receive(:pundit_verify_enabled?)
+      .and_return(false)
+
     get "/test_pundit_ok", headers: headers
     expect(response).to have_http_status(:ok)
   end
