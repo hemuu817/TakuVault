@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   PUNDIT_EXCLUDED_CONTROLLERS = %w[rails/health rails/pwa].freeze
   PUNDIT_POLICY_SCOPED_ACTIONS = %w[index search uncategorized].freeze
+  BOOLEAN_TYPE = ActiveModel::Type::Boolean.new
 
   # after_action は（前の話の通り）only/except を使わない形にするのが安全
   after_action :verify_authorized,
@@ -33,7 +34,8 @@ class ApplicationController < ActionController::Base
   end
 
   def pundit_verify_enabled?
-    false
+    return true if Rails.env.development? || Rails.env.test?
+    BOOLEAN_TYPE.cast(ENV.fetch("PUNDIT_VERIFY", false))
   end
 
   def render_not_found
