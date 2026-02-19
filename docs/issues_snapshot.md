@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-02-18T16:04:51Z_
+_Generated (UTC): 2026-02-19T16:00:43Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -39,7 +39,7 @@ _Generated (UTC): 2026-02-18T16:04:51Z_
 | 33 | Epic X : クラウド保管 | OPEN | 2026-01-12T11:44:11Z | https://github.com/hemuu817/TakuVault/issues/33 | [local](issues/0033.md) |
 | 34 | (26) 本番ストレージ構成（ActiveStorage + S3等） | OPEN | 2026-01-19T07:42:46Z | https://github.com/hemuu817/TakuVault/issues/34 | [local](issues/0034.md) |
 | 35 | (27) 容量/ファイル上限方針 | CLOSED | 2026-01-18T18:53:12Z | https://github.com/hemuu817/TakuVault/issues/35 | [local](issues/0035.md) |
-| 36 | Epic G : 変換（MVP外） | OPEN | 2025-12-27T17:48:13Z | https://github.com/hemuu817/TakuVault/issues/36 | [local](issues/0036.md) |
+| 36 | Epic G : 変換（MVP外） | OPEN | 2026-02-19T06:51:38Z | https://github.com/hemuu817/TakuVault/issues/36 | [local](issues/0036.md) |
 | 37 | (28) 変換方式検証（spike） | OPEN | 2026-01-15T12:39:50Z | https://github.com/hemuu817/TakuVault/issues/37 | [local](issues/0037.md) |
 | 38 | (29)動画→ジョブ投入→進捗/結果（非同期） | OPEN | 2026-01-15T12:40:01Z | https://github.com/hemuu817/TakuVault/issues/38 | [local](issues/0038.md) |
 | 39 | (30)変換後APNG/MP3自動登録 | OPEN | 2026-01-15T12:40:14Z | https://github.com/hemuu817/TakuVault/issues/39 | [local](issues/0039.md) |
