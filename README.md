@@ -51,24 +51,20 @@ MVPでは、アップロード時に以下の上限をサーバ側で判定し�
 * 1回のアップロード上限：30ファイル（複数ファイル選択1回あたり）
 * 1回のアップロード合計上限：200MB（10進。200,000,000 bytes。複数ファイル選択1回あたり）
 
-## ストレージ（preview / 本番）
-- 本番（preview、`RAILS_ENV=production`）では Active Storage は **Cloudflare R2**（service key `:r2`）を使用します。
+## ストレージ（preview）
+- preview環境（`RAILS_ENV=production`）では、Active Storage は **Cloudflare R2**（service key `:r2`）を使用します。
+- 環境は preview の単一構成です。staging / production の分離は行っていません。
 
 ## バックグラウンドジョブ（必須）
 - キュー基盤：Solid Queue（DB-backed、**primary DB 同居**）
-- Renderは2プロセス運用：
+- Render は 2 プロセス運用です。
   - Web（Rails）
   - Worker（`bin/jobs start`）
-- `purge_later` / `analyze` はWorker前提です。Worker停止時はジョブが滞留し、削除・解析が完了しません。
+- `purge_later` / `analyze` / `variant(transform)` は Worker 前提です。Worker 停止時はジョブが滞留し、削除・解析・派生物生成が完了しません。
 
 ## DBマイグレーション
-- マイグレーションはコンテナ内で実行します（正本：`docker compose exec web bin/rails db:migrate`）。
-
-
-### 算定ルール
-* 総容量（500MB）は、ユーザーが所有する **Asset原本（ActiveStorageの添付ファイル）合計**で算定します。
-* 1回合計（200MB）は、今回選択されたファイルの合計で算定します。
-* variant / preview などの派生物は、MVPの総容量算定の対象外です。
+- ローカルでは、コンテナ内で `docker compose exec web bin/rails db:migrate` を実行します。
+- preview環境では、デプロイ時に `bin/rails db:migrate` を実行します。
 
 ### 判定タイミング
 * 作成前（リクエスト処理時点）に判定し、超過は拒否します。
@@ -93,5 +89,5 @@ MVPでは、アップロード時に以下の上限をサーバ側で判定し�
 ## 使用する技術スタック
 * 使用するフレームワーク: Ruby 3.x, Rails 7.x（フルスタック）
 * データベース: PostgreSQL
-* デプロイ先: Render（Web：Dockerデプロイ）
-* ストレージ / ライブラリ: ActiveStorage, 本番ストレージ：Cloudflare R2（S3互換）を利用予定
+* デプロイ先: Render（Web / Worker）
+* ストレージ / ライブラリ: ActiveStorage, Cloudflare R2（S3互換）, Solid Queue
