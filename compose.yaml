@@ -26,6 +26,7 @@ services:
     environment:
       RAILS_ENV: development
       RACK_ENV: development
+      APP_HOST: localhost:3000
       POSTGRES_HOST: ${POSTGRES_HOST:-db}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
@@ -38,11 +39,14 @@ services:
   worker:
     profiles: ["jobs"]
     build: .
-    command: bash -c "bundle exec rails jobs:work"
+    command: bin/jobs start
     volumes:
       - .:/app
       - bundle:/usr/local/bundle
     environment:
+      RAILS_ENV: ${RAILS_ENV:-development}
+      RACK_ENV: ${RACK_ENV:-development}
+      APP_HOST: ${APP_HOST:-localhost:3000}
       POSTGRES_HOST: ${POSTGRES_HOST:-db}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
