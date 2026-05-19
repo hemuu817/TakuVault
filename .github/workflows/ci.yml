@@ -95,11 +95,23 @@ jobs:
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/taku_vault_test
+          R2_ENDPOINT: "https://dummy.r2.example.com"
+          R2_BUCKET: "dummy-bucket"
+          R2_REGION: "auto"
+          R2_ACCESS_KEY_ID: "dummy-key-id"
+          R2_SECRET_ACCESS_KEY: "dummy-secret"
+          APP_HOST: "localhost"
 
       - name: Run tests
         env:
-           RAILS_ENV: test
-           DATABASE_URL: postgres://postgres:postgres@localhost:5432/taku_vault_test
+          RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/taku_vault_test
+          R2_ENDPOINT: "https://dummy.r2.example.com"
+          R2_BUCKET: "dummy-bucket"
+          R2_REGION: "auto"
+          R2_ACCESS_KEY_ID: "dummy-key-id"
+          R2_SECRET_ACCESS_KEY: "dummy-secret"
+          APP_HOST: "localhost"
           # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test test:system
 

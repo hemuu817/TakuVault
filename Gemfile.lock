@@ -77,6 +77,25 @@ GEM
     addressable (2.8.8)
       public_suffix (>= 2.0.2, < 8.0)
     ast (2.4.3)
+    aws-eventstream (1.4.0)
+    aws-partitions (1.1231.0)
+    aws-sdk-core (3.244.0)
+      aws-eventstream (~> 1, >= 1.3.0)
+      aws-partitions (~> 1, >= 1.992.0)
+      aws-sigv4 (~> 1.9)
+      base64
+      bigdecimal
+      jmespath (~> 1, >= 1.6.1)
+      logger
+    aws-sdk-kms (1.123.0)
+      aws-sdk-core (~> 3, >= 3.244.0)
+      aws-sigv4 (~> 1.5)
+    aws-sdk-s3 (1.217.0)
+      aws-sdk-core (~> 3, >= 3.244.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.5)
+    aws-sigv4 (1.12.1)
+      aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.3.0)
     bcrypt (3.1.21)
     benchmark (0.5.0)
@@ -114,11 +133,16 @@ GEM
     drb (2.2.3)
     erb (6.0.1)
     erubi (1.13.1)
+    et-orbi (1.4.0)
+      tzinfo
     factory_bot (6.5.6)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
+    fugit (1.12.1)
+      et-orbi (~> 1.4)
+      raabro (~> 1.4)
     globalid (1.3.0)
       activesupport (>= 6.1)
     i18n (1.14.8)
@@ -135,6 +159,7 @@ GEM
     jbuilder (2.14.1)
       actionview (>= 7.0.0)
       activesupport (>= 7.0.0)
+    jmespath (1.6.2)
     json (2.18.0)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
@@ -203,6 +228,7 @@ GEM
       nio4r (~> 2.0)
     pundit (2.5.2)
       activesupport (>= 3.0.0)
+    raabro (1.4.0)
     racc (1.8.1)
     rack (3.2.4)
     rack-session (2.1.1)
@@ -310,6 +336,13 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
+    solid_queue (1.4.0)
+      activejob (>= 7.1)
+      activerecord (>= 7.1)
+      concurrent-ruby (>= 1.3.1)
+      fugit (~> 1.11)
+      railties (>= 7.1)
+      thor (>= 1.3.1)
     sprockets (4.2.2)
       concurrent-ruby (~> 1.0)
       logger
@@ -361,6 +394,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  aws-sdk-s3
   bootsnap
   brakeman
   capybara
@@ -377,6 +411,7 @@ DEPENDENCIES
   rspec-rails
   rubocop-rails-omakase
   selenium-webdriver
+  solid_queue
   sprockets-rails
   stimulus-rails
   turbo-rails
