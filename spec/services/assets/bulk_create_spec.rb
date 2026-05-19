@@ -43,6 +43,22 @@ RSpec.describe Assets::BulkCreate do
     expect(ActiveStorage::Blob.count).to eq(counts[:blobs])
   end
 
+  it "アップロードファイル型でない要素なら何も作成されない" do
+    counts = {
+      assets: Asset.count,
+      attachments: ActiveStorage::Attachment.count,
+      blobs: ActiveStorage::Blob.count
+    }
+
+    result = described_class.call(user: user, files: [ "not-uploaded-file" ])
+
+    expect(result).not_to be_success
+    expect(result.error).to eq(:invalid_file_param)
+    expect(Asset.count).to eq(counts[:assets])
+    expect(ActiveStorage::Attachment.count).to eq(counts[:attachments])
+    expect(ActiveStorage::Blob.count).to eq(counts[:blobs])
+  end
+
   it "混在で1件でも不正なら何も作成されない" do
     counts = {
       assets: Asset.count,
@@ -62,7 +78,7 @@ RSpec.describe Assets::BulkCreate do
   it "総容量超過なら何も作成されない" do
     asset = create(:asset, user: user, original_filename: "existing.png", display_name: "existing.png")
     existing_size = asset.file.blob.byte_size
-    stub_const("Assets::UploadValidator::MAX_TOTAL_BYTES", existing_size)
+    stub_const("Assets::UploadValidator::MAX_USER_TOTAL_BYTES", existing_size)
 
     expect do
       result = described_class.call(user: user, files: [ valid_file ])
