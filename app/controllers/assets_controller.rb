@@ -56,7 +56,7 @@ class AssetsController < ApplicationController
 
     display_name = params.dig(:asset, :display_name).presence || @asset.original_filename
     if @asset.update(display_name: display_name)
-      redirect_to asset_path(@asset), notice: "名称を更新しました。"
+      redirect_to asset_path(@asset), notice: "名称を更新しました。", status: :see_other
     else
       render :edit, status: :unprocessable_entity
     end
@@ -67,9 +67,9 @@ class AssetsController < ApplicationController
     authorize(@asset)
     @asset.destroy
     if @asset.destroyed?
-      redirect_to assets_path, notice: "素材を削除しました。"
+      redirect_to assets_path, notice: "素材を削除しました。", status: :see_other
     else
-      redirect_to assets_path, alert: "素材の削除に失敗しました。"
+      redirect_to assets_path, alert: "素材の削除に失敗しました。", status: :see_other
     end
   end
 

@@ -13,4 +13,7 @@
 <p>
   <%= link_to "編集", edit_asset_path(@asset) %>
   <%= link_to "一覧へ戻る", assets_path %>
+  <%= button_to "削除", asset_path(@asset),
+                method: :delete,
+                data: { turbo_confirm: "削除しますか？" } %>
 </p>
