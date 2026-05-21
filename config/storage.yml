@@ -1,3 +1,16 @@
+<%
+  # storage.yml evaluates every ERB section, even when test/local storage is selected.
+  r2_env = lambda do |key|
+    value = ENV[key]
+
+    if Rails.env.production? && (value.nil? || value.strip.empty?)
+      raise KeyError, "missing required environment variable: #{key}"
+    end
+
+    value
+  end
+%>
+
 test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
@@ -8,11 +21,11 @@ local:
 
 r2:
   service: S3
-  endpoint: <%= ENV.fetch("R2_ENDPOINT") %>
-  bucket: <%= ENV.fetch("R2_BUCKET") %>
-  access_key_id: <%= ENV.fetch("R2_ACCESS_KEY_ID") %>
-  secret_access_key: <%= ENV.fetch("R2_SECRET_ACCESS_KEY") %>
-  region: <%= ENV.fetch("R2_REGION") %>
+  endpoint: <%= r2_env.call("R2_ENDPOINT") %>
+  bucket: <%= r2_env.call("R2_BUCKET") %>
+  access_key_id: <%= r2_env.call("R2_ACCESS_KEY_ID") %>
+  secret_access_key: <%= r2_env.call("R2_SECRET_ACCESS_KEY") %>
+  region: <%= r2_env.call("R2_REGION") %>
   force_path_style: true
 
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
