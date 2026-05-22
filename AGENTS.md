@@ -1,8 +1,8 @@
 ## 目的
-MVPリリース条件を **Phase 0 完了 + Phase 1（最小Where used）完了** に再定義する。
+MVPリリース条件を **Phase 0 完了 + Phase 1 完了** と定義する。
 
 - Phase 0（最優先）：「アップロードした素材をCloudflare R2へ永続保存できるアプリとして“動く”」を成立させる
-- Phase 1（次点）：「Where used への最小導線」を成立させる（Asset詳細からUsage作成＋Where used表示）
+- Phase 1（次点）：docs/issues/0014.md → docs/issues/0015.md → docs/issues/0018.md → docs/issues/0021.md → docs/issues/0022.md の順で、Session / Scene / Usage / Where used を実装する
 - Phase 0のみ完了は “動作確認段階” とし、MVPリリースとは呼ばない（スコープ誤読防止）
 
 ## プロダクト前提
@@ -41,17 +41,29 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
   - Asset削除後は参照不能（画面・直アクセス双方）
   - Asset削除 → Usage削除 → purge/purge_later で整合させる（詳細は「削除整合性」参照）
 
-- （Phase 1）最小Where used（導線確保）
+- （Phase 1）Where used成立（Session / Scene / Usage / Asset詳細Where used）
   - Session を作成/参照でき、room_url を保存・参照できる（http/httpsのみ）
-  - Session作成時に default_scene が自動作成される（position=1固定・削除不可）
-  - Asset詳細から Usage を **1件** 作成できる（session + default_scene + role）
+  - Scene CRUD + position をMVPに含める
+    - Session作成時に default_scene を自動作成する
+    - default_scene は position=1 固定とし、削除不可にする
+    - Sceneの追加・参照・更新・削除は docs/issues/0015.md（GitHub #15）の範囲で扱う
+  - Usage割当ルール決定をMVPに含める
+    - docs/issues/0018.md（GitHub #18）をMVP対象として扱う
+    - ADR-0006 は Phase 1 の Usage割当ルールの正本として扱う
+    - ADR-0006のPrimary導線（未整理（Usage0）ページで複数選択→一括割当）をMVPのUsage作成導線に含める
+    - Asset詳細からのUsage追加/削除は Secondary / 保守導線として扱う
+  - Usage を作成できる
+    - 複数Assetに対し、同一の session + scene + role を指定してUsageを作成できる
+    - 重複は ADR-0006 に従い、既存Usageをスキップする冪等挙動とする
+    - UNIQUE(asset_id, session_id, scene_id, role) を前提にする
   - Asset詳細に Where used（Usage一覧）が表示される（includes等でN+1回避）
-  - 所有権不一致の session/scene への紐付けは fail-closed（403/404相当）
+  - 所有権不一致の asset / session / scene への紐付けは fail-closed（403/404相当）
 
 - （Deferred：MVPリリース要件に含めない）
   - 検索/絞り込み/ソート
   - タグ機能
-  - 未整理（Usage0）専用ビュー、未整理導線、素材一括割当のUI
+  - 未整理（Usage0）ビューのうち、検索・絞り込み・素材一覧拡張としてのリッチ版
+    - ただし、ADR-0006のPrimary導線に必要な「未整理（Usage0）ページで複数選択→一括割当」はPhase 1に含める
   - 変換（方式検証/ジョブ/進捗/自動登録/割当導線）
   - 素材詳細/素材アップロードのモーダル化
   - フッター＋静的ページ群
@@ -109,19 +121,24 @@ Z その他（MVP外候補）：0061, 0068〜0071
 4. docs/issues/0034.md（GitHub #34）(26) 本番ストレージ構成（ActiveStorage + R2、preview=production単一環境で永続化確認）
 - 余力枠：docs/issues/0020.md（GitHub #20）(15) Asset kind（Phase 0 DoD 必須ではない）
 
-### Phase 1（次点：最小Where used）
+### Phase 1（次点：Where used成立）
 5. docs/issues/0014.md（GitHub #14）(10) Session CRUD（room_url保存/参照、http/httpsのみ）
-6. docs/issues/0015.md（GitHub #15）(11) Scene（default_scene自動作成、position=1固定、削除不可）
-7. docs/issues/0018.md（GitHub #18）(13) Usage割当ルール決定(spike)（ADRで既決なら“確認→反映”で完了扱い）
-8. docs/issues/0021.md（GitHub #21）(16) Usage作成（Asset詳細→default_sceneへ role付きで **1件** 付与）
+6. docs/issues/0015.md（GitHub #15）(11) Scene CRUD+position
+7. docs/issues/0018.md（GitHub #18）(13) Usage割当ルール決定(spike)
+   - ADR-0006をPhase 1のUsage割当ルールの正本として確認する
+   - ADR-0006のPrimary導線（未整理（Usage0）ページで複数選択→一括割当）をMVPに戻す
+   - ADR-0006の意味変更が必要な場合は、AGENTS.md修正後に別途ADR改訂として扱う
+8. docs/issues/0021.md（GitHub #21）(16) Usage作成
+   - ADR-0006に従い、Primary=未整理（Usage0）ページで複数選択→一括割当、Secondary=Asset詳細からの追加/削除として実装する
+   - Usage作成時は asset / session / scene の所有権混在を fail-closed で拒否する
 9. docs/issues/0022.md（GitHub #22）(17) Asset詳細Where used（Usage一覧表示）
 
 ### Deferred（MVPリリース要件に含めない）
 - 検索/絞り込み/ソート：docs/issues/0027.md〜0030.md（GitHub #27〜#30）
 - タグ：docs/issues/0031.md〜0032.md（GitHub #31〜#32）ほか
-- 未整理（Usage0）ビュー：docs/issues/0030.md（GitHub #30）
+- 未整理（Usage0）ビューのうち、検索・絞り込み・素材一覧拡張としてのリッチ版：docs/issues/0030.md（GitHub #30）
+  - ただし、ADR-0006のPrimary導線に必要な最小の未整理（Usage0）選択画面と一括割当UIはPhase 1に含める
 - 変換：docs/issues/0036.md〜0040.md（GitHub #36〜#40）
-
 
 ※受け入れ条件の詳細は GitHub Issue本文を正本とする（このファイルに全文は複製しない）
 - 正本: GitHub Issue 本文（AC/DoD/テスト観点）
@@ -132,7 +149,7 @@ Z その他（MVP外候補）：0061, 0068〜0071
 
 ### Phase運用（MVP計画の更新点）
 - Phase 0（最優先）：A/B/D/X を中心に「R2永続化 + Asset CRUD + 制限 + 削除整合性」を成立させる
-- Phase 1（次点）：C と D（Usage/Where used）で「最小Where used」を成立させる
+- Phase 1（次点）：C と D（Usage/Where used）で、docs/issues/0014.md → 0015.md → 0018.md → 0021.md → 0022.md の順にWhere usedを成立させる
 - Deferred：E/F/G/Z はMVPリリース要件に含めない（明示指示がある場合のみ着手）
 
 ## Issue snapshot (Codex reading rules)
@@ -163,7 +180,10 @@ Z その他（MVP外候補）：0061, 0068〜0071
     - Ignore: docs/issues/0002.md - 0005.md
   - MVP in-scope is limited to Phase 0/Phase 1 as defined in this AGENTS.md:
     - Treat E/F/G/Z as out-of-scope by default (unless explicitly instructed).
-    - If README/ADR contains richer flows (e.g., 未整理（Usage0）ページ、一括割当、検索/タグ等), treat them as Deferred unless the user explicitly pulls them into scope.
+    - ADR-0006 is in scope for Phase 1 because docs/issues/0018.md（GitHub #18）is included in MVP.
+    - Do not automatically adopt every richer flow from README / ADR. First check whether the flow is explicitly included in the current Phase definition of this AGENTS.md.
+    - Search / filtering / tags remain Deferred unless explicitly moved into Phase 1.
+    - The minimal unorganized-assets allocation flow required by ADR-0006 is Phase 1; the richer unorganized-assets view tied to search/filtering remains Deferred.
   - Prefer: ignore issues explicitly labeled "MVP外" / "out of scope" in docs/issues_snapshot.md
   - Fallback: Ignore legacy conversion range docs/issues/0036.md - 0040.md (if still present)
 
