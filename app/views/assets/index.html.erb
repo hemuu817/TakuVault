@@ -1,6 +1,9 @@
 <h1>素材一覧</h1>
 
-<p><%= link_to "新規アップロード", new_asset_path %></p>
+<p>
+  <%= link_to "新規アップロード", new_asset_path %>
+  <%= link_to "セッション一覧", game_sessions_path %>
+</p>
 
 <% if @assets.any? %>
   <ul>

@@ -1,0 +1,22 @@
+<h1>セッション一覧</h1>
+
+<p>
+  <%= link_to "新規作成", new_game_session_path %>
+  <%= link_to "素材一覧", assets_path %>
+</p>
+
+<% if @sessions.any? %>
+  <ul>
+    <% @sessions.each do |s| %>
+      <li>
+        <%= link_to s.name, game_session_path(s) %>
+        <%= link_to "編集", edit_game_session_path(s) %>
+        <%= button_to "削除", game_session_path(s),
+                      method: :delete,
+                      data: { turbo_confirm: "削除しますか？" } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>セッションがまだありません。</p>
+<% end %>

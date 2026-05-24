@@ -158,12 +158,79 @@ ALTER SEQUENCE public.assets_id_seq OWNED BY public.assets.id;
 
 
 --
+-- Name: scenes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.scenes (
+    id bigint NOT NULL,
+    session_id bigint NOT NULL,
+    "position" integer NOT NULL,
+    name character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: scenes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.scenes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: scenes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.scenes_id_seq OWNED BY public.scenes.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: sessions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sessions (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    name character varying NOT NULL,
+    room_url text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT sessions_room_url_http_https_only CHECK (((room_url IS NULL) OR (room_url = ''::text) OR (room_url ~* '^https?://'::text)))
+);
+
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.sessions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.sessions_id_seq OWNED BY public.sessions.id;
 
 
 --
@@ -599,6 +666,20 @@ ALTER TABLE ONLY public.assets ALTER COLUMN id SET DEFAULT nextval('public.asset
 
 
 --
+-- Name: scenes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenes ALTER COLUMN id SET DEFAULT nextval('public.scenes_id_seq'::regclass);
+
+
+--
+-- Name: sessions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sessions ALTER COLUMN id SET DEFAULT nextval('public.sessions_id_seq'::regclass);
+
+
+--
 -- Name: solid_queue_blocked_executions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -723,11 +804,27 @@ ALTER TABLE ONLY public.assets
 
 
 --
+-- Name: scenes scenes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenes
+    ADD CONSTRAINT scenes_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sessions
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY (id);
 
 
 --
@@ -859,6 +956,34 @@ CREATE UNIQUE INDEX index_active_storage_variant_records_uniqueness ON public.ac
 --
 
 CREATE INDEX index_assets_on_user_id ON public.assets USING btree (user_id);
+
+
+--
+-- Name: index_scenes_on_session_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_scenes_on_session_id ON public.scenes USING btree (session_id);
+
+
+--
+-- Name: index_scenes_on_session_id_and_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_scenes_on_session_id_and_id ON public.scenes USING btree (session_id, id);
+
+
+--
+-- Name: index_scenes_on_session_id_and_position; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_scenes_on_session_id_and_position ON public.scenes USING btree (session_id, "position");
+
+
+--
+-- Name: index_sessions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sessions_on_user_id ON public.sessions USING btree (user_id);
 
 
 --
@@ -1097,6 +1222,14 @@ ALTER TABLE ONLY public.assets
 
 
 --
+-- Name: sessions fk_rails_758836b4f0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sessions
+    ADD CONSTRAINT fk_rails_758836b4f0 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: solid_queue_ready_executions fk_rails_81fcbd66af; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1137,12 +1270,22 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 
 --
+-- Name: scenes fk_rails_f0dbbdfcd6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.scenes
+    ADD CONSTRAINT fk_rails_f0dbbdfcd6 FOREIGN KEY (session_id) REFERENCES public.sessions(id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260524080431'),
+('20260524080426'),
 ('20260327000100'),
 ('20260119122507'),
 ('20260119122448'),

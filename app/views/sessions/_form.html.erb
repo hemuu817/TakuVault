@@ -1,0 +1,24 @@
+<%= form_with model: @session,
+              url: @session.new_record? ? game_sessions_path : game_session_path(@session) do |form| %>
+  <% if @session.errors.any? %>
+    <ul>
+      <% @session.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <div>
+    <%= form.label :name, "セッション名" %>
+    <%= form.text_field :name, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :room_url, "部屋URL（任意）" %>
+    <%= form.text_field :room_url, placeholder: "https://..." %>
+  </div>
+
+  <div>
+    <%= form.submit @session.new_record? ? "登録" : "更新" %>
+  </div>
+<% end %>

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   resources :assets
+  resources :sessions, as: :game_sessions
 
   root to: "assets#index"
 end

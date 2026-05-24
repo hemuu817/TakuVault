@@ -1,0 +1,19 @@
+<h1>セッション詳細</h1>
+
+<p>セッション名: <%= @session.name %></p>
+
+<% if @session.room_url.present? %>
+  <p>
+    部屋URL:
+    <%= link_to @session.room_url, @session.room_url,
+                target: "_blank", rel: "noopener noreferrer" %>
+  </p>
+<% end %>
+
+<p>
+  <%= link_to "編集", edit_game_session_path(@session) %>
+  <%= link_to "一覧へ戻る", game_sessions_path %>
+  <%= button_to "削除", game_session_path(@session),
+                method: :delete,
+                data: { turbo_confirm: "削除しますか？" } %>
+</p>
