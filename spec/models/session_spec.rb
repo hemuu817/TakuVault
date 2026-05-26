@@ -1,6 +1,17 @@
 require "rails_helper"
 
 RSpec.describe Session, type: :model do
+  describe "destroy" do
+    it "deletes the session and its default_scene through DB cascade" do
+      session_record = create(:session)
+      default_scene = session_record.scenes.find_by!(position: 1)
+
+      expect { session_record.destroy }.to change(described_class, :count).by(-1)
+        .and change(Scene, :count).by(-1)
+      expect(Scene.where(id: default_scene.id)).to be_empty
+    end
+  end
+
   describe "room_url バリデーション" do
     it "http URL は有効" do
       expect(build(:session, room_url: "http://example.com")).to be_valid

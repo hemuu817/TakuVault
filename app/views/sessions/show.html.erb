@@ -17,3 +17,29 @@
                 method: :delete,
                 data: { turbo_confirm: "削除しますか？" } %>
 </p>
+
+<h2>シーン</h2>
+
+<p>
+  <%= link_to "シーンを追加", new_game_session_scene_path(@session) %>
+</p>
+
+<% scenes = @session.scenes.order(:position) %>
+<% if scenes.any? %>
+  <ul>
+    <% scenes.each do |scene| %>
+      <li>
+        <%= scene.position %>.
+        <%= link_to scene.name, game_session_scene_path(@session, scene) %>
+        <%= link_to "編集", edit_game_session_scene_path(@session, scene) %>
+        <% unless scene.default_scene? %>
+          <%= button_to "削除", game_session_scene_path(@session, scene),
+                        method: :delete,
+                        data: { turbo_confirm: "削除しますか？" } %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>シーンがありません。</p>
+<% end %>

@@ -53,6 +53,33 @@ RSpec.describe "Sessions", type: :system do
     expect(page).to have_content("テストセッション")
     created = Session.find_by!(name: "テストセッション")
     expect(created.scenes.where(position: 1).count).to eq(1)
+    expect(created.scenes.find_by!(position: 1).name).to eq("scene1")
+  end
+
+  it "Session詳細からSceneを追加・編集・削除できる" do
+    login(user)
+
+    navigate_to_new_session_from_assets
+    fill_in "session_name", with: "シーン操作セッション"
+    click_button "登録"
+
+    click_link "シーンを追加"
+    fill_in "scene_name", with: "追加シーン"
+    click_button "登録"
+
+    expect(page).to have_content("2.")
+    expect(page).to have_content("追加シーン")
+
+    click_link "編集", href: edit_game_session_scene_path(Session.find_by!(name: "シーン操作セッション"), Scene.find_by!(name: "追加シーン"))
+    fill_in "scene_name", with: "更新シーン"
+    click_button "更新"
+
+    expect(page).to have_content("更新シーン")
+    within("li", text: "更新シーン") do
+      click_button "削除"
+    end
+
+    expect(page).not_to have_content("更新シーン")
   end
 
   it "room_urlリンクにtargetとrelが付く" do
@@ -86,5 +113,22 @@ RSpec.describe "Sessions", type: :system do
     visit game_session_path(other_session)
 
     expect(page.status_code).to eq(404)
+  end
+
+  it "Sessionを削除すると一覧から消える" do
+    login(user)
+    session_record = create(:session, user: user, name: "削除対象セッション")
+
+    visit game_sessions_path
+    expect(page).to have_content("削除対象セッション")
+
+    within("li", text: "削除対象セッション") do
+      click_button "削除"
+    end
+
+    expect(page).to have_current_path(game_sessions_path)
+    expect(page).to have_content("セッションを削除しました。")
+    expect(page).not_to have_content("削除対象セッション")
+    expect(Session.where(id: session_record.id)).to be_empty
   end
 end

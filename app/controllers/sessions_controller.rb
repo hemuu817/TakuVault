@@ -20,10 +20,7 @@ class SessionsController < ApplicationController
     @session = current_user.sessions.build(session_params)
     authorize @session
 
-    ActiveRecord::Base.transaction do
-      @session.save!
-      @session.scenes.create!(position: 1, name: "デフォルト")
-    end
+    @session.save!
 
     redirect_to game_session_path(@session), notice: "セッションを作成しました。", status: :see_other
   rescue ActiveRecord::RecordInvalid
@@ -45,8 +42,13 @@ class SessionsController < ApplicationController
 
   def destroy
     authorize @session
-    @session.destroy
-    redirect_to game_sessions_path, notice: "セッションを削除しました。", status: :see_other
+    if @session.destroy
+      redirect_to game_sessions_path, notice: "セッションを削除しました。", status: :see_other
+    else
+      redirect_to game_session_path(@session),
+                  alert: "セッションを削除できませんでした。",
+                  status: :see_other
+    end
   end
 
   private

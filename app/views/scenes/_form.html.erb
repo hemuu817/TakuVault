@@ -1,0 +1,19 @@
+<%= form_with model: [@session, @scene],
+              url: @scene.new_record? ? game_session_scenes_path(@session) : game_session_scene_path(@session, @scene) do |form| %>
+  <% if @scene.errors.any? %>
+    <ul>
+      <% @scene.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <div>
+    <%= form.label :name, "シーン名" %>
+    <%= form.text_field :name, required: !@scene.new_record? %>
+  </div>
+
+  <div>
+    <%= form.submit @scene.new_record? ? "登録" : "更新" %>
+  </div>
+<% end %>
