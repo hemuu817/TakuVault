@@ -114,4 +114,21 @@ RSpec.describe "Sessions", type: :system do
 
     expect(page.status_code).to eq(404)
   end
+
+  it "Sessionを削除すると一覧から消える" do
+    login(user)
+    session_record = create(:session, user: user, name: "削除対象セッション")
+
+    visit game_sessions_path
+    expect(page).to have_content("削除対象セッション")
+
+    within("li", text: "削除対象セッション") do
+      click_button "削除"
+    end
+
+    expect(page).to have_current_path(game_sessions_path)
+    expect(page).to have_content("セッションを削除しました。")
+    expect(page).not_to have_content("削除対象セッション")
+    expect(Session.where(id: session_record.id)).to be_empty
+  end
 end
