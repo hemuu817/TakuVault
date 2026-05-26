@@ -1,0 +1,9 @@
+<h1>シーン詳細</h1>
+
+<p>シーン名: <%= @scene.name %></p>
+<p>位置: <%= @scene.position %></p>
+
+<p>
+  <%= link_to "編集", edit_game_session_scene_path(@session, @scene) %>
+  <%= link_to "セッション詳細へ戻る", game_session_path(@session) %>
+</p>

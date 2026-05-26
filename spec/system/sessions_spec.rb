@@ -56,6 +56,32 @@ RSpec.describe "Sessions", type: :system do
     expect(created.scenes.find_by!(position: 1).name).to eq("scene1")
   end
 
+  it "Session詳細からSceneを追加・編集・削除できる" do
+    login(user)
+
+    navigate_to_new_session_from_assets
+    fill_in "session_name", with: "シーン操作セッション"
+    click_button "登録"
+
+    click_link "シーンを追加"
+    fill_in "scene_name", with: "追加シーン"
+    click_button "登録"
+
+    expect(page).to have_content("2.")
+    expect(page).to have_content("追加シーン")
+
+    click_link "編集", href: edit_game_session_scene_path(Session.find_by!(name: "シーン操作セッション"), Scene.find_by!(name: "追加シーン"))
+    fill_in "scene_name", with: "更新シーン"
+    click_button "更新"
+
+    expect(page).to have_content("更新シーン")
+    within("li", text: "更新シーン") do
+      click_button "削除"
+    end
+
+    expect(page).not_to have_content("更新シーン")
+  end
+
   it "room_urlリンクにtargetとrelが付く" do
     login(user)
 

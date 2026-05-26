@@ -42,8 +42,13 @@ class SessionsController < ApplicationController
 
   def destroy
     authorize @session
-    @session.destroy
-    redirect_to game_sessions_path, notice: "セッションを削除しました。", status: :see_other
+    if @session.destroy
+      redirect_to game_sessions_path, notice: "セッションを削除しました。", status: :see_other
+    else
+      redirect_to game_session_path(@session),
+                  alert: "セッションを削除できませんでした。",
+                  status: :see_other
+    end
   end
 
   private
