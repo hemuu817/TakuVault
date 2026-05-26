@@ -53,6 +53,7 @@ RSpec.describe "Sessions", type: :system do
     expect(page).to have_content("テストセッション")
     created = Session.find_by!(name: "テストセッション")
     expect(created.scenes.where(position: 1).count).to eq(1)
+    expect(created.scenes.find_by!(position: 1).name).to eq("scene1")
   end
 
   it "room_urlリンクにtargetとrelが付く" do

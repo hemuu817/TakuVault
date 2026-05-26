@@ -1,11 +1,17 @@
 class Session < ApplicationRecord
   belongs_to :user
-  has_many :scenes, dependent: :destroy, inverse_of: :session
+  has_many :scenes, inverse_of: :session
+
+  after_create :create_default_scene!
 
   validates :name, presence: true
   validate :room_url_scheme, if: -> { room_url.present? }
 
   private
+
+  def create_default_scene!
+    scenes.create!(position: Scene::DEFAULT_POSITION, name: "scene1")
+  end
 
   def room_url_scheme
     uri = URI.parse(room_url)
