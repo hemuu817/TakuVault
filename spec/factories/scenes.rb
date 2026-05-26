@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :scene do
     association :session
-    position { 1 }
-    name { "デフォルト" }
+    sequence(:position) { |n| n + 1 }
+    sequence(:name) { |n| "シーン#{n}" }
   end
 end
