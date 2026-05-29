@@ -71,23 +71,22 @@ Accepted
 ## 運用上の注意（差し戻し回避）
 - Web/Worker のスレッド数と DB pool の整合を取ること（不一致は `ActiveRecord::ConnectionTimeoutError` の原因）
   - `RAILS_MAX_THREADS` と `database.yml pool`（または `DATABASE_URL?pool=`）の整合を必ず確認する
-- worker停止時は `purge_later` が滞留する（= 削除整合が壊れる）。workerは常時稼働を前提とする。
+- worker停止時は `purge_later` / `analyze` / `variant(transform)` が滞留する（= 削除整合が壊れる）。workerは常時稼働を前提とする。
 
-### 本番のジョブ基盤（Active Storageのpurge_later / analyze成立条件）
-- 本番（preview、`RAILS_ENV=production`）では、Active Storage の `analyze` / `purge_later` を処理するため、ジョブ基盤を **用意必須**とする。
+### 本番のジョブ基盤（Active Storageのpurge_later / analyze / variant(transform) 成立条件）
+- 本番（preview、`RAILS_ENV=production`）では、Active Storage の `analyze` / `purge_later` / `variant(transform)` を処理するため、ジョブ基盤を **用意必須**とする。
 - キューバックエンドは **Solid Queue（DB-backed）** とする。
 - Renderは **Web + Worker の2プロセス**運用とし、Workerの起動コマンドは **`bin/jobs start`** に固定する。
 - MVPでは、Active Storage関連ジョブは **default queue に統一**する。
-- Workerが停止している場合、purge/analysisジョブが滞留し、ストレージのクリーンアップが完了しない（＝削除整合が崩れる）。
-
+- Workerが停止している場合、purge/analyze/transform が滞留し、ストレージのクリーンアップが完了しない（＝削除整合が崩れる）。
 ## 受け入れ条件（Yes/No）
-- [ ] worker が稼働し、`purge_later` が滞留しない（ログで確認可能）
+- [ ] worker が稼働し、`purge_later` / `analyze` / `variant(transform)` が滞留しない（ログで確認可能）
 - [ ] 再デプロイ後も添付が参照できる（R2永続）
 - [ ] 削除後、R2上の実体削除と ActiveStorage（Blob/Attachment）非残骸化が確認できる
 - [ ] Direct Upload 不採用が docs/README に明記されている
 
 ## 非スコープ（ここでは決めない）
-- 上限値（サイズ/Content-Type/拡張子）の確定：Issue (27)
+- 上限値（サイズ/Content-Type/拡張子）の確定：GitHub #35 / docs/issues/0035.md（(27) 容量/ファイル上限方針）
 - 不正ファイル拒否の実装：Phase 0 の Asset側Issue
 - UI/UX：Phase 0 の Asset側Issue
 
