@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-05-28T16:35:50Z_
+_Generated (UTC): 2026-05-29T16:27:33Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -21,11 +21,11 @@ _Generated (UTC): 2026-05-28T16:35:50Z_
 | 15 | (11) Scene CRUD+position | CLOSED | 2026-05-26T09:23:51Z | https://github.com/hemuu817/TakuVault/issues/15 | [local](issues/0015.md) |
 | 16 | Epic D : Asset + Usage（Where used核） | OPEN | 2026-01-11T17:29:41Z | https://github.com/hemuu817/TakuVault/issues/16 | [local](issues/0016.md) |
 | 17 | (12) データモデル確定(ER/制約/Index) | CLOSED | 2026-01-15T12:31:29Z | https://github.com/hemuu817/TakuVault/issues/17 | [local](issues/0017.md) |
-| 18 | (13) Usage割当ルール決定(spike) | OPEN | 2026-01-15T12:34:06Z | https://github.com/hemuu817/TakuVault/issues/18 | [local](issues/0018.md) |
+| 18 | (13) Usage割当ルール決定(spike) | CLOSED | 2026-05-29T06:53:17Z | https://github.com/hemuu817/TakuVault/issues/18 | [local](issues/0018.md) |
 | 19 | (14) Asset CRUD(ActiveStorage) | CLOSED | 2026-01-19T21:35:06Z | https://github.com/hemuu817/TakuVault/issues/19 | [local](issues/0019.md) |
 | 20 | (15) Asset kind | OPEN | 2026-01-15T12:34:47Z | https://github.com/hemuu817/TakuVault/issues/20 | [local](issues/0020.md) |
-| 21 | (16) Usage作成 | OPEN | 2026-05-27T03:53:39Z | https://github.com/hemuu817/TakuVault/issues/21 | [local](issues/0021.md) |
-| 22 | (17) Asset詳細Where used | OPEN | 2026-01-15T12:32:50Z | https://github.com/hemuu817/TakuVault/issues/22 | [local](issues/0022.md) |
+| 21 | (16) Usage作成 | OPEN | 2026-05-29T06:53:45Z | https://github.com/hemuu817/TakuVault/issues/21 | [local](issues/0021.md) |
+| 22 | (17) Asset詳細Where used | OPEN | 2026-05-29T06:54:14Z | https://github.com/hemuu817/TakuVault/issues/22 | [local](issues/0022.md) |
 | 23 | (18) 素材一覧 | OPEN | 2026-01-15T12:35:04Z | https://github.com/hemuu817/TakuVault/issues/23 | [local](issues/0023.md) |
 | 24 | (19) Asset削除整合性 | OPEN | 2026-05-21T15:56:38Z | https://github.com/hemuu817/TakuVault/issues/24 | [local](issues/0024.md) |
 | 25 | Epic H: Docs | CLOSED | 2026-01-10T08:58:08Z | https://github.com/hemuu817/TakuVault/issues/25 | [local](issues/0025.md) |
