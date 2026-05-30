@@ -14,7 +14,7 @@ Status: Proposed
   - [ ] 遅延ロードの出力形式を **HTML partial** に固定する（本ADRのまま）ことに合意している
   - [ ] エンドポイント（path）と partial名（view）を固定している（2)〜3)に記載）
   - [ ] 認可適用方針（policy_scope + authorize の適用箇所）を固定している（6)に記載）
-  - [ ] #23/#29 から共通契約の重複記載を削除し、`Relates to: ADR-0007` に置換するPRを用意している（同一PRでよい）
+  - [ ] #23/#29 から共通契約の重複記載を削除し、`Relates to: ADR-0010` に置換するPRを用意している（同一PRでよい）
 - Accepted 以降、仕様変更（意味が変わる変更）は新ADRでSuperseded運用とする（ADR-0005）。
 
 ### 1) 取得対象と主語
@@ -65,8 +65,9 @@ Status: Proposed
 - `role` が許容値外の場合は **400**（Bad Request）とする（曖昧な挙動にしない）。
 
 ### 8) エンドポイント（ルーティング）方針
-- ルーティングは **ネスト**で表現し、親資源でfail-closedを担保できる形にする。
+- 本ADRが対象とする **閲覧系**（遅延ロード）のルーティングは **ネスト**で表現し、親資源でfail-closedを担保できる形にする。
   - 例：`GET /sessions/:session_id/scenes/:scene_id/usages`（queryで `role` 任意）
+- Usage **create（割当）はフラット** `POST /usages` とする（ADR-0006 D8 参照）。本ADRの射程外。
 - controller/action 名は実装時に確定し、本ADRの Decision へ追記して Accepted 化する。
 
 ## Consequences
@@ -78,6 +79,6 @@ Status: Proposed
 - Issue: #23（素材一覧・ツリー基盤）
 - Issue: #29（絞り込み：kind/role/session）
 - ADR-0005：ADR運用ルール（正本化・参照境界・改訂手順）
-- ADR-0006：Usage割当ルール
+- ADR-0006：Usage割当ルール（D8にcreateのルーティング方針を記載）
 - ADR-0001：default_scene
 - ADR-0002：Asset.kind

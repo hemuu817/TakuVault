@@ -59,6 +59,12 @@ TakuVaultのコア価値「Where used（素材→セッション/シーン/役�
 - 未整理（Usage0）：Usageが **0件** のAsset（「特定セッション未割当」等の別概念はMVPでは扱わない）
 - 一括割当：複数Assetに対して同一の `session + scene + role` を適用してUsageを作成すること
 
+### D8. ルーティング（create と閲覧系の使い分け）
+- Usage create（割当）は **フラット** `POST /usages` とする
+  - Asset起点の割当がPrimary導線であり、session/sceneはリクエストbodyで渡す
+  - `insert_all(unique_by:)` による冪等実装と相性がよく、実装が単純になる（ADR-0009 判断順位2）
+- 閲覧系（Where used ツリー遅延ロード）は **ネスト** ルーティングを使用する（ADR-0010 参照）
+
 ## Examples（成功例/失敗例）
 ### 成功例
 1. 未整理（Usage0）で複数Assetを選択し、session=A / scene=1 / role=background を指定 → Usageが作成され、Where usedに反映
@@ -74,6 +80,7 @@ TakuVaultのコア価値「Where used（素材→セッション/シーン/役�
 ## Related
 - ADR-0001：default_scene の定義（position=1固定）
 - ADR-0002：Asset.kind（content_type自動判定）
+- ADR-0010：Where used ツリー遅延ロード契約（閲覧系ルーティングはネスト、create とのルーティング分離）
 - Epic B：認証/認可（policy_scope/authorize）
 - Epic C：Session/Scene（default_scene常設、position管理）
 - Epic D：Usage作成 / Where used表示 / DB制約
