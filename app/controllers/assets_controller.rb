@@ -6,10 +6,22 @@ class AssetsController < ApplicationController
     @assets = policy_scope(Asset).with_attached_file.order(created_at: :desc)
   end
 
+  def uncategorized
+    authorize Asset, :index?
+    @assets = policy_scope(Asset)
+      .left_outer_joins(:usages)
+      .where(usages: { id: nil })
+      .with_attached_file
+      .order(created_at: :desc)
+    @sessions = policy_scope(Session).includes(:scenes).order(created_at: :desc)
+    @roles = Usage.roles.keys
+  end
 
   def show
     @asset = policy_scope(Asset).with_attached_file.find(params[:id])
     authorize(@asset)
+    @sessions = policy_scope(Session).includes(:scenes).order(created_at: :desc)
+    @roles = Usage.roles.keys
   end
 
   def new

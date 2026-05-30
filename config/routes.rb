@@ -8,7 +8,10 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  resources :assets
+  resources :assets do
+    get :uncategorized, on: :collection
+  end
+  resources :usages, only: :create
   resources :sessions, as: :game_sessions do
     resources :scenes
   end

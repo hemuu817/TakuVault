@@ -1,0 +1,57 @@
+<h1>未整理の素材</h1>
+
+<p>
+  <%= link_to "素材一覧", assets_path %>
+  <%= link_to "セッション一覧", game_sessions_path %>
+</p>
+
+<% if @assets.any? %>
+  <%= form_with url: usages_path, method: :post, data: { controller: "scene-select" } do |form| %>
+    <%= hidden_field_tag :usage_mode, "bulk" %>
+
+    <fieldset>
+      <legend>一括割当</legend>
+
+      <p>
+        <%= form.label :session_id, "セッション" %>
+        <%= form.select :session_id,
+                        @sessions.map { |session| [ session.name, session.id ] },
+                        { prompt: "選択してください" },
+                        data: {
+                          scene_select_target: "session",
+                          action: "scene-select#update"
+                        } %>
+      </p>
+
+      <p>
+        <%= form.label :scene_id, "シーン" %>
+        <%= form.select :scene_id,
+                        @sessions.flat_map { |session|
+                          session.scenes.sort_by(&:position).map do |scene|
+                            [ "#{session.name} / #{scene.name}", scene.id, { data: { session_id: session.id } } ]
+                          end
+                        },
+                        { prompt: "選択してください" },
+                        data: { scene_select_target: "scene" } %>
+      </p>
+
+      <p>
+        <%= form.label :role, "役割" %>
+        <%= form.select :role, @roles.map { |role| [ role, role ] }, prompt: "選択してください" %>
+      </p>
+    </fieldset>
+
+    <ul>
+      <% @assets.each do |asset| %>
+        <li>
+          <%= check_box_tag "asset_ids[]", asset.id, false, id: "asset_ids_#{asset.id}" %>
+          <%= label_tag "asset_ids_#{asset.id}", "#{asset.display_name} (#{asset.original_filename})" %>
+        </li>
+      <% end %>
+    </ul>
+
+    <%= form.submit "Usageを一括作成" %>
+  <% end %>
+<% else %>
+  <p>未整理の素材はありません。</p>
+<% end %>
