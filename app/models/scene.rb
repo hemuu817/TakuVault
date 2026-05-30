@@ -5,6 +5,7 @@ class Scene < ApplicationRecord
   class PositionAssignmentFailed < StandardError; end
 
   belongs_to :session
+  has_many :usages
 
   validates :name, presence: true
   validates :position, presence: true,

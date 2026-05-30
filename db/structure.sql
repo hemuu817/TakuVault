@@ -603,6 +603,41 @@ ALTER SEQUENCE public.solid_queue_semaphores_id_seq OWNED BY public.solid_queue_
 
 
 --
+-- Name: usages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.usages (
+    id bigint NOT NULL,
+    asset_id bigint NOT NULL,
+    session_id bigint NOT NULL,
+    scene_id bigint NOT NULL,
+    role integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    CONSTRAINT usages_role_allowed_values CHECK ((role = ANY (ARRAY[0, 1, 2, 3])))
+);
+
+
+--
+-- Name: usages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.usages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: usages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.usages_id_seq OWNED BY public.usages.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -754,6 +789,13 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions ALTER COLUMN id SET DEF
 --
 
 ALTER TABLE ONLY public.solid_queue_semaphores ALTER COLUMN id SET DEFAULT nextval('public.solid_queue_semaphores_id_seq'::regclass);
+
+
+--
+-- Name: usages id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.usages ALTER COLUMN id SET DEFAULT nextval('public.usages_id_seq'::regclass);
 
 
 --
@@ -913,6 +955,14 @@ ALTER TABLE ONLY public.solid_queue_scheduled_executions
 
 ALTER TABLE ONLY public.solid_queue_semaphores
     ADD CONSTRAINT solid_queue_semaphores_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: usages usages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.usages
+    ADD CONSTRAINT usages_pkey PRIMARY KEY (id);
 
 
 --
@@ -1176,6 +1226,27 @@ CREATE INDEX index_solid_queue_semaphores_on_key_and_value ON public.solid_queue
 
 
 --
+-- Name: index_usages_on_asset_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_usages_on_asset_id ON public.usages USING btree (asset_id);
+
+
+--
+-- Name: index_usages_on_asset_id_and_session_id_and_scene_id_and_role; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_usages_on_asset_id_and_session_id_and_scene_id_and_role ON public.usages USING btree (asset_id, session_id, scene_id, role);
+
+
+--
+-- Name: index_usages_on_session_id_and_scene_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_usages_on_session_id_and_scene_id ON public.usages USING btree (session_id, scene_id);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1278,12 +1349,30 @@ ALTER TABLE ONLY public.scenes
 
 
 --
+-- Name: usages fk_usages_asset; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.usages
+    ADD CONSTRAINT fk_usages_asset FOREIGN KEY (asset_id) REFERENCES public.assets(id) ON DELETE CASCADE;
+
+
+--
+-- Name: usages fk_usages_session_scene; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.usages
+    ADD CONSTRAINT fk_usages_session_scene FOREIGN KEY (session_id, scene_id) REFERENCES public.scenes(session_id, id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260530141000'),
+('20260530135000'),
 ('20260524080431'),
 ('20260524080426'),
 ('20260327000100'),

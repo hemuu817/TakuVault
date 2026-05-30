@@ -1,6 +1,7 @@
 class Session < ApplicationRecord
   belongs_to :user
   has_many :scenes, inverse_of: :session
+  has_many :usages
 
   after_create :create_default_scene!
 
