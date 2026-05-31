@@ -152,52 +152,50 @@ Z その他（MVP外候補）：0061, 0068〜0071
 - Phase 1（次点）：C と D（Usage/Where used）で、docs/issues/0014.md → 0015.md → 0018.md → 0021.md → 0022.md の順にWhere usedを成立させる
 - Deferred：E/F/G/Z はMVPリリース要件に含めない（明示指示がある場合のみ着手）
 
-## Issue snapshot (Codex reading rules)
-- Source of truth in this repo:
-  - REQUIRED: docs/issues/*.md
-  - OPTIONAL: docs/issues_snapshot.md (if present, use as a quick index only)
+## Issue snapshot（Codex参照ルール）
 
-- At the start of every task, run these checks first (must not fail the task):
-  1) `git rev-parse --abbrev-ref HEAD || true`
-  2) `ls -la docs || true`
-  3) `ls -la docs/issues | head || true`
+- Issue snapshot の正本は、main ではなく `automation/issue-snapshot` ブランチにある。
+  - 対応表: `docs/issues_snapshot.md`
+  - Issue本文: `docs/issues/*.md`
 
-- Reading strategy:
-  - If `docs/issues_snapshot.md` exists:
-    - `sed -n '1,80p' docs/issues_snapshot.md`
-    - `tail -n 80 docs/issues_snapshot.md`
-  - If it does NOT exist:
-    - Proceed by reading `docs/issues/*.md` directly.
+- Issue番号・State・UpdatedAt・Issue本文を確認する場合は、必ず `automation/issue-snapshot` ブランチの snapshot を参照する。
+  - main 上に同名ファイルが存在していても、古い可能性があるため正本として扱わない。
+  - `automation/issue-snapshot` ブランチの `docs/issues_snapshot.md` と `docs/issues/*.md` を読み取れない場合は、推測で進めず、参照不能として報告する。
 
-- Dependency gate (must):
-  - If the target issue requires models/tables/controllers that do not exist yet, do NOT “silently create prerequisites” inside the issue unless the issue explicitly includes them.
-  - Instead, stop and report "BLOCKED by missing prerequisites" and point to the dependency issue in docs/issues/ and issues_snapshot.
-  - Example:
-    - docs/issues/0021.md（GitHub #21 Usage作成）は Session/Scene が前提。sessions/scenes が未存在なら、docs/issues/0014.md（#14）→ docs/issues/0015.md（#15）を先に実装する。
+- 実装コード・README・ADR・AGENTS.md は、main または現在の作業ブランチを正本として扱う。
+  - `automation/issue-snapshot` ブランチ上の `AGENTS.md` / `README.md` / `docs/adr/*` は参照正本にしない。
+  - `automation/issue-snapshot` ブランチは Issue snapshot の読み取り専用キャッシュとして扱う。
 
-- Scope control (important):
-  - Ignore mistaken issues (if present):
-    - Ignore: docs/issues/0002.md - 0005.md
-  - MVP in-scope is limited to Phase 0/Phase 1 as defined in this AGENTS.md:
-    - Treat E/F/G/Z as out-of-scope by default (unless explicitly instructed).
-    - ADR-0006 is in scope for Phase 1 because docs/issues/0018.md（GitHub #18）is included in MVP.
-    - Do not automatically adopt every richer flow from README / ADR. First check whether the flow is explicitly included in the current Phase definition of this AGENTS.md.
-    - Search / filtering / tags remain Deferred unless explicitly moved into Phase 1.
-    - The minimal unorganized-assets allocation flow required by ADR-0006 is Phase 1; the richer unorganized-assets view tied to search/filtering remains Deferred.
-  - Prefer: ignore issues explicitly labeled "MVP外" / "out of scope" in docs/issues_snapshot.md
-  - Fallback: Ignore legacy conversion range docs/issues/0036.md - 0040.md (if still present)
+- タスク開始時は、まず以下を確認する。
+  1. 現在の作業ブランチ
+  2. `automation/issue-snapshot` ブランチの `docs/issues_snapshot.md`
+  3. 対象Issueに対応する `automation/issue-snapshot` ブランチの `docs/issues/*.md`
 
-- If `docs/issues/` is missing or empty:
-  - Stop and report that the current checkout does not include issue snapshots.
-  - Do not proceed with assumptions.
+- 依存関係ゲート:
+  - 対象Issueが、未作成のモデル / テーブル / コントローラを前提にしている場合、そのIssue内で前提を勝手に作らない。
+  - 代わりに "BLOCKED by missing prerequisites" と報告し、`automation/issue-snapshot` の `docs/issues_snapshot.md` / `docs/issues/*.md` に基づいて依存Issueへ誘導する。
+  - 例:
+    - `docs/issues/0021.md`（GitHub #21 Usage作成）は Session / Scene が前提。
+    - `sessions` / `scenes` が未存在なら、`docs/issues/0014.md`（GitHub #14）→ `docs/issues/0015.md`（GitHub #15）を先に確認する。
 
+- スコープ制御:
+  - MVP範囲は、この `AGENTS.md` の Phase 0 / Phase 1 / Deferred を正本とする。
+  - README / ADR / Issue snapshot により豊富な将来構想が書かれていても、現在の Phase 定義に明示されていない機能は勝手に実装しない。
+  - E / F / G / Z は、明示指示がない限り Deferred として扱う。
+  - 検索 / 絞り込み / タグは、明示的にPhase 1へ戻されない限り Deferred として扱う。
+  - `automation/issue-snapshot` 側の Issue本文に古いMVP範囲が残っている場合でも、MVPスコープ判断はこの `AGENTS.md` を優先する。
+
+- `automation/issue-snapshot` ブランチの snapshot を参照できない場合:
+  - 現在のcheckoutにある古い snapshot で代用しない。
+  - Issue番号・State・本文に関する判断を unknown として扱う。
+  - 必要な情報が参照不能であることを報告する。
 
 ### Source of truth
 - MVPスコープの正本: 本AGENTS.md（Phase 0/Phase 1/Deferred）
 - 受け入れ条件の正本: GitHub Issue 本文
-- 対応表（INDEX）の正本: docs/issues_snapshot.md
-- 進捗（Done）の正本: docs/issues_snapshot.md の State=CLOSED
-- 運用: docs/issues_snapshot.md は毎日最新化する。最新化されていない場合は unknown 扱いとする（推測で前提変更しない）。
+- 対応表（INDEX）の正本: `automation/issue-snapshot` ブランチの `docs/issues_snapshot.md`
+- 進捗（Done）の正本: `automation/issue-snapshot` ブランチの `docs/issues_snapshot.md` の State=CLOSED
+- 運用: `automation/issue-snapshot` ブランチの `docs/issues_snapshot.md` は毎日最新化する。最新化されていない場合は unknown 扱いとする（推測で前提変更しない）。
 - Issue を CLOSE してよい条件: main に反映済み（マージ済み）＋最低限の手動確認が通った場合のみ。
 
 
