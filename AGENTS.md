@@ -92,8 +92,8 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
 - 複合FK：usages(session_id, scene_id) -> scenes(session_id, id)
 - 複合FK成立条件：scenes に UNIQUE(session_id, id)
 
-- RSpec は MVP の必須要件にしない（非タスク）
-  - ただし既存CIがテストを要求する場合は、既存を壊さない範囲で維持する（新規に整備しない）
+- spec は実装の一部（全網羅義務なし。認可/所有権 + 主要導線を優先）。CI green を維持する。
+  - RSpec の実行は bin/rspec を使用する
 - 手動QA（最低ライン）：
   - ログイン → アップロード → 一覧/詳細参照 → 削除 → 再参照不可
   - preview（Render単一環境）で R2 永続化（再デプロイ後も参照できる）
