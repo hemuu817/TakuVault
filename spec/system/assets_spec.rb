@@ -66,15 +66,40 @@ RSpec.describe "Assets", type: :system do
     expect(page).not_to have_content("他人セッション")
 
     session_names = page.all("table tbody tr td:first-child").map(&:text)
-    scene_names = page.all("table tbody tr td:nth-child(2)").map(&:text)
-    role_names = page.all("table tbody tr td:nth-child(3)").map(&:text)
+    scene_names = page.all("table tbody tr .usage-scene-select").map { |select| select.find("option[selected]").text }
+    role_names = page.all("table tbody tr .usage-role-select").map { |select| select.find("option[selected]").text }
 
     expect(session_names).to eq([ "Aセッション", "Aセッション", "Aセッション", "Bセッション" ])
     expect(scene_names).to eq([ "scene2", "scene2", "scene3", "scene1" ])
     expect(role_names).to eq([ "背景", "カットイン", "BGM", "その他" ])
+    first_scene_select = page.all("table tbody tr .usage-scene-select").first
+    first_role_select = page.all("table tbody tr .usage-role-select").first
+    expect(first_scene_select.find("option[selected]").text).to eq("scene2")
+    expect(first_scene_select.all("option").map(&:text)).to contain_exactly(
+      "選択してください",
+      "scene1",
+      "scene2",
+      "scene3"
+    )
+    expect(first_role_select.find("option[selected]").text).to eq("背景")
+    expect(first_role_select.all("option").map(&:text)).to eq([ "選択してください", "背景", "カットイン", "BGM", "その他" ])
 
-    page.find("table tbody tr:first-child").click_link("Aセッション")
-    expect(page).to have_current_path(game_session_path(background_usage.session), ignore_query: true)
+    first_scene_select.select("scene3")
+    first_role_select.select("その他")
+    expect(first_scene_select.value).to eq(alpha_scene_3.id.to_s)
+    expect(first_role_select.value).to eq("other")
+    click_button "更新", match: :first
+
+    expect(page).to have_current_path(asset_path(asset), ignore_query: true)
+    expect(page).to have_content("Usageを更新しました。")
+    expect(background_usage.reload.session).to eq(alpha_session)
+    expect(background_usage.scene).to eq(alpha_scene_3)
+    expect(background_usage.role).to eq("other")
+
+    updated_row = find(:xpath, "//select[@id='usage_scene_id_#{background_usage.id}']/ancestor::tr")
+    updated_row.click_link("Aセッション")
+    expect(page).to have_current_path(game_session_path(alpha_session), ignore_query: true)
+
     expect(page).to have_content("セッション詳細")
     expect(page).to have_content("Aセッション")
   end

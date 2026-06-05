@@ -31,6 +31,26 @@ class UsagesController < ApplicationController
     end
   end
 
+  def update
+    usage = policy_scope(Usage).find(params[:id])
+    authorize usage
+
+    result = Usages::UpdateService.call(
+      user: current_user,
+      usage: usage,
+      scene_id: params[:scene_id],
+      role: params[:role]
+    )
+
+    if result.success?
+      redirect_to asset_path(result.usage.asset),
+                  notice: "Usageを更新しました。",
+                  status: :see_other
+    else
+      render plain: error_message_for(result.error), status: result.status
+    end
+  end
+
   private
 
   def success_redirect_path

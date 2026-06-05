@@ -23,10 +23,39 @@
     </thead>
     <tbody>
       <% @where_used_usages.each do |usage| %>
+        <% usage_update_form_id = "usage_update_#{usage.id}" %>
         <tr>
           <td><%= link_to usage.session.name, game_session_path(usage.session) %></td>
-          <td><%= usage.scene.name %></td>
-          <td><%= usage.role_label %></td>
+          <td>
+            <%= form_with url: usage_path(usage),
+                          method: :patch,
+                          html: { id: usage_update_form_id } do %>
+              <%= select_tag :scene_id,
+                             options_for_select(
+                               usage.session.scenes.sort_by(&:position).map { |scene|
+                                 [ scene.name, scene.id ]
+                               },
+                               usage.scene_id
+                             ),
+                             include_blank: "選択してください",
+                             id: "usage_scene_id_#{usage.id}",
+                             aria: { label: "シーン" },
+                             class: "usage-scene-select" %>
+            <% end %>
+          </td>
+          <td>
+            <%= select_tag :role,
+                           options_for_select(
+                             @roles.map { |role| [ Usage.role_label(role), role ] },
+                             usage.role
+                           ),
+                           include_blank: "選択してください",
+                           id: "usage_role_#{usage.id}",
+                           form: usage_update_form_id,
+                           aria: { label: "用途" },
+                           class: "usage-role-select" %>
+            <%= submit_tag "更新", form: usage_update_form_id %>
+          </td>
         </tr>
       <% end %>
     </tbody>
