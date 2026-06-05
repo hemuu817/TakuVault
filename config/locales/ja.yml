@@ -1,0 +1,9 @@
+ja:
+  activerecord:
+    attributes:
+      usage:
+        roles:
+          background: "背景"
+          cutin: "カットイン"
+          bgm: "BGM"
+          other: "その他"

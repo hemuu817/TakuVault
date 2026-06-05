@@ -10,6 +10,32 @@
   </p>
 <% end %>
 
+<h2>使用先</h2>
+
+<% if @where_used_usages.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>セッション</th>
+        <th>シーン</th>
+        <th>用途</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @where_used_usages.each do |usage| %>
+        <tr>
+          <td><%= link_to usage.session.name, game_session_path(usage.session) %></td>
+          <td><%= usage.scene.name %></td>
+          <td><%= usage.role_label %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>使用先：未設定（未整理）</p>
+  <p><%= link_to "未整理一覧へ", uncategorized_assets_path %></p>
+<% end %>
+
 <h2>Usage追加</h2>
 
 <% if @sessions.any? %>
@@ -41,7 +67,9 @@
 
     <p>
       <%= form.label :role, "役割" %>
-      <%= form.select :role, @roles.map { |role| [ role, role ] }, prompt: "選択してください" %>
+      <%= form.select :role,
+                      @roles.map { |role| [ Usage.role_label(role), role ] },
+                      prompt: "選択してください" %>
     </p>
 
     <%= form.submit "Usageを追加" %>
