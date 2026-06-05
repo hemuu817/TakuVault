@@ -3,6 +3,10 @@ class UsagePolicy < ApplicationPolicy
     true
   end
 
+  def update?
+    record.asset.user_id == user.id && record.session.user_id == user.id
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.joins(:asset).joins(scene: :session)

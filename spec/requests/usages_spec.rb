@@ -84,6 +84,72 @@ RSpec.describe "Usages", type: :request do
     end
   end
 
+  describe "PATCH /usages/:id" do
+    it "updates a usage scene and role" do
+      asset = create(:asset, user: user)
+      target_scene = create(:scene, session: session_record, name: "更新先シーン", position: 2)
+      usage = create(:usage, asset: asset, session: session_record, scene: scene, role: :background)
+
+      patch usage_path(usage), params: {
+        scene_id: target_scene.id,
+        role: "bgm"
+      }
+
+      expect(response).to redirect_to(asset_path(asset))
+      expect(usage.reload.session).to eq(session_record)
+      expect(usage.scene).to eq(target_scene)
+      expect(usage.role).to eq("bgm")
+    end
+
+    it "fails closed when the selected scene belongs to another session" do
+      asset = create(:asset, user: user)
+      usage = create(:usage, asset: asset, session: session_record, scene: scene, role: :background)
+      other_session = create(:session, user: user)
+      other_scene = other_session.scenes.find_by!(position: Scene::DEFAULT_POSITION)
+
+      patch usage_path(usage), params: {
+        scene_id: other_scene.id,
+        role: "bgm"
+      }
+
+      expect(response).to have_http_status(:not_found)
+      expect(usage.reload.session).to eq(session_record)
+      expect(usage.scene).to eq(scene)
+      expect(usage.role).to eq("background")
+    end
+
+    it "returns 422 when the update would duplicate an existing usage" do
+      asset = create(:asset, user: user)
+      existing = create(:usage, asset: asset, session: session_record, scene: scene, role: :background)
+      usage = create(:usage, asset: asset, session: session_record, scene: scene, role: :cutin)
+
+      patch usage_path(usage), params: {
+        scene_id: existing.scene_id,
+        role: "background"
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include("同じ詳細が既に存在します。")
+      expect(usage.reload.role).to eq("cutin")
+    end
+
+    it "fails closed when updating another user's usage" do
+      other_user = create(:user, email: "other-usage-update@example.com")
+      other_asset = create(:asset, user: other_user)
+      other_session = create(:session, user: other_user)
+      other_scene = other_session.scenes.find_by!(position: Scene::DEFAULT_POSITION)
+      other_usage = create(:usage, asset: other_asset, session: other_session, scene: other_scene, role: :background)
+
+      patch usage_path(other_usage), params: {
+        scene_id: scene.id,
+        role: "bgm"
+      }
+
+      expect(response).to have_http_status(:not_found)
+      expect(other_usage.reload.role).to eq("background")
+    end
+  end
+
   describe "GET /assets/uncategorized" do
     it "renders session-scoped scene select wiring" do
       create(:asset, user: user)
@@ -101,6 +167,10 @@ RSpec.describe "Usages", type: :request do
       expect(response.body).to include("data-session-id=\"#{session_record.id}\"")
       expect(response.body).to include("data-session-id=\"#{other_session.id}\"")
       expect(response.body).to include(other_scene.name)
+      expect(response.body).to include("種類")
+      expect(response.body).to include("背景")
+      expect(response.body).to include("詳細を一括作成")
+      expect(response.body).not_to include("Usage")
     end
   end
 end

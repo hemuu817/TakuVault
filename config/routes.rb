@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :assets do
     get :uncategorized, on: :collection
   end
-  resources :usages, only: :create
+  resources :usages, only: %i[create update]
   resources :sessions, as: :game_sessions do
     resources :scenes
   end

@@ -1,8 +1,8 @@
-<h1>未整理の素材</h1>
+<h1><%= t(".title", locale: :ja) %></h1>
 
 <p>
-  <%= link_to "素材一覧", assets_path %>
-  <%= link_to "セッション一覧", game_sessions_path %>
+  <%= link_to t("assets.common.assets_index", locale: :ja), assets_path %>
+  <%= link_to t("assets.common.sessions_index", locale: :ja), game_sessions_path %>
 </p>
 
 <% if @assets.any? %>
@@ -10,13 +10,13 @@
     <%= hidden_field_tag :usage_mode, "bulk" %>
 
     <fieldset>
-      <legend>一括割当</legend>
+      <legend><%= t(".bulk_assignment", locale: :ja) %></legend>
 
       <p>
-        <%= form.label :session_id, "セッション" %>
+        <%= form.label :session_id, t("assets.common.session", locale: :ja) %>
         <%= form.select :session_id,
                         @sessions.map { |session| [ session.name, session.id ] },
-                        { prompt: "選択してください" },
+                        { prompt: t("assets.common.select_prompt", locale: :ja) },
                         data: {
                           scene_select_target: "session",
                           action: "scene-select#update"
@@ -24,20 +24,22 @@
       </p>
 
       <p>
-        <%= form.label :scene_id, "シーン" %>
+        <%= form.label :scene_id, t("assets.common.scene", locale: :ja) %>
         <%= form.select :scene_id,
                         @sessions.flat_map { |session|
                           session.scenes.sort_by(&:position).map do |scene|
                             [ "#{session.name} / #{scene.name}", scene.id, { data: { session_id: session.id } } ]
                           end
                         },
-                        { prompt: "選択してください" },
+                        { prompt: t("assets.common.select_prompt", locale: :ja) },
                         data: { scene_select_target: "scene" } %>
       </p>
 
       <p>
-        <%= form.label :role, "役割" %>
-        <%= form.select :role, @roles.map { |role| [ role, role ] }, prompt: "選択してください" %>
+        <%= form.label :role, t("assets.common.kind", locale: :ja) %>
+        <%= form.select :role,
+                        @roles.map { |role| [ Usage.role_label(role), role ] },
+                        prompt: t("assets.common.select_prompt", locale: :ja) %>
       </p>
     </fieldset>
 
@@ -45,13 +47,17 @@
       <% @assets.each do |asset| %>
         <li>
           <%= check_box_tag "asset_ids[]", asset.id, false, id: "asset_ids_#{asset.id}" %>
-          <%= label_tag "asset_ids_#{asset.id}", "#{asset.display_name} (#{asset.original_filename})" %>
+          <%= label_tag "asset_ids_#{asset.id}",
+                        t(".asset_option",
+                          locale: :ja,
+                          display_name: asset.display_name,
+                          original_filename: asset.original_filename) %>
         </li>
       <% end %>
     </ul>
 
-    <%= form.submit "Usageを一括作成" %>
+    <%= form.submit t(".bulk_submit", locale: :ja) %>
   <% end %>
 <% else %>
-  <p>未整理の素材はありません。</p>
+  <p><%= t(".empty", locale: :ja) %></p>
 <% end %>

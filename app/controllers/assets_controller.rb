@@ -20,6 +20,7 @@ class AssetsController < ApplicationController
   def show
     @asset = policy_scope(Asset).with_attached_file.find(params[:id])
     authorize(@asset)
+    @where_used_usages = @asset.usages.for_where_used(current_user)
     @sessions = policy_scope(Session).includes(:scenes).order(created_at: :desc)
     @roles = Usage.roles.keys
   end
