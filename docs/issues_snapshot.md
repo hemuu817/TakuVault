@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-06-04T16:18:04Z_
+_Generated (UTC): 2026-06-05T16:08:52Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -52,3 +52,4 @@ _Generated (UTC): 2026-06-04T16:18:04Z_
 | 69 | (34)素材アップロードのモーダル化 | OPEN | 2026-01-15T12:41:36Z | https://github.com/hemuu817/TakuVault/issues/69 | [local](issues/0069.md) |
 | 70 | (35)フッター＋静的ページ群 | OPEN | 2026-01-15T12:41:45Z | https://github.com/hemuu817/TakuVault/issues/70 | [local](issues/0070.md) |
 | 71 | (6)パスワードリセット機能 | OPEN | 2026-01-15T12:25:09Z | https://github.com/hemuu817/TakuVault/issues/71 | [local](issues/0071.md) |
+| 136 | (36)Session詳細：セッション素材一覧表示 | OPEN | 2026-06-05T13:52:51Z | https://github.com/hemuu817/TakuVault/issues/136 | [local](issues/0136.md) |
