@@ -1,24 +1,24 @@
-<h1>素材詳細</h1>
+<h1><%= @asset.display_name %></h1>
 
-<p>表示名: <%= @asset.display_name %></p>
-<p>元ファイル名: <%= @asset.original_filename %></p>
+<p><%= t(".display_name_label", locale: :ja) %>: <%= @asset.display_name %></p>
+<p><%= t(".original_filename_label", locale: :ja) %>: <%= @asset.original_filename %></p>
 
 <% if @asset.file.attached? %>
   <p>
-    <%= link_to "ダウンロード",
+    <%= link_to t("assets.common.download", locale: :ja),
                 rails_blob_path(@asset.file, disposition: "attachment") %>
   </p>
 <% end %>
 
-<h2>使用先</h2>
+<h2><%= t(".details_heading", locale: :ja) %></h2>
 
 <% if @where_used_usages.any? %>
   <table>
     <thead>
       <tr>
-        <th>セッション</th>
-        <th>シーン</th>
-        <th>用途</th>
+        <th><%= t("assets.common.session", locale: :ja) %></th>
+        <th><%= t("assets.common.scene", locale: :ja) %></th>
+        <th><%= t("assets.common.kind", locale: :ja) %></th>
       </tr>
     </thead>
     <tbody>
@@ -37,9 +37,9 @@
                                },
                                usage.scene_id
                              ),
-                             include_blank: "選択してください",
+                             include_blank: t("assets.common.select_prompt", locale: :ja),
                              id: "usage_scene_id_#{usage.id}",
-                             aria: { label: "シーン" },
+                             aria: { label: t("assets.common.scene", locale: :ja) },
                              class: "usage-scene-select" %>
             <% end %>
           </td>
@@ -49,33 +49,34 @@
                              @roles.map { |role| [ Usage.role_label(role), role ] },
                              usage.role
                            ),
-                           include_blank: "選択してください",
+                           include_blank: t("assets.common.select_prompt", locale: :ja),
                            id: "usage_role_#{usage.id}",
                            form: usage_update_form_id,
-                           aria: { label: "用途" },
+                           aria: { label: t("assets.common.kind", locale: :ja) },
                            class: "usage-role-select" %>
-            <%= submit_tag "更新", form: usage_update_form_id %>
+            <%= submit_tag t("assets.common.update", locale: :ja),
+                           form: usage_update_form_id %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 <% else %>
-  <p>使用先：未設定（未整理）</p>
-  <p><%= link_to "未整理一覧へ", uncategorized_assets_path %></p>
+  <p><%= t(".details_empty", locale: :ja) %></p>
+  <p><%= link_to t("assets.common.uncategorized_index", locale: :ja), uncategorized_assets_path %></p>
 <% end %>
 
-<h2>Usage追加</h2>
+<h2><%= t(".add_details_heading", locale: :ja) %></h2>
 
 <% if @sessions.any? %>
   <%= form_with url: usages_path, method: :post, data: { controller: "scene-select" } do |form| %>
     <%= hidden_field_tag :asset_id, @asset.id %>
 
     <p>
-      <%= form.label :session_id, "セッション" %>
+      <%= form.label :session_id, t("assets.common.session", locale: :ja) %>
       <%= form.select :session_id,
                       @sessions.map { |session| [ session.name, session.id ] },
-                      { prompt: "選択してください" },
+                      { prompt: t("assets.common.select_prompt", locale: :ja) },
                       data: {
                         scene_select_target: "session",
                         action: "scene-select#update"
@@ -83,34 +84,34 @@
     </p>
 
     <p>
-      <%= form.label :scene_id, "シーン" %>
+      <%= form.label :scene_id, t("assets.common.scene", locale: :ja) %>
       <%= form.select :scene_id,
                       @sessions.flat_map { |session|
                         session.scenes.sort_by(&:position).map do |scene|
                           [ "#{session.name} / #{scene.name}", scene.id, { data: { session_id: session.id } } ]
                         end
                       },
-                      { prompt: "選択してください" },
+                      { prompt: t("assets.common.select_prompt", locale: :ja) },
                       data: { scene_select_target: "scene" } %>
     </p>
 
     <p>
-      <%= form.label :role, "役割" %>
+      <%= form.label :role, t("assets.common.kind", locale: :ja) %>
       <%= form.select :role,
                       @roles.map { |role| [ Usage.role_label(role), role ] },
-                      prompt: "選択してください" %>
+                      prompt: t("assets.common.select_prompt", locale: :ja) %>
     </p>
 
-    <%= form.submit "Usageを追加" %>
+    <%= form.submit t(".add_details_submit", locale: :ja) %>
   <% end %>
 <% else %>
-  <p>Usageを追加するにはセッションを作成してください。</p>
+  <p><%= t(".add_details_without_sessions", locale: :ja) %></p>
 <% end %>
 
 <p>
-  <%= link_to "編集", edit_asset_path(@asset) %>
-  <%= link_to "一覧へ戻る", assets_path %>
-  <%= button_to "削除", asset_path(@asset),
+  <%= link_to t("assets.common.edit", locale: :ja), edit_asset_path(@asset) %>
+  <%= link_to t("assets.common.back_to_index", locale: :ja), assets_path %>
+  <%= button_to t("assets.common.delete", locale: :ja), asset_path(@asset),
                 method: :delete,
-                data: { turbo_confirm: "削除しますか？" } %>
+                data: { turbo_confirm: t("assets.common.delete_confirm", locale: :ja) } %>
 </p>

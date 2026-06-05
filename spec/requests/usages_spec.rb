@@ -129,7 +129,7 @@ RSpec.describe "Usages", type: :request do
       }
 
       expect(response).to have_http_status(:unprocessable_entity)
-      expect(response.body).to include("同じUsageが既に存在します。")
+      expect(response.body).to include("同じ詳細が既に存在します。")
       expect(usage.reload.role).to eq("cutin")
     end
 
@@ -167,6 +167,10 @@ RSpec.describe "Usages", type: :request do
       expect(response.body).to include("data-session-id=\"#{session_record.id}\"")
       expect(response.body).to include("data-session-id=\"#{other_session.id}\"")
       expect(response.body).to include(other_scene.name)
+      expect(response.body).to include("種類")
+      expect(response.body).to include("背景")
+      expect(response.body).to include("詳細を一括作成")
+      expect(response.body).not_to include("Usage")
     end
   end
 end

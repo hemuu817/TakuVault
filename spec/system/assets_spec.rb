@@ -56,7 +56,9 @@ RSpec.describe "Assets", type: :system do
     log_in(user)
     visit asset_path(asset)
 
-    expect(page).to have_content("使用先")
+    expect(page).to have_css("h1", text: "where_used.png")
+    expect(page).to have_css("h2", exact_text: "詳細")
+    expect(page).to have_css("th", text: "種類")
     expect(page).to have_link("Aセッション", href: game_session_path(alpha_session))
     expect(page).to have_content("scene2")
     expect(page).to have_content("背景")
@@ -91,7 +93,7 @@ RSpec.describe "Assets", type: :system do
     click_button "更新", match: :first
 
     expect(page).to have_current_path(asset_path(asset), ignore_query: true)
-    expect(page).to have_content("Usageを更新しました。")
+    expect(page).to have_content("詳細を更新しました。")
     expect(background_usage.reload.session).to eq(alpha_session)
     expect(background_usage.scene).to eq(alpha_scene_3)
     expect(background_usage.role).to eq("other")
@@ -110,7 +112,9 @@ RSpec.describe "Assets", type: :system do
     log_in(user)
     visit asset_path(asset)
 
-    expect(page).to have_content("使用先：未設定（未整理）")
+    expect(page).to have_css("h1", text: "unused.png")
+    expect(page).to have_css("h2", exact_text: "詳細")
+    expect(page).to have_content("詳細：未設定（未整理）")
     expect(page).to have_link("未整理一覧へ", href: uncategorized_assets_path)
   end
 

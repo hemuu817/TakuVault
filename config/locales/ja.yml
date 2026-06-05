@@ -7,3 +7,43 @@ ja:
           cutin: "カットイン"
           bgm: "BGM"
           other: "その他"
+  assets:
+    common:
+      assets_index: "素材一覧"
+      sessions_index: "セッション一覧"
+      download: "ダウンロード"
+      edit: "編集"
+      update: "更新"
+      back_to_index: "一覧へ戻る"
+      delete: "削除"
+      delete_confirm: "削除しますか？"
+      session: "セッション"
+      scene: "シーン"
+      kind: "種類"
+      select_prompt: "選択してください"
+      uncategorized_index: "未整理一覧へ"
+    show:
+      display_name_label: "表示名"
+      original_filename_label: "元ファイル名"
+      details_heading: "詳細"
+      details_empty: "詳細：未設定（未整理）"
+      add_details_heading: "詳細を追加"
+      add_details_submit: "詳細を追加"
+      add_details_without_sessions: "詳細を追加するにはセッションを作成してください。"
+    uncategorized:
+      title: "未整理の素材"
+      bulk_assignment: "一括割当"
+      asset_option: "%{display_name} (%{original_filename})"
+      bulk_submit: "詳細を一括作成"
+      empty: "未整理の素材はありません。"
+  usages:
+    create:
+      success: "詳細を追加しました。"
+      bulk_success: "詳細を作成しました（作成%{created_count}件 / 重複スキップ%{skipped_duplicate_count}件）。"
+      skipped_assets: "スキップ: %{names}"
+      invalid_role: "種類が不正です。"
+      duplicate: "同じ詳細が既に存在します。"
+      asset_required: "素材を選択してください。"
+      failure: "詳細を作成できませんでした。"
+    update:
+      success: "詳細を更新しました。"
