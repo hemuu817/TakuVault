@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120" role="img" aria-labelledby="title desc">
+  <title id="title">Audio file placeholder</title>
+  <desc id="desc">A simple audio thumbnail placeholder.</desc>
+  <rect width="160" height="120" fill="#f4f4f5"/>
+  <rect x="16" y="16" width="128" height="88" fill="#ffffff" stroke="#a1a1aa" stroke-width="2"/>
+  <path d="M61 74H46V50h15l23-18v60L61 74Z" fill="#52525b"/>
+  <path d="M94 47c7 7 7 19 0 26M105 36c13 13 13 35 0 48" fill="none" stroke="#52525b" stroke-width="6" stroke-linecap="round"/>
+</svg>

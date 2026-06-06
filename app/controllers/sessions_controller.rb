@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
 
   def show
     authorize @session
+    @asset_grid = Sessions::AssetGridQuery.new(session: @session).call
   end
 
   def new

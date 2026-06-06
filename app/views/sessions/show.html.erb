@@ -24,7 +24,7 @@
   <%= link_to "シーンを追加", new_game_session_scene_path(@session) %>
 </p>
 
-<% scenes = @session.scenes.order(:position) %>
+<% scenes = @asset_grid.scenes %>
 <% if scenes.any? %>
   <ul>
     <% scenes.each do |scene| %>
@@ -43,3 +43,36 @@
 <% else %>
   <p>シーンがありません。</p>
 <% end %>
+
+<h2>セッション素材一覧</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>シーン</th>
+      <% @asset_grid.roles.each do |role| %>
+        <th><%= Usage.role_label(role) %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @asset_grid.scenes.each do |scene| %>
+      <tr>
+        <th><%= scene.name %></th>
+        <% @asset_grid.roles.each do |role| %>
+          <td>
+            <% @asset_grid.usages_for(scene, role).each do |usage| %>
+              <% thumbnail_src = asset_file_thumbnail_src(usage.asset) %>
+              <%= link_to asset_path(usage.asset) do %>
+                <% if thumbnail_src.present? %>
+                  <%= image_tag thumbnail_src, alt: usage.asset.display_name, width: 120 %>
+                <% end %>
+                <span><%= usage.asset.display_name %></span>
+              <% end %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

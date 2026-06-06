@@ -6,7 +6,7 @@
 <% if @asset.file.attached? %>
   <p>
     <%= link_to t("assets.common.download", locale: :ja),
-                rails_blob_path(@asset.file, disposition: "attachment") %>
+                asset_file_download_path(@asset) %>
   </p>
 <% end %>
 
