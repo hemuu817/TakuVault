@@ -48,3 +48,4 @@ Session詳細は、当該セッション内で素材（Asset）が「どのシ�
 ## Related
 - ADR-0001：default_scene（position=1固定）
 - ADR-0006：Usage割当ルール（Primary=未整理、Secondary=素材詳細）
+- docs/issues/0136.md（GitHub #136）：Session詳細「セッション素材一覧」実装
