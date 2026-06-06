@@ -2,7 +2,7 @@
 MVPリリース条件を **Phase 0 完了 + Phase 1 完了** と定義する。
 
 - Phase 0（最優先）：「アップロードした素材をCloudflare R2へ永続保存できるアプリとして“動く”」を成立させる
-- Phase 1（次点）：docs/issues/0014.md → docs/issues/0015.md → docs/issues/0018.md → docs/issues/0021.md → docs/issues/0022.md の順で、Session / Scene / Usage / Where used を実装する
+- Phase 1（次点）：docs/issues/0014.md → docs/issues/0015.md → docs/issues/0018.md → docs/issues/0021.md → docs/issues/0022.md → docs/issues/0136.md の順で、Session / Scene / Usage / Where used / セッション素材一覧 を実装する
 - Phase 0のみ完了は “動作確認段階” とし、MVPリリースとは呼ばない（スコープ誤読防止）
 
 ## プロダクト前提
@@ -58,6 +58,7 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
     - UNIQUE(asset_id, session_id, scene_id, role) を前提にする
   - Asset詳細に Where used（Usage一覧）が表示される（includes等でN+1回避）
   - 所有権不一致の asset / session / scene への紐付けは fail-closed（403/404相当）
+  - Session詳細に「セッション素材一覧」が表示され（行=Scene／列=用途）、タイルから素材詳細へ遷移できる（ADR-0008準拠）
 
 - （Deferred：MVPリリース要件に含めない）
   - 検索/絞り込み/ソート
@@ -103,7 +104,7 @@ Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage,
 A 基盤(0001)：0006〜0008  
 B 認証・認可(0009)：0010〜0012  
 C セッション&シーン(0013)：0014〜0015, 0041  
-D Asset+Usage核(0017)：0018〜0024, 0042  
+D Asset+Usage核(0017)：0018〜0024, 0042, 0136 
 E 検索(0027)：0028〜0030  
 F タグ(0031)：0032, 0065  
 X クラウド保管(0033)：0034〜0035  
@@ -132,6 +133,7 @@ Z その他（MVP外候補）：0061, 0068〜0071
    - ADR-0006に従い、Primary=未整理（Usage0）ページで複数選択→一括割当、Secondary=Asset詳細からの追加/削除として実装する
    - Usage作成時は asset / session / scene の所有権混在を fail-closed で拒否する
 9. docs/issues/0022.md（GitHub #22）(17) Asset詳細Where used（Usage一覧表示）
+10. docs/issues/0136.md（GitHub #136）Session詳細「セッション素材一覧」表示（ADR-0008準拠）
 
 ### Deferred（MVPリリース要件に含めない）
 - 検索/絞り込み/ソート：docs/issues/0027.md〜0030.md（GitHub #27〜#30）
@@ -149,7 +151,7 @@ Z その他（MVP外候補）：0061, 0068〜0071
 
 ### Phase運用（MVP計画の更新点）
 - Phase 0（最優先）：A/B/D/X を中心に「R2永続化 + Asset CRUD + 制限 + 削除整合性」を成立させる
-- Phase 1（次点）：C と D（Usage/Where used）で、docs/issues/0014.md → 0015.md → 0018.md → 0021.md → 0022.md の順にWhere usedを成立させる
+- Phase 1（次点）：C と D（Usage/Where used）で、docs/issues/0014.md → 0015.md → 0018.md → 0021.md → 0022.md → 0136.md の順にWhere used とセッション素材一覧を成立させる
 - Deferred：E/F/G/Z はMVPリリース要件に含めない（明示指示がある場合のみ着手）
 
 ## Issue snapshot（Codex参照ルール）
