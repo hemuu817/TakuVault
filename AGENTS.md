@@ -135,7 +135,7 @@ Z その他（MVP外候補）：0061, 0068〜0071
 9. docs/issues/0022.md（GitHub #22）(17) Asset詳細Where used（Usage一覧表示）
 10. docs/issues/0136.md（GitHub #136）Session詳細「セッション素材一覧」表示（ADR-0008準拠）
 11. docs/issues/0141.md（GitHub #141）Tailwind CSS導入・ビルド基盤整備
-    - 最初のフロントエンド実装Issue。DoDに Render build command 更新を含める
+    - 最初のフロントエンド実装Issue。Render(Docker)構成のため、Dockerfile（assets:precompile）経由で production相当でも Tailwind build が成立することをDoDに含める
 12. docs/issues/0142.md（GitHub #142）既存ERB画面のTailwind retrofit
     - #11（Tailwind導入）完了後に着手。既存機能・認可境界・DB/routes/controller/model/policy は変更しない
 
