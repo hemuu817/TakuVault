@@ -2,7 +2,7 @@
 MVPリリース条件を **Phase 0 完了 + Phase 1 完了** と定義する。
 
 - Phase 0（最優先）：「アップロードした素材をCloudflare R2へ永続保存できるアプリとして“動く”」を成立させる
-- Phase 1（次点）：docs/issues/0014.md → docs/issues/0015.md → docs/issues/0018.md → docs/issues/0021.md → docs/issues/0022.md → docs/issues/0136.md の順で、Session / Scene / Usage / Where used / セッション素材一覧 を実装する
+- Phase 1（次点）：docs/issues/0014.md → docs/issues/0015.md → docs/issues/0018.md → docs/issues/0021.md → docs/issues/0022.md → docs/issues/0136.md の順で、Session / Scene / Usage / Where used / セッション素材一覧 を実装し、続けて Tailwind CSS導入 → 既存ERB画面のretrofit でUIを整える
 - Phase 0のみ完了は “動作確認段階” とし、MVPリリースとは呼ばない（スコープ誤読防止）
 
 ## プロダクト前提
@@ -134,6 +134,10 @@ Z その他（MVP外候補）：0061, 0068〜0071
    - Usage作成時は asset / session / scene の所有権混在を fail-closed で拒否する
 9. docs/issues/0022.md（GitHub #22）(17) Asset詳細Where used（Usage一覧表示）
 10. docs/issues/0136.md（GitHub #136）Session詳細「セッション素材一覧」表示（ADR-0008準拠）
+11. docs/issues/0141.md（GitHub #141）Tailwind CSS導入・ビルド基盤整備
+    - 最初のフロントエンド実装Issue。DoDに Render build command 更新を含める
+12. docs/issues/0142.md（GitHub #142）既存ERB画面のTailwind retrofit
+    - #11（Tailwind導入）完了後に着手。既存機能・認可境界・DB/routes/controller/model/policy は変更しない
 
 ### Deferred（MVPリリース要件に含めない）
 - 検索/絞り込み/ソート：docs/issues/0027.md〜0030.md（GitHub #27〜#30）
@@ -151,7 +155,7 @@ Z その他（MVP外候補）：0061, 0068〜0071
 
 ### Phase運用（MVP計画の更新点）
 - Phase 0（最優先）：A/B/D/X を中心に「R2永続化 + Asset CRUD + 制限 + 削除整合性」を成立させる
-- Phase 1（次点）：C と D（Usage/Where used）で、docs/issues/0014.md → 0015.md → 0018.md → 0021.md → 0022.md → 0136.md の順にWhere used とセッション素材一覧を成立させる
+- Phase 1（次点）：C と D（Usage/Where used）で、docs/issues/0014.md → 0015.md → 0018.md → 0021.md → 0022.md → 0136.md の順にWhere used とセッション素材一覧を成立させ、最後に Tailwind CSS導入 → retrofit でUIを整える
 - Deferred：E/F/G/Z はMVPリリース要件に含めない（明示指示がある場合のみ着手）
 
 ## Issue snapshot（Codex参照ルール）
