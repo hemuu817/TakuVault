@@ -31,6 +31,19 @@ RSpec.describe Asset, type: :model do
     expect(asset.errors[:file]).not_to be_empty
   end
 
+  it "application/ogg の添付は無効" do
+    asset = build(:asset, original_filename: "sound.ogg", display_name: "sound.ogg")
+    asset.file.attach(
+      io: File.open(valid_file_path),
+      filename: "sound.ogg",
+      content_type: "application/ogg",
+      identify: false
+    )
+
+    expect(asset).not_to be_valid
+    expect(asset.errors[:file]).not_to be_empty
+  end
+
   it "サイズ上限を超えると無効" do
     stub_const("Assets::UploadValidator::MAX_FILE_BYTES", 1)
 

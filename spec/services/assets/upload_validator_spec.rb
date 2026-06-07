@@ -63,6 +63,20 @@ RSpec.describe Assets::UploadValidator do
     expect(result.error).to eq(:invalid_content_type)
   end
 
+  it "application/ogg と判定された .ogg は拒否する" do
+    ogg_file = Rack::Test::UploadedFile.new(
+      Rails.root.join("spec/fixtures/files/valid.png"),
+      "application/ogg",
+      original_filename: "sound.ogg"
+    )
+    allow(Marcel::MimeType).to receive(:for).and_return("application/ogg")
+
+    result = described_class.new(files: [ ogg_file ]).call
+
+    expect(result.ok?).to be(false)
+    expect(result.error).to eq(:invalid_content_type)
+  end
+
   it "1ファイル上限を超えると拒否する" do
     stub_const("Assets::UploadValidator::MAX_FILE_BYTES", 1)
 

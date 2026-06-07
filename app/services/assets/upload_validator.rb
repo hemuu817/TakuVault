@@ -14,7 +14,6 @@ module Assets
       audio/wav
       audio/x-wav
       audio/ogg
-      application/ogg
     ].freeze
 
     ALLOWED_EXTENSIONS = %w[
