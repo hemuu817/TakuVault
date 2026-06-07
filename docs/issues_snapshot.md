@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-06-06T15:39:39Z_
+_Generated (UTC): 2026-06-07T13:38:56Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -26,7 +26,7 @@ _Generated (UTC): 2026-06-06T15:39:39Z_
 | 20 | (15) Asset kind | OPEN | 2026-01-15T12:34:47Z | https://github.com/hemuu817/TakuVault/issues/20 | [local](issues/0020.md) |
 | 21 | (16) Usage作成 | CLOSED | 2026-05-30T16:37:14Z | https://github.com/hemuu817/TakuVault/issues/21 | [local](issues/0021.md) |
 | 22 | (17) Asset詳細Where used | CLOSED | 2026-06-05T17:53:02Z | https://github.com/hemuu817/TakuVault/issues/22 | [local](issues/0022.md) |
-| 23 | (18) 素材一覧(spike) | OPEN | 2026-06-05T17:54:54Z | https://github.com/hemuu817/TakuVault/issues/23 | [local](issues/0023.md) |
+| 23 | (18) 素材一覧とセッション一覧の統合(spike) | OPEN | 2026-06-06T16:16:24Z | https://github.com/hemuu817/TakuVault/issues/23 | [local](issues/0023.md) |
 | 24 | (19) Asset削除整合性 | CLOSED | 2026-06-01T13:07:54Z | https://github.com/hemuu817/TakuVault/issues/24 | [local](issues/0024.md) |
 | 25 | Epic H: Docs | CLOSED | 2026-01-10T08:58:08Z | https://github.com/hemuu817/TakuVault/issues/25 | [local](issues/0025.md) |
 | 26 | (32) README価値提案+MVP宣言 | CLOSED | 2026-01-15T12:41:05Z | https://github.com/hemuu817/TakuVault/issues/26 | [local](issues/0026.md) |
@@ -52,5 +52,6 @@ _Generated (UTC): 2026-06-06T15:39:39Z_
 | 69 | (34)素材アップロードのモーダル化 | OPEN | 2026-06-05T17:54:32Z | https://github.com/hemuu817/TakuVault/issues/69 | [local](issues/0069.md) |
 | 70 | (35)フッター＋静的ページ群 | OPEN | 2026-01-15T12:41:45Z | https://github.com/hemuu817/TakuVault/issues/70 | [local](issues/0070.md) |
 | 71 | (6)パスワードリセット機能 | OPEN | 2026-01-15T12:25:09Z | https://github.com/hemuu817/TakuVault/issues/71 | [local](issues/0071.md) |
-| 136 | (36)Session詳細：セッション素材一覧表示 | CLOSED | 2026-06-06T12:28:34Z | https://github.com/hemuu817/TakuVault/issues/136 | [local](issues/0136.md) |
-| 141 | Tailwind CSS導入・ビルド基盤整備 | OPEN | 2026-06-06T14:34:05Z | https://github.com/hemuu817/TakuVault/issues/141 | [local](issues/0141.md) |
+| 136 | (36)Session詳細：セッション素材一覧表示 | CLOSED | 2026-06-07T08:05:43Z | https://github.com/hemuu817/TakuVault/issues/136 | [local](issues/0136.md) |
+| 141 | (37)Tailwind CSS導入・ビルド基盤整備 | OPEN | 2026-06-06T16:14:39Z | https://github.com/hemuu817/TakuVault/issues/141 | [local](issues/0141.md) |
+| 142 | (38)既存ERB画面のTailwind retrofit | OPEN | 2026-06-06T16:14:52Z | https://github.com/hemuu817/TakuVault/issues/142 | [local](issues/0142.md) |
