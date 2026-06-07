@@ -13,7 +13,6 @@ module Assets
       audio/mp3
       audio/wav
       audio/x-wav
-      audio/ogg
     ].freeze
 
     ALLOWED_EXTENSIONS = %w[
@@ -23,7 +22,6 @@ module Assets
       .webp
       .mp3
       .wav
-      .ogg
     ].freeze
 
     Result = Struct.new(:ok?, :error, :details, :total_bytes, keyword_init: true)

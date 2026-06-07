@@ -31,12 +31,12 @@ RSpec.describe Asset, type: :model do
     expect(asset.errors[:file]).not_to be_empty
   end
 
-  it "application/ogg の添付は無効" do
+  it "audio/ogg の添付は無効" do
     asset = build(:asset, original_filename: "sound.ogg", display_name: "sound.ogg")
     asset.file.attach(
       io: File.open(valid_file_path),
       filename: "sound.ogg",
-      content_type: "application/ogg",
+      content_type: "audio/ogg",
       identify: false
     )
 

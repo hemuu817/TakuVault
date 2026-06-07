@@ -63,13 +63,13 @@ RSpec.describe Assets::UploadValidator do
     expect(result.error).to eq(:invalid_content_type)
   end
 
-  it "application/ogg と判定された .ogg は拒否する" do
+  it "audio/ogg と判定された .ogg は拒否する" do
     ogg_file = Rack::Test::UploadedFile.new(
       Rails.root.join("spec/fixtures/files/valid.png"),
-      "application/ogg",
+      "audio/ogg",
       original_filename: "sound.ogg"
     )
-    allow(Marcel::MimeType).to receive(:for).and_return("application/ogg")
+    allow(Marcel::MimeType).to receive(:for).and_return("audio/ogg")
 
     result = described_class.new(files: [ ogg_file ]).call
 
