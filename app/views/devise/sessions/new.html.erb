@@ -1,0 +1,34 @@
+<div class="mx-auto max-w-md">
+  <h1 class="mb-4 text-2xl font-semibold text-gray-900">Log in</h1>
+
+  <%= form_for(resource,
+               as: resource_name,
+               url: session_path(resource_name),
+               html: { class: "rounded-lg border border-gray-200 bg-white p-4 shadow-sm" }) do |form| %>
+    <div class="mb-4">
+      <%= form.label :email, "Email", class: "block text-sm font-medium text-gray-700" %>
+      <%= form.email_field :email,
+                           autofocus: true,
+                           autocomplete: "email",
+                           class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :password, "Password", class: "block text-sm font-medium text-gray-700" %>
+      <%= form.password_field :password,
+                              autocomplete: "current-password",
+                              class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+    </div>
+
+    <% if devise_mapping.rememberable? %>
+      <div class="mb-4 flex items-center gap-2">
+        <%= form.check_box :remember_me,
+                           class: "h-4 w-4 rounded border-gray-300 text-orange-700 focus:ring-orange-600" %>
+        <%= form.label :remember_me, "Remember me", class: "text-sm text-gray-700" %>
+      </div>
+    <% end %>
+
+    <%= form.submit "Log in",
+                    class: "inline-flex w-full items-center justify-center rounded-md bg-orange-700 px-4 py-2 text-sm font-medium text-white hover:bg-orange-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
+  <% end %>
+</div>
