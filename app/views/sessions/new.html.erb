@@ -1,5 +1,9 @@
-<h1>セッション新規作成</h1>
+<h1 class="mb-4 text-2xl font-semibold text-gray-900">セッション新規作成</h1>
 
 <%= render "form" %>
 
-<p><%= link_to "一覧へ戻る", game_sessions_path %></p>
+<p class="mt-6">
+  <%= link_to "一覧へ戻る",
+              game_sessions_path,
+              class: "text-orange-700 hover:text-orange-800 hover:underline" %>
+</p>

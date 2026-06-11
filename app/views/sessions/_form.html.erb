@@ -1,24 +1,30 @@
 <%= form_with model: @session,
-              url: @session.new_record? ? game_sessions_path : game_session_path(@session) do |form| %>
+              url: @session.new_record? ? game_sessions_path : game_session_path(@session),
+              html: { class: "rounded-lg border border-gray-200 bg-white p-4 shadow-sm" } do |form| %>
   <% if @session.errors.any? %>
-    <ul>
+    <ul class="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
       <% @session.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
     </ul>
   <% end %>
 
-  <div>
-    <%= form.label :name, "セッション名" %>
-    <%= form.text_field :name, required: true %>
+  <div class="mb-4">
+    <%= form.label :name, "セッション名", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :name,
+                        required: true,
+                        class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :room_url, "部屋URL（任意）", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :room_url,
+                        placeholder: "https://...",
+                        class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
   </div>
 
   <div>
-    <%= form.label :room_url, "部屋URL（任意）" %>
-    <%= form.text_field :room_url, placeholder: "https://..." %>
-  </div>
-
-  <div>
-    <%= form.submit @session.new_record? ? "登録" : "更新" %>
+    <%= form.submit @session.new_record? ? "登録" : "更新",
+                    class: "inline-flex items-center rounded-md bg-orange-700 px-4 py-2 text-sm font-medium text-white hover:bg-orange-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
   </div>
 <% end %>
