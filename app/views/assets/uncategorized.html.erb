@@ -1,30 +1,35 @@
-<h1><%= t(".title", locale: :ja) %></h1>
+<h1 class="mb-4 text-2xl font-semibold text-gray-900"><%= t(".title", locale: :ja) %></h1>
 
-<p>
-  <%= link_to t("assets.common.assets_index", locale: :ja), assets_path %>
-  <%= link_to t("assets.common.sessions_index", locale: :ja), game_sessions_path %>
-</p>
+<div class="mb-6 flex flex-wrap gap-3">
+  <%= link_to t("assets.common.assets_index", locale: :ja),
+              assets_path,
+              class: "inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
+  <%= link_to t("assets.common.sessions_index", locale: :ja),
+              game_sessions_path,
+              class: "inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
+</div>
 
 <% if @assets.any? %>
-  <%= form_with url: usages_path, method: :post, data: { controller: "scene-select" } do |form| %>
+  <%= form_with url: usages_path, method: :post, data: { controller: "scene-select" }, html: { class: "space-y-6" } do |form| %>
     <%= hidden_field_tag :usage_mode, "bulk" %>
 
-    <fieldset>
-      <legend><%= t(".bulk_assignment", locale: :ja) %></legend>
+    <fieldset class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <legend class="px-1 text-base font-semibold text-gray-900"><%= t(".bulk_assignment", locale: :ja) %></legend>
 
-      <p>
-        <%= form.label :session_id, t("assets.common.session", locale: :ja) %>
+      <div class="mb-4">
+        <%= form.label :session_id, t("assets.common.session", locale: :ja), class: "block text-sm font-medium text-gray-700" %>
         <%= form.select :session_id,
                         @sessions.map { |session| [ session.name, session.id ] },
                         { prompt: t("assets.common.select_prompt", locale: :ja) },
                         data: {
                           scene_select_target: "session",
                           action: "scene-select#update"
-                        } %>
-      </p>
+                        },
+                        class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+      </div>
 
-      <p>
-        <%= form.label :scene_id, t("assets.common.scene", locale: :ja) %>
+      <div class="mb-4">
+        <%= form.label :scene_id, t("assets.common.scene", locale: :ja), class: "block text-sm font-medium text-gray-700" %>
         <%= form.select :scene_id,
                         @sessions.flat_map { |session|
                           session.scenes.sort_by(&:position).map do |scene|
@@ -32,32 +37,38 @@
                           end
                         },
                         { prompt: t("assets.common.select_prompt", locale: :ja) },
-                        data: { scene_select_target: "scene" } %>
-      </p>
+                        data: { scene_select_target: "scene" },
+                        class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+      </div>
 
-      <p>
-        <%= form.label :role, t("assets.common.kind", locale: :ja) %>
+      <div>
+        <%= form.label :role, t("assets.common.kind", locale: :ja), class: "block text-sm font-medium text-gray-700" %>
         <%= form.select :role,
                         @roles.map { |role| [ Usage.role_label(role), role ] },
-                        prompt: t("assets.common.select_prompt", locale: :ja) %>
-      </p>
+                        { prompt: t("assets.common.select_prompt", locale: :ja) },
+                        class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+      </div>
     </fieldset>
 
-    <ul>
+    <ul class="grid gap-3 sm:grid-cols-2">
       <% @assets.each do |asset| %>
-        <li>
-          <%= check_box_tag "asset_ids[]", asset.id, false, id: "asset_ids_#{asset.id}" %>
+        <li class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+          <div class="flex items-start gap-3">
+            <%= check_box_tag "asset_ids[]", asset.id, false, id: "asset_ids_#{asset.id}", class: "mt-1 h-4 w-4 rounded border-gray-300 text-orange-700 focus:ring-orange-600" %>
           <%= label_tag "asset_ids_#{asset.id}",
                         t(".asset_option",
                           locale: :ja,
                           display_name: asset.display_name,
-                          original_filename: asset.original_filename) %>
+                          original_filename: asset.original_filename),
+                        class: "break-all text-sm font-medium text-gray-900" %>
+          </div>
         </li>
       <% end %>
     </ul>
 
-    <%= form.submit t(".bulk_submit", locale: :ja) %>
+    <%= form.submit t(".bulk_submit", locale: :ja),
+                    class: "inline-flex items-center rounded-md bg-orange-700 px-4 py-2 text-sm font-medium text-white hover:bg-orange-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
   <% end %>
 <% else %>
-  <p><%= t(".empty", locale: :ja) %></p>
+  <p class="rounded-md border border-gray-200 bg-white px-4 py-6 text-sm text-gray-600"><%= t(".empty", locale: :ja) %></p>
 <% end %>

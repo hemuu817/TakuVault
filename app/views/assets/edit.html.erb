@@ -1,5 +1,9 @@
-<h1>素材名の編集</h1>
+<h1 class="mb-4 text-2xl font-semibold text-gray-900">素材名の編集</h1>
 
 <%= render "form", asset: @asset %>
 
-<p><%= link_to "詳細へ戻る", asset_path(@asset) %></p>
+<p class="mt-6">
+  <%= link_to "詳細へ戻る",
+              asset_path(@asset),
+              class: "text-orange-700 hover:text-orange-800 hover:underline" %>
+</p>
