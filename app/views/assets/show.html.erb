@@ -1,90 +1,117 @@
-<h1><%= @asset.display_name %></h1>
+<h1 class="mb-4 text-2xl font-semibold text-gray-900"><%= @asset.display_name %></h1>
 
-<p><%= t(".display_name_label", locale: :ja) %>: <%= @asset.display_name %></p>
-<p><%= t(".original_filename_label", locale: :ja) %>: <%= @asset.original_filename %></p>
+<div class="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+  <dl class="space-y-3 text-sm">
+    <div>
+      <dt class="font-medium text-gray-700"><%= t(".display_name_label", locale: :ja) %></dt>
+      <dd class="mt-1 text-gray-900"><%= @asset.display_name %></dd>
+    </div>
+    <div>
+      <dt class="font-medium text-gray-700"><%= t(".original_filename_label", locale: :ja) %></dt>
+      <dd class="mt-1 break-all text-gray-900"><%= @asset.original_filename %></dd>
+    </div>
+  </dl>
 
-<% if @asset.file.attached? %>
-  <p>
-    <%= link_to t("assets.common.download", locale: :ja),
-                asset_file_download_path(@asset) %>
-  </p>
-<% end %>
+  <% if @asset.file.attached? %>
+    <div class="mt-4">
+      <%= link_to t("assets.common.download", locale: :ja),
+                  asset_file_download_path(@asset),
+                  class: "text-orange-700 hover:text-orange-800 hover:underline" %>
+    </div>
+  <% end %>
+</div>
 
-<h2><%= t(".details_heading", locale: :ja) %></h2>
+<h2 class="mb-3 text-lg font-semibold text-gray-900"><%= t(".details_heading", locale: :ja) %></h2>
 
 <% if @where_used_usages.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th><%= t("assets.common.session", locale: :ja) %></th>
-        <th><%= t("assets.common.scene", locale: :ja) %></th>
-        <th><%= t("assets.common.kind", locale: :ja) %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @where_used_usages.each do |usage| %>
-        <% usage_update_form_id = "usage_update_#{usage.id}" %>
+  <div class="mb-6 overflow-x-auto">
+    <table class="w-full border-collapse text-sm">
+      <thead>
         <tr>
-          <td><%= link_to usage.session.name, game_session_path(usage.session) %></td>
-          <td>
-            <%= form_with url: usage_path(usage),
-                          method: :patch,
-                          html: { id: usage_update_form_id } do %>
-              <%= select_tag :scene_id,
-                             options_for_select(
-                               usage.session.scenes.sort_by(&:position).map { |scene|
-                                 [ scene.name, scene.id ]
-                               },
-                               usage.scene_id
-                             ),
-                             include_blank: t("assets.common.select_prompt", locale: :ja),
-                             id: "usage_scene_id_#{usage.id}",
-                             aria: { label: t("assets.common.scene", locale: :ja) },
-                             class: "usage-scene-select" %>
-            <% end %>
-          </td>
-          <td>
-            <%= select_tag :role,
-                           options_for_select(
-                             @roles.map { |role| [ Usage.role_label(role), role ] },
-                             usage.role
-                           ),
-                           include_blank: t("assets.common.select_prompt", locale: :ja),
-                           id: "usage_role_#{usage.id}",
-                           form: usage_update_form_id,
-                           aria: { label: t("assets.common.kind", locale: :ja) },
-                           class: "usage-role-select" %>
-            <%= submit_tag t("assets.common.update", locale: :ja),
-                           form: usage_update_form_id %>
-          </td>
+          <th class="border-b border-gray-200 px-3 py-2 text-left font-medium text-gray-600"><%= t("assets.common.session", locale: :ja) %></th>
+          <th class="border-b border-gray-200 px-3 py-2 text-left font-medium text-gray-600"><%= t("assets.common.scene", locale: :ja) %></th>
+          <th class="border-b border-gray-200 px-3 py-2 text-left font-medium text-gray-600"><%= t("assets.common.kind", locale: :ja) %></th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @where_used_usages.each do |usage| %>
+          <% usage_update_form_id = "usage_update_#{usage.id}" %>
+          <tr>
+            <td class="border-b border-gray-100 px-3 py-2 align-top">
+              <%= link_to usage.session.name,
+                          game_session_path(usage.session),
+                          class: "text-orange-700 hover:text-orange-800 hover:underline" %>
+            </td>
+            <td class="border-b border-gray-100 px-3 py-2 align-top">
+              <%= form_with url: usage_path(usage),
+                            method: :patch,
+                            html: { id: usage_update_form_id } do %>
+                <%= select_tag :scene_id,
+                               options_for_select(
+                                 usage.session.scenes.sort_by(&:position).map { |scene|
+                                   [ scene.name, scene.id ]
+                                 },
+                                 usage.scene_id
+                               ),
+                               include_blank: t("assets.common.select_prompt", locale: :ja),
+                               id: "usage_scene_id_#{usage.id}",
+                               aria: { label: t("assets.common.scene", locale: :ja) },
+                               class: "usage-scene-select block w-full min-w-44 rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+              <% end %>
+            </td>
+            <td class="border-b border-gray-100 px-3 py-2 align-top">
+              <div class="flex min-w-64 flex-wrap items-center gap-2">
+                <%= select_tag :role,
+                               options_for_select(
+                                 @roles.map { |role| [ Usage.role_label(role), role ] },
+                                 usage.role
+                               ),
+                               include_blank: t("assets.common.select_prompt", locale: :ja),
+                               id: "usage_role_#{usage.id}",
+                               form: usage_update_form_id,
+                               aria: { label: t("assets.common.kind", locale: :ja) },
+                               class: "usage-role-select block rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+                <%= submit_tag t("assets.common.update", locale: :ja),
+                               form: usage_update_form_id,
+                               class: "inline-flex items-center rounded-md bg-orange-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-orange-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% else %>
-  <p><%= t(".details_empty", locale: :ja) %></p>
-  <p><%= link_to t("assets.common.uncategorized_index", locale: :ja), uncategorized_assets_path %></p>
+  <div class="mb-6 rounded-md border border-gray-200 bg-white px-4 py-6 text-sm text-gray-600">
+    <p><%= t(".details_empty", locale: :ja) %></p>
+    <p class="mt-2">
+      <%= link_to t("assets.common.uncategorized_index", locale: :ja),
+                  uncategorized_assets_path,
+                  class: "text-orange-700 hover:text-orange-800 hover:underline" %>
+    </p>
+  </div>
 <% end %>
 
-<h2><%= t(".add_details_heading", locale: :ja) %></h2>
+<h2 class="mb-3 text-lg font-semibold text-gray-900"><%= t(".add_details_heading", locale: :ja) %></h2>
 
 <% if @sessions.any? %>
-  <%= form_with url: usages_path, method: :post, data: { controller: "scene-select" } do |form| %>
+  <%= form_with url: usages_path, method: :post, data: { controller: "scene-select" }, html: { class: "mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm" } do |form| %>
     <%= hidden_field_tag :asset_id, @asset.id %>
 
-    <p>
-      <%= form.label :session_id, t("assets.common.session", locale: :ja) %>
+    <div class="mb-4">
+      <%= form.label :session_id, t("assets.common.session", locale: :ja), class: "block text-sm font-medium text-gray-700" %>
       <%= form.select :session_id,
                       @sessions.map { |session| [ session.name, session.id ] },
                       { prompt: t("assets.common.select_prompt", locale: :ja) },
                       data: {
                         scene_select_target: "session",
                         action: "scene-select#update"
-                      } %>
-    </p>
+                      },
+                      class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+    </div>
 
-    <p>
-      <%= form.label :scene_id, t("assets.common.scene", locale: :ja) %>
+    <div class="mb-4">
+      <%= form.label :scene_id, t("assets.common.scene", locale: :ja), class: "block text-sm font-medium text-gray-700" %>
       <%= form.select :scene_id,
                       @sessions.flat_map { |session|
                         session.scenes.sort_by(&:position).map do |scene|
@@ -92,26 +119,35 @@
                         end
                       },
                       { prompt: t("assets.common.select_prompt", locale: :ja) },
-                      data: { scene_select_target: "scene" } %>
-    </p>
+                      data: { scene_select_target: "scene" },
+                      class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+    </div>
 
-    <p>
-      <%= form.label :role, t("assets.common.kind", locale: :ja) %>
+    <div class="mb-4">
+      <%= form.label :role, t("assets.common.kind", locale: :ja), class: "block text-sm font-medium text-gray-700" %>
       <%= form.select :role,
                       @roles.map { |role| [ Usage.role_label(role), role ] },
-                      prompt: t("assets.common.select_prompt", locale: :ja) %>
-    </p>
+                      { prompt: t("assets.common.select_prompt", locale: :ja) },
+                      class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
+    </div>
 
-    <%= form.submit t(".add_details_submit", locale: :ja) %>
+    <%= form.submit t(".add_details_submit", locale: :ja),
+                    class: "inline-flex items-center rounded-md bg-orange-700 px-4 py-2 text-sm font-medium text-white hover:bg-orange-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
   <% end %>
 <% else %>
-  <p><%= t(".add_details_without_sessions", locale: :ja) %></p>
+  <p class="mb-6 rounded-md border border-gray-200 bg-white px-4 py-6 text-sm text-gray-600"><%= t(".add_details_without_sessions", locale: :ja) %></p>
 <% end %>
 
-<p>
-  <%= link_to t("assets.common.edit", locale: :ja), edit_asset_path(@asset) %>
-  <%= link_to t("assets.common.back_to_index", locale: :ja), assets_path %>
+<div class="flex flex-wrap gap-3">
+  <%= link_to t("assets.common.edit", locale: :ja),
+              edit_asset_path(@asset),
+              class: "inline-flex items-center rounded-md bg-orange-700 px-4 py-2 text-sm font-medium text-white hover:bg-orange-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
+  <%= link_to t("assets.common.back_to_index", locale: :ja),
+              assets_path,
+              class: "inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
   <%= button_to t("assets.common.delete", locale: :ja), asset_path(@asset),
                 method: :delete,
-                data: { turbo_confirm: t("assets.common.delete_confirm", locale: :ja) } %>
-</p>
+                data: { turbo_confirm: t("assets.common.delete_confirm", locale: :ja) },
+                form: { class: "inline" },
+                class: "inline-flex items-center rounded-md border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2" %>
+</div>

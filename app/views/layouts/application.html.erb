@@ -16,21 +16,42 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-
-    <% if user_signed_in? %>
-      <%= button_to "ログアウト",
-                    destroy_user_session_path,
-                    method: :delete,
-                    form: { data: { turbo: true } } %>
-    <% else %>
-      <%= link_to "ログイン", new_user_session_path %>
-      <%= link_to "新規登録", new_user_registration_path %>
-    <% end %>
   </head>
 
-  <body class="min-h-screen bg-white text-slate-900">
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
+  <body class="min-h-screen bg-white text-gray-900">
+    <nav class="border-b border-gray-200 bg-white">
+      <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+        <%= link_to "Taku Vault", root_path, class: "text-lg font-semibold text-orange-700" %>
+
+        <div class="flex items-center gap-4 text-sm">
+          <% if user_signed_in? %>
+            <%= button_to "ログアウト",
+                          destroy_user_session_path,
+                          method: :delete,
+                          form: { data: { turbo: true }, class: "inline" },
+                          class: "cursor-pointer border-none bg-transparent p-0 text-gray-700 hover:text-orange-700" %>
+          <% else %>
+            <%= link_to "ログイン",
+                        new_user_session_path,
+                        class: "text-gray-700 hover:text-orange-700" %>
+            <%= link_to "新規登録",
+                        new_user_registration_path,
+                        class: "text-gray-700 hover:text-orange-700" %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+
+    <% main_width_class = controller_path == "sessions" && action_name == "show" ? "max-w-7xl" : "max-w-5xl" %>
+    <main class="mx-auto <%= main_width_class %> px-4 py-6">
+      <% if notice.present? %>
+        <p class="mb-4 rounded-md border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800"><%= notice %></p>
+      <% end %>
+      <% if alert.present? %>
+        <p class="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"><%= alert %></p>
+      <% end %>
+
+      <%= yield %>
+    </main>
   </body>
 </html>

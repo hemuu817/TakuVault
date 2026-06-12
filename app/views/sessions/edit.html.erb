@@ -1,5 +1,9 @@
-<h1>セッション編集</h1>
+<h1 class="mb-4 text-2xl font-semibold text-gray-900">セッション編集</h1>
 
 <%= render "form" %>
 
-<p><%= link_to "詳細へ戻る", game_session_path(@session) %></p>
+<p class="mt-6">
+  <%= link_to "詳細へ戻る",
+              game_session_path(@session),
+              class: "text-orange-700 hover:text-orange-800 hover:underline" %>
+</p>

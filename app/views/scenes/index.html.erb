@@ -1,25 +1,41 @@
-<h1>シーン一覧</h1>
+<h1 class="mb-4 text-2xl font-semibold text-gray-900">シーン一覧</h1>
 
-<p>
-  <%= link_to "シーンを追加", new_game_session_scene_path(@session) %>
-  <%= link_to "セッション詳細へ戻る", game_session_path(@session) %>
-</p>
+<div class="mb-6 flex flex-wrap gap-3">
+  <%= link_to "シーンを追加",
+              new_game_session_scene_path(@session),
+              class: "inline-flex items-center rounded-md bg-orange-700 px-4 py-2 text-sm font-medium text-white hover:bg-orange-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
+  <%= link_to "セッション詳細へ戻る",
+              game_session_path(@session),
+              class: "inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
+</div>
 
 <% if @scenes.any? %>
-  <ul>
+  <ul class="space-y-3">
     <% @scenes.each do |scene| %>
-      <li>
-        <%= scene.position %>.
-        <%= link_to scene.name, game_session_scene_path(@session, scene) %>
-        <%= link_to "編集", edit_game_session_scene_path(@session, scene) %>
+      <li class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <span class="text-sm text-gray-500"><%= scene.position %>.</span>
+            <%= link_to scene.name,
+                        game_session_scene_path(@session, scene),
+                        class: "font-medium text-orange-700 hover:text-orange-800 hover:underline" %>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <%= link_to "編集",
+                        edit_game_session_scene_path(@session, scene),
+                        class: "inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
         <% unless scene.default_scene? %>
           <%= button_to "削除", game_session_scene_path(@session, scene),
                         method: :delete,
-                        data: { turbo_confirm: "削除しますか？" } %>
+                        data: { turbo_confirm: "削除しますか？" },
+                        form: { class: "inline" },
+                        class: "inline-flex items-center rounded-md border border-red-300 bg-white px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2" %>
         <% end %>
+          </div>
+        </div>
       </li>
     <% end %>
   </ul>
 <% else %>
-  <p>シーンがありません。</p>
+  <p class="rounded-md border border-gray-200 bg-white px-4 py-6 text-sm text-gray-600">シーンがありません。</p>
 <% end %>
