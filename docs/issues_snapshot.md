@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-06-13T15:45:23Z_
+_Generated (UTC): 2026-06-14T15:47:08Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -54,5 +54,5 @@ _Generated (UTC): 2026-06-13T15:45:23Z_
 | 71 | (6)パスワードリセット機能 | OPEN | 2026-01-15T12:25:09Z | https://github.com/hemuu817/TakuVault/issues/71 | [local](issues/0071.md) |
 | 136 | (36)Session詳細：セッション素材一覧表示 | CLOSED | 2026-06-07T08:05:43Z | https://github.com/hemuu817/TakuVault/issues/136 | [local](issues/0136.md) |
 | 141 | (37)Tailwind CSS導入・ビルド基盤整備 | CLOSED | 2026-06-11T16:20:10Z | https://github.com/hemuu817/TakuVault/issues/141 | [local](issues/0141.md) |
-| 142 | (38)既存ERB画面のTailwind retrofit | OPEN | 2026-06-06T16:14:52Z | https://github.com/hemuu817/TakuVault/issues/142 | [local](issues/0142.md) |
+| 142 | (38)既存ERB画面のTailwind retrofit | CLOSED | 2026-06-14T10:26:52Z | https://github.com/hemuu817/TakuVault/issues/142 | [local](issues/0142.md) |
 | 147 | (39)Brakeman EOLRails警告を期限付きで抑制 | OPEN | 2026-06-12T10:11:01Z | https://github.com/hemuu817/TakuVault/issues/147 | [local](issues/0147.md) |
