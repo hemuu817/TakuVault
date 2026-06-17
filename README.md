@@ -87,7 +87,7 @@ MVPでは、アップロード時に以下の上限をサーバ側で判定し�
 
 
 ## 使用する技術スタック
-* 使用するフレームワーク: Ruby 3.x, Rails 7.x（フルスタック）
+* 使用するフレームワーク: Ruby 3.x, Rails 8.1.x（フルスタック）
 * データベース: PostgreSQL
 * デプロイ先: Render（Web / Worker）
 * ストレージ / ライブラリ: ActiveStorage, Cloudflare R2（S3互換）, Solid Queue
