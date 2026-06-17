@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-06-16T16:47:12Z_
+_Generated (UTC): 2026-06-17T09:28:32Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -55,4 +55,8 @@ _Generated (UTC): 2026-06-16T16:47:12Z_
 | 136 | (36)Session詳細：セッション素材一覧表示 | CLOSED | 2026-06-07T08:05:43Z | https://github.com/hemuu817/TakuVault/issues/136 | [local](issues/0136.md) |
 | 141 | (37)Tailwind CSS導入・ビルド基盤整備 | CLOSED | 2026-06-11T16:20:10Z | https://github.com/hemuu817/TakuVault/issues/141 | [local](issues/0141.md) |
 | 142 | (38)既存ERB画面のTailwind retrofit | CLOSED | 2026-06-14T10:26:52Z | https://github.com/hemuu817/TakuVault/issues/142 | [local](issues/0142.md) |
-| 147 | (39)Brakeman EOLRails警告を期限付きで抑制 | OPEN | 2026-06-12T10:11:01Z | https://github.com/hemuu817/TakuVault/issues/147 | [local](issues/0147.md) |
+| 147 | (39)Brakeman EOLRails警告を期限付きで抑制 | CLOSED | 2026-06-17T06:20:18Z | https://github.com/hemuu817/TakuVault/issues/147 | [local](issues/0147.md) |
+| 149 | Epic I: Rails最新版への移行 | OPEN | 2026-06-17T07:01:55Z | https://github.com/hemuu817/TakuVault/issues/149 | [local](issues/0149.md) |
+| 150 | (40)Rails 7.2.3 → Rails 8.0系 動作確認 | OPEN | 2026-06-17T09:03:01Z | https://github.com/hemuu817/TakuVault/issues/150 | [local](issues/0150.md) |
+| 151 | (41)Rails 8.0系 → Rails 8.1系 段階移行 | OPEN | 2026-06-17T09:03:14Z | https://github.com/hemuu817/TakuVault/issues/151 | [local](issues/0151.md) |
+| 152 | (42)Rails 8.x framework defaults 段階適用 | OPEN | 2026-06-17T09:03:24Z | https://github.com/hemuu817/TakuVault/issues/152 | [local](issues/0152.md) |
