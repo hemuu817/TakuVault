@@ -3,7 +3,19 @@
 TakuVault は MVPリリース済みである。
 
 MVPでは、Phase 0（Asset / R2永続化）と Phase 1（Session / Scene / Usage / Where used成立）を実装した。
-現在は、MVPで実装した機能を前提に、Post-MVP の改善・保守・アップグレードを行ってく予定。
+現在は、MVPで実装した機能を前提に、Post-MVP の改善・保守・アップグレードを行っていく。
+
+## 現在の進捗状態
+
+プロダクト状態として、TakuVault の MVPリリースは完了済みである。
+
+一方で、GitHub Issue単位の番号・State・本文は `automation/issue-snapshot` ブランチの
+`docs/issues_snapshot.md` / `docs/issues/*.md` を参照して確認する。
+
+snapshot が参照不能、または未更新の場合、Issue単位の状態は unknown として扱う。
+ただし、snapshot の未更新や参照不能を理由に、プロダクト状態を MVP未完了へ戻して解釈しない。
+
+以後の作業は、明示的に指定がない限り Post-MVP の改善・保守・アップグレードとして扱う。
 
 ## プロダクト前提
 - TRPG向けクラウド素材保管庫（VTT機能は作らない）
@@ -207,7 +219,11 @@ Z その他（MVP外候補）：0061, 0068〜0071
 - MVPスコープの正本: 本AGENTS.md（Phase 0/Phase 1/Deferred）
 - 受け入れ条件の正本: GitHub Issue 本文
 - 対応表（INDEX）の正本: `automation/issue-snapshot` ブランチの `docs/issues_snapshot.md`
-- 進捗（Done）の正本: `automation/issue-snapshot` ブランチの `docs/issues_snapshot.md` の State=CLOSED
+- プロダクト状態の正本: 本AGENTS.md（MVPリリース済み / 現在はPost-MVP）
+- Issue単位のState/番号/本文の正本: `automation/issue-snapshot` ブランチの `docs/issues_snapshot.md`
+- Issue単位のDone判定: `docs/issues_snapshot.md` の State=CLOSED
+- snapshot が参照不能または未更新の場合、Issue単位の状態は unknown として扱う。
+  ただし、snapshot の状態を根拠にプロダクト状態を MVP未完了へ戻して解釈しない。
 - 運用: `automation/issue-snapshot` ブランチの `docs/issues_snapshot.md` は毎日最新化する。最新化されていない場合は unknown 扱いとする（推測で前提変更しない）。
 - Issue を CLOSE してよい条件: main に反映済み（マージ済み）＋最低限の手動確認が通った場合のみ。
 
