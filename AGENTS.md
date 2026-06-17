@@ -1,17 +1,24 @@
 ## 目的
-MVPリリース条件を **Phase 0 完了 + Phase 1 完了** と定義する。
 
-- Phase 0（最優先）：「アップロードした素材をCloudflare R2へ永続保存できるアプリとして“動く”」を成立させる
-- Phase 1（次点）：docs/issues/0014.md → docs/issues/0015.md → docs/issues/0018.md → docs/issues/0021.md → docs/issues/0022.md → docs/issues/0136.md の順で、Session / Scene / Usage / Where used / セッション素材一覧 を実装し、続けて Tailwind CSS導入 → 既存ERB画面のretrofit でUIを整える
-- Phase 0のみ完了は “動作確認段階” とし、MVPリリースとは呼ばない（スコープ誤読防止）
+TakuVault は MVPリリース済みである。
+
+MVPでは、Phase 0（Asset / R2永続化）と Phase 1（Session / Scene / Usage / Where used成立）を実装した。
+現在は、MVPで実装した機能を前提に、Post-MVP の改善・保守・アップグレードを行ってく予定。
 
 ## プロダクト前提
 - TRPG向けクラウド素材保管庫（VTT機能は作らない）
 - コア価値：Where used（素材→セッション/シーン/役割の逆引き）
 - MVP：Cocofoliaのみ。room_urlは保存して参照/遷移（同期/API連携なし）
 
-## 技術スタック（固定）
-Ruby 3.x / Rails 7.x, PostgreSQL, Docker Compose, Render(Docker), ActiveStorage, Cloudflare R2
+## 技術スタック
+- Ruby 3.x
+- Rails 7.2.3（Post-MVPで Rails 8.1.x へ段階移行予定）
+- PostgreSQL
+- Docker Compose
+- Render(Docker)
+- ActiveStorage
+- Cloudflare R2
+- Solid Queue
 
 ## MVP必須（固定）
 - （共通）認証：Devise（MVPでは Recoverable を導入しない。passwords ルートは出さない）
