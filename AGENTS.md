@@ -24,7 +24,7 @@ snapshot が参照不能、または未更新の場合、Issue単位の状態は
 
 ## 技術スタック
 - Ruby 3.x
-- Rails 8.1.3（`config.load_defaults 7.2` を維持）
+- Rails 8.1.3（`config.load_defaults 8.1`）
 - PostgreSQL
 - Docker Compose
 - Render(Docker)
