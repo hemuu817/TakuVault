@@ -10,7 +10,7 @@ Accepted
 - GIFはサイズが小さくてもデコード負荷が高く、MVPでも運用事故要因になり得る。
 
 ## 前提（参照）
-- Direct Upload 不採用（サーバ経由 multipart 統一）は ADR-0012 を正本とする。
+- Direct Upload 不採用（サーバ経由 multipart 統一）は ADR-0015 を正本とする。
 
 
 ## 許可形式（MVP）
