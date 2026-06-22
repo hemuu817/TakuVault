@@ -1,7 +1,11 @@
-# 2) ADR-0012：ActiveStorage（R2）/ Solid Queue / Render運用の正本（Rails 7.2.3）
+# ADR-0012：ActiveStorage（R2）/ Solid Queue / Render運用の正本（Rails 7.2.3）
 
 ## ステータス
-Accepted
+Superseded
+
+> 本ADRの後継は ADR-0015（Rails 8.1.3 前提）。
+> Rails 8.1.3移行後の ActiveStorage（R2）/ Solid Queue / Render運用の正本は ADR-0015 を参照する。
+> 本ADRは Rails 7.2.3 前提の判断履歴として、本文を改変せず残す。
 
 ## 位置づけ（ADR-0005との関係）
 - ADR-0005 は「一般方針（DB-backed + worker 常時稼働）」の正本。
