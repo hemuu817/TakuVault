@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-06-21T15:47:26Z_
+_Generated (UTC): 2026-06-22T16:47:41Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -59,4 +59,4 @@ _Generated (UTC): 2026-06-21T15:47:26Z_
 | 149 | Epic I: Rails最新版への移行 | OPEN | 2026-06-17T07:01:55Z | https://github.com/hemuu817/TakuVault/issues/149 | [local](issues/0149.md) |
 | 150 | (40)Rails 7.2.3 → Rails 8.0系 動作確認 | CLOSED | 2026-06-17T13:45:44Z | https://github.com/hemuu817/TakuVault/issues/150 | [local](issues/0150.md) |
 | 151 | (41)Rails 8.0系 → Rails 8.1系 段階移行 | CLOSED | 2026-06-20T13:44:29Z | https://github.com/hemuu817/TakuVault/issues/151 | [local](issues/0151.md) |
-| 152 | (42)Rails 8.x framework defaults 段階適用 | OPEN | 2026-06-20T13:44:22Z | https://github.com/hemuu817/TakuVault/issues/152 | [local](issues/0152.md) |
+| 152 | (42)Rails 8.x framework defaults 段階適用 | CLOSED | 2026-06-21T17:32:50Z | https://github.com/hemuu817/TakuVault/issues/152 | [local](issues/0152.md) |
