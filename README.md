@@ -73,7 +73,8 @@ MVPでは、アップロード時に以下の上限をサーバ側で判定し�
 ### 参照（正本）
 * 容量・上限の定義と算定ルール：ADR-0013
 * 許可形式・判定方式・エラーハンドリング：ADR-0014
-* Direct Upload 不採用（サーバ経由 multipart 統一）：ADR-0012
+* Direct Upload 不採用（サーバ経由 multipart 統一）：ADR-0015
+* ストレージ・Solid Queue・Render 運用の判断経緯（Rails 7.2.3 時点）：ADR-0012（Superseded by ADR-0015）
 
 ### 本リリース以降
 * (その他のセッションツール対応は本リリース前に、ユドナリウム、TRPGスタジオ、Quoridorn を検討中)
