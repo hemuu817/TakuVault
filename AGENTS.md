@@ -24,7 +24,7 @@ snapshot が参照不能、または未更新の場合、Issue単位の状態は
 
 ## 技術スタック
 - Ruby 3.x
-- Rails 7.2.3（Post-MVPで Rails 8.1.x へ段階移行予定）
+- Rails 8.1.3（`config.load_defaults 8.1`）
 - PostgreSQL
 - Docker Compose
 - Render(Docker)
@@ -231,6 +231,5 @@ Z その他（MVP外候補）：0061, 0068〜0071
 #### Done 判定ルール（軽量運用）
 - Issue を CLOSE してよい条件は「main に反映済み（マージ済み）＋最低限の手動確認が通った」のみ。
 - OPEN は未完了と断定せず、unknown / in progress / blocked を内包する扱いとする（追加ログは要求しない）。
-
 
 
