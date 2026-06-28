@@ -1,6 +1,6 @@
 # ADR-0008：Session詳細「セッション素材一覧」表示仕様（MVP）
 
-Status: Accepted（MVP）
+Status: Superseded
 
 ## Context
 Session詳細は、当該セッション内で素材（Asset）が「どのシーン／どの用途」で使われているかを俯瞰する中心画面になる。
