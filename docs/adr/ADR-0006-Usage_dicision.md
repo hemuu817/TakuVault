@@ -21,6 +21,8 @@ TakuVaultのコア価値「Where used（素材→セッション/シーン/役�
 - 入力は `session / scene / role`
 - `role` は必須（推定しない。逃げ道として `other` は用意）
 - `scene` 候補は選択 `session` 配下のみ提示し、不整合をUIで予防する（サーバでもDBで拒否される）
+- Asset.kind は Usage.role の自動決定には使わない。
+  UI上の role 候補表示補助には使ってよいが、kind-role 不一致はサーバ側で拒否しない。
 
 ### D4-P. 重複の扱い：Primary（一括割当）
 - 重複判定は **(session_id, scene_id, role)** のコンテキスト単位で行う（asset単体では扱わない）
