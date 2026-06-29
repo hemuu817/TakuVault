@@ -4,7 +4,7 @@
 Accepted（MVP）
 
 ## Context
-TakuVaultのコア価値「Where used（素材→セッション/シーン/役割）」を成立させるため、Usage（asset + session + scene + role）の割当導線と、重複・不整合・所有権混在を含むエラー時挙動を固定する。  
+TakuVaultのコア価値「Where used（素材→セッション/シーン/役割）」を成立させるため、Usage（asset + session + scene + role）の割当導線と、重複・不整合・所有権混在を含むエラー時挙動を固定する。
 未整理（Usage0）からの割当は頻繁に行われるため、重複で全ロールバックして作業が止まるUXを避ける必要がある。
 
 ## Decision（決定事項）
@@ -14,13 +14,15 @@ TakuVaultのコア価値「Where used（素材→セッション/シーン/役�
 - Secondary：Asset詳細（Where used）で追加（保守導線）
 
 ### D2. 一括割当の単位
-- 一括割当は **同一の `session + scene + role`** を選択した複数Assetに適用して Usage を作成する  
+- 一括割当は **同一の `session + scene + role`** を選択した複数Assetに適用して Usage を作成する
 - `role` 単体の付与は行わない（Usage作成に読み替える）
 
 ### D3. 入力項目と制約
 - 入力は `session / scene / role`
 - `role` は必須（推定しない。逃げ道として `other` は用意）
 - `scene` 候補は選択 `session` 配下のみ提示し、不整合をUIで予防する（サーバでもDBで拒否される）
+- Asset.kind は Usage.role の自動決定には使わない。
+  UI上の role 候補表示補助には使ってよいが、kind-role 不一致はサーバ側で拒否しない。
 
 ### D4-P. 重複の扱い：Primary（一括割当）
 - 重複判定は **(session_id, scene_id, role)** のコンテキスト単位で行う（asset単体では扱わない）

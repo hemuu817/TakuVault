@@ -13,24 +13,30 @@ Accepted
 - Direct Upload 不採用（サーバ経由 multipart 統一）は ADR-0015 を正本とする。
 
 
-## 許可形式（MVP）
+## 許可形式
 
 ### 画像（許可）
 - Content-Type（候補）：`image/png`, `image/jpeg`, `image/webp`
 - 拡張子：`.png .jpg .jpeg .webp`
 
-### 画像（不許可：MVP）
-- `image/gif` / `.gif`（運用事故リスク低減のためMVPでは除外）
+### 画像（不許可）
+- `image/gif` / `.gif`（運用事故リスク低減のためMVP時点では除外）
 
-### 音声（許可）
-- Content-Type（候補）：`audio/mpeg`, `audio/mp3`, `audio/wav`, `audio/x-wav`, `audio/ogg`, `application/ogg`
-- 拡張子：`.mp3 .wav .ogg`
-
-### 不許可（MVP）
+### 不許可
 - 動画：`video/*`（例：mp4/webm 等）
 - アーカイブ：zip/rar/7z
 - 実行形式：exe/dmg/pkg/bat/sh 等
 - 文書：pdf/docx 等（必要になったら別Issue）
+
+### 音声（許可）
+- Content-Type（候補）：`audio/mpeg`, `audio/mp3`, `audio/wav`, `audio/x-wav`
+- 拡張子：`.mp3 .wav`
+
+ ### 不許可
+ - 動画：`video/*`（例：mp4/webm 等）
+ - アーカイブ：zip/rar/7z
+ - 実行形式：exe/dmg/pkg/bat/sh 等
+ - 文書：pdf/docx 等（必要になったら別Issue）
 
 ## 判定方針（正本：サーバ側推定）
 - Content-Type は **クライアント申告を信用しない**。
