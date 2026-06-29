@@ -4,7 +4,7 @@
 Accepted（MVP）
 
 ## Context
-TakuVaultのコア価値「Where used（素材→セッション/シーン/役割）」を成立させるため、Usage（asset + session + scene + role）の割当導線と、重複・不整合・所有権混在を含むエラー時挙動を固定する。  
+TakuVaultのコア価値「Where used（素材→セッション/シーン/役割）」を成立させるため、Usage（asset + session + scene + role）の割当導線と、重複・不整合・所有権混在を含むエラー時挙動を固定する。
 未整理（Usage0）からの割当は頻繁に行われるため、重複で全ロールバックして作業が止まるUXを避ける必要がある。
 
 ## Decision（決定事項）
@@ -14,7 +14,7 @@ TakuVaultのコア価値「Where used（素材→セッション/シーン/役�
 - Secondary：Asset詳細（Where used）で追加（保守導線）
 
 ### D2. 一括割当の単位
-- 一括割当は **同一の `session + scene + role`** を選択した複数Assetに適用して Usage を作成する  
+- 一括割当は **同一の `session + scene + role`** を選択した複数Assetに適用して Usage を作成する
 - `role` 単体の付与は行わない（Usage作成に読み替える）
 
 ### D3. 入力項目と制約

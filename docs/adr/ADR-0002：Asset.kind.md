@@ -1,10 +1,10 @@
 # ADR-0002：Asset.kind（content_type 自動判定・手動変更なし）
 
 ## Status
-Accepted（MVP）
+superseded
 
 ## Context
-TakuVaultでは Asset 一覧の絞り込み、未整理導線、検索（Epic E）で「素材種別」を安定して扱う必要がある。  
+TakuVaultでは Asset 一覧の絞り込み、未整理導線、検索（Epic E）で「素材種別」を安定して扱う必要がある。
 MVPではユーザーの手動選択や推定ロジックを入れず、添付ファイルから機械的に分類して `assets.kind` に永続化する。
 
 ## Decision
@@ -30,7 +30,7 @@ MVPではユーザーの手動選択や推定ロジックを入れず、添付�
 - 上記以外 → `other`
 
 ### D5. content_type の信頼境界（固定）
-- 判定の入力は **ActiveStorage Blob が保持する `content_type`** を唯一の根拠とする  
+- 判定の入力は **ActiveStorage Blob が保持する `content_type`** を唯一の根拠とする
   - リクエストパラメータ由来の `kind` / `content_type` は信頼しない
 - `content_type` が不明/曖昧（例：`application/octet-stream`、空）な場合は **`other`** に分類する（MVPでは許容）
 
@@ -44,7 +44,7 @@ MVPではユーザーの手動選択や推定ロジックを入れず、添付�
   - ファイルを変更したい場合は **新規Assetとして作成**する
 
 ### D8. 依存関係（順序の注意）
-- アップロード安全性（許可Content-Type/拡張子/サイズ上限）は別仕様（Epic D/X）で担保する  
+- アップロード安全性（許可Content-Type/拡張子/サイズ上限）は別仕様（Epic D/X）で担保する
   - kindは「分類」であり「拒否」の責務を持たない
   - ただし実装順としては、許可/拒否の導入と近いタイミングで適用するのが望ましい（挙動の一時的ズレを避ける）
 
