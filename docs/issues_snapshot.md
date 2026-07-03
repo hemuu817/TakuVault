@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-07-02T15:54:55Z_
+_Generated (UTC): 2026-07-03T07:02:13Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -23,7 +23,7 @@ _Generated (UTC): 2026-07-02T15:54:55Z_
 | 17 | (12) データモデル確定(ER/制約/Index) | CLOSED | 2026-01-15T12:31:29Z | https://github.com/hemuu817/TakuVault/issues/17 | [local](issues/0017.md) |
 | 18 | (13) Usage割当ルール決定(spike) | CLOSED | 2026-05-29T06:53:17Z | https://github.com/hemuu817/TakuVault/issues/18 | [local](issues/0018.md) |
 | 19 | (14) Asset CRUD(ActiveStorage) | CLOSED | 2026-01-19T21:35:06Z | https://github.com/hemuu817/TakuVault/issues/19 | [local](issues/0019.md) |
-| 20 | (15) Asset kind | OPEN | 2026-07-02T04:41:55Z | https://github.com/hemuu817/TakuVault/issues/20 | [local](issues/0020.md) |
+| 20 | (15) Asset kind | OPEN | 2026-07-03T06:59:47Z | https://github.com/hemuu817/TakuVault/issues/20 | [local](issues/0020.md) |
 | 21 | (16) Usage作成 | CLOSED | 2026-05-30T16:37:14Z | https://github.com/hemuu817/TakuVault/issues/21 | [local](issues/0021.md) |
 | 22 | (17) Asset詳細Where used | CLOSED | 2026-06-05T17:53:02Z | https://github.com/hemuu817/TakuVault/issues/22 | [local](issues/0022.md) |
 | 23 | (18) 素材一覧とセッション一覧の統合(spike) | OPEN | 2026-06-06T16:16:24Z | https://github.com/hemuu817/TakuVault/issues/23 | [local](issues/0023.md) |
