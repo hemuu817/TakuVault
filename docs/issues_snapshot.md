@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-07-03T15:48:08Z_
+_Generated (UTC): 2026-07-04T06:13:19Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -61,3 +61,4 @@ _Generated (UTC): 2026-07-03T15:48:08Z_
 | 151 | (41)Rails 8.0系 → Rails 8.1系 段階移行 | CLOSED | 2026-06-20T13:44:29Z | https://github.com/hemuu817/TakuVault/issues/151 | [local](issues/0151.md) |
 | 152 | (42)Rails 8.x framework defaults 段階適用 | CLOSED | 2026-06-21T17:32:50Z | https://github.com/hemuu817/TakuVault/issues/152 | [local](issues/0152.md) |
 | 163 | (43)Usage.role絞り込み + 表示順並び替え | OPEN | 2026-07-03T11:36:16Z | https://github.com/hemuu817/TakuVault/issues/163 | [local](issues/0163.md) |
+| 164 | (44)Usage.role拡張 + 用途表示順固定化 | OPEN | 2026-07-04T06:11:53Z | https://github.com/hemuu817/TakuVault/issues/164 | [local](issues/0164.md) |
