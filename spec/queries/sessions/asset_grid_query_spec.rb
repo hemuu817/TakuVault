@@ -15,12 +15,15 @@ RSpec.describe Sessions::AssetGridQuery do
                                    role: :background, created_at: timestamp, updated_at: timestamp)
       second_usage = create(:usage, asset: second_asset, session: session, scene: scene2,
                                     role: :background, created_at: timestamp, updated_at: timestamp)
+      standing_usage = create(:usage, asset: create(:asset, user: user), session: session, scene: scene2,
+                                      role: :standing)
 
       result = described_class.new(session: session).call
 
       expect(result.scenes).to eq([ scene1, scene2, scene3 ])
-      expect(result.roles).to eq(%w[background cutin bgm other])
+      expect(result.roles).to eq(Usage::DISPLAY_ROLE_ORDER)
       expect(result.usages_for(scene2, "background")).to eq([ first_usage, second_usage ])
+      expect(result.usages_for(scene2, "standing")).to eq([ standing_usage ])
       expect(result.usages_for(scene2, "cutin")).to eq([])
     end
 

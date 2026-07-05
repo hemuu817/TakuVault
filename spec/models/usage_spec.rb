@@ -1,6 +1,46 @@
 require "rails_helper"
 
 RSpec.describe Usage, type: :model do
+  describe ".roles" do
+    it "既存roleの整数値を維持したまま追加roleを末尾に追加している" do
+      expect(Usage.roles).to eq(
+        "background" => 0,
+        "cutin" => 1,
+        "bgm" => 2,
+        "other" => 3,
+        "standing" => 4,
+        "panel" => 5,
+        "sound_effect" => 6
+      )
+    end
+  end
+
+  describe "DISPLAY_ROLE_ORDER" do
+    it "セッション素材一覧の固定表示順と一致している" do
+      expect(Usage::DISPLAY_ROLE_ORDER).to eq(%w[
+        background
+        standing
+        cutin
+        panel
+        bgm
+        sound_effect
+        other
+      ])
+    end
+
+    it "enumと完全に同じroleを含んでいる" do
+      expect(Usage::DISPLAY_ROLE_ORDER).to match_array(Usage.roles.keys)
+    end
+  end
+
+  it "DBで許可された追加roleをすべて保存できる" do
+    %w[standing panel sound_effect].each do |role|
+      usage = create(:usage, role: role)
+
+      expect(usage.reload.role).to eq(role)
+    end
+  end
+
   it "enforces allowed role values at the database level" do
     usage = create(:usage)
 
