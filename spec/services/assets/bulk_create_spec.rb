@@ -25,6 +25,7 @@ RSpec.describe Assets::BulkCreate do
     asset = Asset.last
     expect(asset.display_name).to eq("valid.png")
     expect(asset.original_filename).to eq("valid.png")
+    expect(asset).to be_image
   end
 
   it "形式不正なら何も作成されない" do
