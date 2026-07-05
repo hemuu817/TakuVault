@@ -5,6 +5,12 @@ class Asset < ApplicationRecord
 
   attr_readonly :original_filename
 
+  enum :kind, {
+    other: 0,
+    image: 1,
+    audio: 2
+  }
+
   validates :display_name, presence: true
   validates :original_filename, presence: true
   validate :file_presence
@@ -12,11 +18,18 @@ class Asset < ApplicationRecord
   validate :file_content_type_and_extension, if: -> { file.attached? }
 
   before_validation :set_display_name, if: -> { display_name.blank? && original_filename.present? }
+  before_validation :assign_kind, on: :create
 
   private
 
   def set_display_name
     self.display_name = original_filename
+  end
+
+  def assign_kind
+    return unless file.attached?
+
+    self.kind = Assets::KindClassifier.call(file.blob.content_type)
   end
 
   def file_presence
