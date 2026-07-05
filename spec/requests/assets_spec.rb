@@ -13,6 +13,22 @@ RSpec.describe "Assets", type: :request do
     )
   end
 
+  def build_spoofed_png_upload
+    Rack::Test::UploadedFile.new(
+      Rails.root.join("spec/fixtures/files/valid.png"),
+      "audio/mpeg",
+      original_filename: "spoofed.png"
+    )
+  end
+
+  def build_invalid_png_upload
+    Rack::Test::UploadedFile.new(
+      Rails.root.join("spec/fixtures/files/fake.png"),
+      "image/png",
+      original_filename: "fake.png"
+    )
+  end
+
   def create_asset_for(owner, filename: "owned.png")
     asset = Asset.new(
       user: owner,
@@ -127,6 +143,49 @@ RSpec.describe "Assets", type: :request do
 
       expect(response).to have_http_status(:unprocessable_entity)
     end
+
+    it "ignores submitted kind and stores the blob-derived kind" do
+      login_via_http!(user)
+
+      post assets_path, params: {
+        asset: {
+          files: [ build_uploaded_file("tamper.png") ],
+          kind: "audio"
+        }
+      }
+
+      expect(response).to redirect_to(new_asset_path)
+      expect(Asset.last).to be_image
+    end
+
+    it "送信されたcontent_typeではなくサーバ側で確定したBlob content_typeからkindを保存する" do
+      login_via_http!(user)
+
+      post assets_path, params: {
+        asset: {
+          files: [ build_spoofed_png_upload ]
+        }
+      }
+
+      asset = Asset.last
+      expect(response).to redirect_to(new_asset_path)
+      expect(asset.file.blob.content_type).to eq("image/png")
+      expect(asset).to be_image
+    end
+
+    it "形式不正ファイルをotherとして保存しない" do
+      login_via_http!(user)
+
+      expect do
+        post assets_path, params: {
+          asset: {
+            files: [ build_invalid_png_upload ]
+          }
+        }
+      end.not_to change(Asset, :count)
+
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
   end
 
   describe "GET /assets/:id/edit" do
@@ -156,6 +215,18 @@ RSpec.describe "Assets", type: :request do
 
       expect(response).to redirect_to(asset_path(asset))
       expect(asset.reload.display_name).to eq("keep_name.png")
+    end
+
+    it "ignores submitted kind when updating display_name" do
+      asset = create_asset_for(user, filename: "keep_kind.png")
+      expect(asset).to be_image
+
+      login_via_http!(user)
+      patch asset_path(asset), params: { asset: { display_name: "renamed", kind: "audio" } }
+
+      expect(response).to redirect_to(asset_path(asset))
+      expect(asset.reload.display_name).to eq("renamed")
+      expect(asset).to be_image
     end
 
     it "returns 404 when updating someone else's asset" do

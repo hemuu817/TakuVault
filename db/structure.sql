@@ -134,7 +134,9 @@ CREATE TABLE public.assets (
     display_name character varying NOT NULL,
     original_filename character varying NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    kind integer DEFAULT 0 NOT NULL,
+    CONSTRAINT assets_kind_allowed_values CHECK ((kind = ANY (ARRAY[0, 1, 2])))
 );
 
 
@@ -1371,6 +1373,7 @@ ALTER TABLE ONLY public.usages
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260705000000'),
 ('20260530141000'),
 ('20260530135000'),
 ('20260524080431'),
