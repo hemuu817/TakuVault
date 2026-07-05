@@ -19,6 +19,49 @@ RSpec.describe Usages::CreateService do
     expect(result.usage).to be_persisted
   end
 
+  it "追加roleでusageを作成できる" do
+    result = described_class.call(
+      user: user,
+      asset_id: asset.id,
+      session_id: session_record.id,
+      scene_id: scene.id,
+      role: "panel"
+    )
+
+    expect(result).to be_success
+    expect(result.usage.reload.role).to eq("panel")
+  end
+
+  it "role未選択なら422を返す" do
+    result = described_class.call(
+      user: user,
+      asset_id: asset.id,
+      session_id: session_record.id,
+      scene_id: scene.id,
+      role: ""
+    )
+
+    expect(result).not_to be_success
+    expect(result.error).to eq(:invalid_role)
+    expect(result.status).to eq(:unprocessable_entity)
+    expect(Usage.count).to eq(0)
+  end
+
+  it "不正なroleなら422を返す" do
+    result = described_class.call(
+      user: user,
+      asset_id: asset.id,
+      session_id: session_record.id,
+      scene_id: scene.id,
+      role: "invalid"
+    )
+
+    expect(result).not_to be_success
+    expect(result.error).to eq(:invalid_role)
+    expect(result.status).to eq(:unprocessable_entity)
+    expect(Usage.count).to eq(0)
+  end
+
   it "returns 422 for a duplicate usage" do
     described_class.call(
       user: user,
