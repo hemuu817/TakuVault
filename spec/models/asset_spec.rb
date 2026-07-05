@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe Asset, type: :model do
   let(:valid_file_path) { Rails.root.join("spec/fixtures/files/valid.png") }
+  let(:user) { create(:user) }
 
   it "display_name が空なら original_filename を採用する" do
     asset = build(:asset, original_filename: "sample.png", display_name: "")
@@ -56,5 +57,46 @@ RSpec.describe Asset, type: :model do
 
     expect(asset).not_to be_valid
     expect(asset.errors[:file]).not_to be_empty
+  end
+
+  it "DB default は other である" do
+    kind_column = described_class.columns.find { |column| column.name == "kind" }
+
+    expect(kind_column.default).to eq(0)
+    expect(kind_column.null).to be(false)
+  end
+
+  it "DB制約で kind NULL は拒否される" do
+    now = Time.current
+
+    expect do
+      described_class.insert_all!([
+        {
+          user_id: user.id,
+          display_name: "null-kind.png",
+          original_filename: "null-kind.png",
+          kind: nil,
+          created_at: now,
+          updated_at: now
+        }
+      ])
+    end.to raise_error(ActiveRecord::NotNullViolation)
+  end
+
+  it "DB制約で未定義の kind は拒否される" do
+    now = Time.current
+
+    expect do
+      described_class.insert_all!([
+        {
+          user_id: user.id,
+          display_name: "video-kind.png",
+          original_filename: "video-kind.png",
+          kind: 3,
+          created_at: now,
+          updated_at: now
+        }
+      ])
+    end.to raise_error(ActiveRecord::StatementInvalid)
   end
 end
