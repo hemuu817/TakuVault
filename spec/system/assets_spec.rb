@@ -84,19 +84,20 @@ RSpec.describe "Assets", type: :system do
       "scene3"
     )
     expect(first_role_select.find("option[selected]").text).to eq("背景")
-    expect(first_role_select.all("option").map(&:text)).to eq([ "選択してください", "背景", "カットイン", "BGM", "その他" ])
+    expect(first_role_select.all("option").map(&:text)).to eq([ "選択してください", "背景", "立ち絵", "カットイン", "装飾パネル", "BGM", "効果音", "その他" ])
 
     first_scene_select.select("scene3")
-    first_role_select.select("その他")
+    first_role_select.select("効果音")
     expect(first_scene_select.value).to eq(alpha_scene_3.id.to_s)
-    expect(first_role_select.value).to eq("other")
+    expect(first_role_select.value).to eq("sound_effect")
     click_button "更新", match: :first
 
     expect(page).to have_current_path(asset_path(asset), ignore_query: true)
     expect(page).to have_content("詳細を更新しました。")
     expect(background_usage.reload.session).to eq(alpha_session)
     expect(background_usage.scene).to eq(alpha_scene_3)
-    expect(background_usage.role).to eq("other")
+    expect(background_usage.role).to eq("sound_effect")
+    expect(page).to have_content("効果音")
 
     updated_row = find(:xpath, "//select[@id='usage_scene_id_#{background_usage.id}']/ancestor::tr")
     updated_row.click_link("Aセッション")
@@ -104,6 +105,33 @@ RSpec.describe "Assets", type: :system do
 
     expect(page).to have_content("セッション詳細")
     expect(page).to have_content("Aセッション")
+  end
+
+  it "素材詳細の追加フォームで追加roleを選択してWhere usedへ表示できる" do
+    asset = create(:asset, user: user, original_filename: "new_where_used.png", display_name: "new_where_used.png")
+    session_record = create(:session, user: user, name: "追加先セッション")
+    scene = session_record.scenes.find_by!(position: Scene::DEFAULT_POSITION)
+
+    log_in(user)
+    visit asset_path(asset)
+
+    add_form = find(:xpath, "//input[@name='asset_id' and @value='#{asset.id}']/ancestor::form")
+    within(add_form) do
+      role_select = find("select[name='role']")
+      expect(role_select.all("option").map(&:text)).to eq([ "選択してください", "背景", "立ち絵", "カットイン", "装飾パネル", "BGM", "効果音", "その他" ])
+
+      find("select[name='session_id']").select("追加先セッション")
+      find("select[name='scene_id']").select("追加先セッション / #{scene.name}")
+      role_select.select("装飾パネル")
+      click_button "詳細を追加"
+    end
+
+    expect(page).to have_current_path(asset_path(asset), ignore_query: true)
+    expect(page).to have_content("詳細を追加しました。")
+    expect(page).to have_link("追加先セッション", href: game_session_path(session_record))
+    expect(page).to have_content(scene.name)
+    expect(page).to have_content("装飾パネル")
+    expect(asset.usages.reload.map(&:role)).to eq([ "panel" ])
   end
 
   it "素材詳細で使用先がない場合は未整理状態と未整理一覧への導線を表示する" do
