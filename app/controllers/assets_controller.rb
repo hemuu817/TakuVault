@@ -14,7 +14,7 @@ class AssetsController < ApplicationController
       .with_attached_file
       .order(created_at: :desc)
     @sessions = policy_scope(Session).includes(:scenes).order(created_at: :desc)
-    @roles = Usage.roles.keys
+    @roles = Usage::DISPLAY_ROLE_ORDER
   end
 
   def show
@@ -22,7 +22,7 @@ class AssetsController < ApplicationController
     authorize(@asset)
     @where_used_usages = @asset.usages.for_where_used(current_user)
     @sessions = policy_scope(Session).includes(:scenes).order(created_at: :desc)
-    @roles = Usage.roles.keys
+    @roles = Usage::DISPLAY_ROLE_ORDER
   end
 
   def new

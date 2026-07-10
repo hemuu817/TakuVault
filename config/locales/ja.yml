@@ -4,8 +4,11 @@ ja:
       usage:
         roles:
           background: "背景"
+          standing: "立ち絵"
           cutin: "カットイン"
+          panel: "装飾パネル"
           bgm: "BGM"
+          sound_effect: "効果音"
           other: "その他"
   assets:
     common:

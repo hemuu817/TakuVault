@@ -12,7 +12,7 @@ module Sessions
 
     def call
       scenes = session.scenes.order(:position).to_a
-      roles = Usage.roles.keys
+      roles = Usage::DISPLAY_ROLE_ORDER
       usages = session.usages
         .joins(:asset)
         .includes(asset: { file_attachment: :blob })

@@ -100,11 +100,17 @@ RSpec.describe "Sessions", type: :system do
     scene2 = create(:scene, session: session_record, name: "追加シーン", position: 2)
     image_asset = create(:asset, user: user, display_name: "画像素材.png")
     audio_asset = create_audio_asset(user: user, display_name: "音声素材.mp3")
+    standing_asset = create(:asset, user: user, display_name: "立ち絵素材.png")
+    panel_asset = create(:asset, user: user, display_name: "装飾パネル素材.png")
+    sound_effect_asset = create_audio_asset(user: user, display_name: "効果音素材.mp3")
     other_user = create(:user, email: "grid-other@example.com")
     hidden_asset = create(:asset, user: other_user, display_name: "他人素材.png")
 
     create(:usage, asset: image_asset, session: session_record, scene: scene2, role: :background)
     create(:usage, asset: audio_asset, session: session_record, scene: scene2, role: :bgm)
+    create(:usage, asset: standing_asset, session: session_record, scene: scene2, role: :standing)
+    create(:usage, asset: panel_asset, session: session_record, scene: scene2, role: :panel)
+    create(:usage, asset: sound_effect_asset, session: session_record, scene: scene2, role: :sound_effect)
     create(:usage, asset: hidden_asset, session: session_record, scene: scene2, role: :cutin)
 
     login(user)
@@ -112,8 +118,11 @@ RSpec.describe "Sessions", type: :system do
 
     expect(page).to have_css("h2", exact_text: "セッション素材一覧")
     expect(page).to have_css("th", text: "背景")
+    expect(page).to have_css("th", text: "立ち絵")
     expect(page).to have_css("th", text: "カットイン")
+    expect(page).to have_css("th", text: "装飾パネル")
     expect(page).to have_css("th", text: "BGM")
+    expect(page).to have_css("th", text: "効果音")
     expect(page).to have_css("th", text: "その他")
 
     scene1_row = find(:xpath, "//tr[th[normalize-space()='#{scene1.name}']]")
@@ -125,9 +134,13 @@ RSpec.describe "Sessions", type: :system do
     scene2_row = find(:xpath, "//tr[th[normalize-space()='追加シーン']]")
     within(scene2_row) do
       expect(page).to have_link("画像素材.png", href: asset_path(image_asset))
+      expect(page).to have_link("立ち絵素材.png", href: asset_path(standing_asset))
+      expect(page).to have_link("装飾パネル素材.png", href: asset_path(panel_asset))
       expect(page).to have_link("音声素材.mp3", href: asset_path(audio_asset))
+      expect(page).to have_link("効果音素材.mp3", href: asset_path(sound_effect_asset))
       expect(page).to have_css("img[alt='画像素材.png']")
       expect(page).to have_css("img[alt='音声素材.mp3'][src*='audio-placeholder']")
+      expect(page).to have_css("img[alt='効果音素材.mp3'][src*='audio-placeholder']")
       expect(page).not_to have_content("他人素材.png")
       expect(page).not_to have_css("audio")
     end

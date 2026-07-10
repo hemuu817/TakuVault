@@ -6,7 +6,7 @@ RSpec.describe "Usages", type: :request do
   let(:scene) { session_record.scenes.find_by!(position: Scene::DEFAULT_POSITION) }
 
   before do
-    sign_in user
+    sign_in user, scope: :user
   end
 
   describe "POST /usages" do
@@ -25,6 +25,21 @@ RSpec.describe "Usages", type: :request do
       expect(Usage.count).to eq(2)
     end
 
+    it "一括作成で追加roleのusageを作成できる" do
+      assets = create_list(:asset, 2, user: user)
+
+      post usages_path, params: {
+        usage_mode: "bulk",
+        asset_ids: assets.map(&:id),
+        session_id: session_record.id,
+        scene_id: scene.id,
+        role: "standing"
+      }
+
+      expect(response).to redirect_to(uncategorized_assets_path)
+      expect(Usage.pluck(:role)).to contain_exactly("standing", "standing")
+    end
+
     it "creates one usage from an asset detail form" do
       asset = create(:asset, user: user)
 
@@ -37,6 +52,35 @@ RSpec.describe "Usages", type: :request do
 
       expect(response).to redirect_to(asset_path(asset))
       expect(Usage.count).to eq(1)
+    end
+
+    it "素材詳細フォームから追加roleのusageを作成できる" do
+      asset = create(:asset, user: user)
+
+      post usages_path, params: {
+        asset_id: asset.id,
+        session_id: session_record.id,
+        scene_id: scene.id,
+        role: "panel"
+      }
+
+      expect(response).to redirect_to(asset_path(asset))
+      expect(Usage.last.role).to eq("panel")
+    end
+
+    it "素材詳細フォームでrole未選択なら422を返す" do
+      asset = create(:asset, user: user)
+
+      post usages_path, params: {
+        asset_id: asset.id,
+        session_id: session_record.id,
+        scene_id: scene.id,
+        role: ""
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include("種類が不正です。")
+      expect(Usage.count).to eq(0)
     end
 
     it "returns 422 for a duplicate secondary creation" do
@@ -82,6 +126,22 @@ RSpec.describe "Usages", type: :request do
       expect(response.body).to include("素材を選択してください。")
       expect(Usage.count).to eq(0)
     end
+
+    it "一括作成でrole未選択なら422を返す" do
+      asset = create(:asset, user: user)
+
+      post usages_path, params: {
+        usage_mode: "bulk",
+        asset_ids: [ asset.id ],
+        session_id: session_record.id,
+        scene_id: scene.id,
+        role: ""
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response.body).to include("種類が不正です。")
+      expect(Usage.count).to eq(0)
+    end
   end
 
   describe "PATCH /usages/:id" do
@@ -99,6 +159,33 @@ RSpec.describe "Usages", type: :request do
       expect(usage.reload.session).to eq(session_record)
       expect(usage.scene).to eq(target_scene)
       expect(usage.role).to eq("bgm")
+    end
+
+    it "usageを追加roleへ更新できる" do
+      %w[standing panel sound_effect].each do |role|
+        usage = create(:usage, asset: create(:asset, user: user), session: session_record, scene: scene, role: :background)
+
+        patch usage_path(usage), params: {
+          scene_id: scene.id,
+          role: role
+        }
+
+        expect(response).to redirect_to(asset_path(usage.asset))
+        expect(usage.reload.role).to eq(role)
+      end
+    end
+
+    it "不正なroleへの更新なら422を返す" do
+      asset = create(:asset, user: user)
+      usage = create(:usage, asset: asset, session: session_record, scene: scene, role: :background)
+
+      patch usage_path(usage), params: {
+        scene_id: scene.id,
+        role: "invalid"
+      }
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(usage.reload.role).to eq("background")
     end
 
     it "fails closed when the selected scene belongs to another session" do
@@ -169,6 +256,9 @@ RSpec.describe "Usages", type: :request do
       expect(response.body).to include(other_scene.name)
       expect(response.body).to include("種類")
       expect(response.body).to include("背景")
+      expect(response.body).to include("立ち絵")
+      expect(response.body).to include("装飾パネル")
+      expect(response.body).to include("効果音")
       expect(response.body).to include("詳細を一括作成")
       expect(response.body).not_to include("Usage")
     end

@@ -7,8 +7,13 @@ class Usage < ApplicationRecord
     background: 0,
     cutin: 1,
     bgm: 2,
-    other: 3
+    other: 3,
+    standing: 4,
+    panel: 5,
+    sound_effect: 6
   }
+
+  DISPLAY_ROLE_ORDER = %w[background standing cutin panel bgm sound_effect other].freeze
 
   scope :for_where_used, ->(user) {
     eager_load(:session, :scene)

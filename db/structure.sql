@@ -616,7 +616,7 @@ CREATE TABLE public.usages (
     role integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    CONSTRAINT usages_role_allowed_values CHECK ((role = ANY (ARRAY[0, 1, 2, 3])))
+    CONSTRAINT usages_role_allowed_values CHECK ((role = ANY (ARRAY[0, 1, 2, 3, 4, 5, 6])))
 );
 
 
@@ -1373,6 +1373,7 @@ ALTER TABLE ONLY public.usages
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260706000000'),
 ('20260705000000'),
 ('20260530141000'),
 ('20260530135000'),

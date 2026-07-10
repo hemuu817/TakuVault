@@ -22,6 +22,38 @@ RSpec.describe Usages::BulkCreateService do
     expect(Usage.count).to eq(2)
   end
 
+  it "追加roleでusageを一括作成できる" do
+    assets = create_list(:asset, 2, user: user)
+
+    result = described_class.call(
+      user: user,
+      asset_ids: assets.map(&:id),
+      session_id: session_record.id,
+      scene_id: scene.id,
+      role: "standing"
+    )
+
+    expect(result).to be_success
+    expect(Usage.where(role: :standing).count).to eq(2)
+  end
+
+  it "role未選択なら一括作成を422で拒否する" do
+    asset = create(:asset, user: user)
+
+    result = described_class.call(
+      user: user,
+      asset_ids: [ asset.id ],
+      session_id: session_record.id,
+      scene_id: scene.id,
+      role: ""
+    )
+
+    expect(result).not_to be_success
+    expect(result.error).to eq(:invalid_role)
+    expect(result.status).to eq(:unprocessable_entity)
+    expect(Usage.count).to eq(0)
+  end
+
   it "skips duplicate usages idempotently" do
     assets = create_list(:asset, 2, user: user)
     described_class.call(
