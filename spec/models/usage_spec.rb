@@ -33,6 +33,18 @@ RSpec.describe Usage, type: :model do
     end
   end
 
+  describe "ROLE_KIND_CANDIDATES" do
+    it "表示対象の全roleに候補kindを定義している" do
+      expect(Usage::ROLE_KIND_CANDIDATES.keys).to match_array(Usage::DISPLAY_ROLE_ORDER)
+    end
+
+    it "Assetで許可されたkindのみを候補にしている" do
+      candidate_kinds = Usage::ROLE_KIND_CANDIDATES.values.flatten.uniq
+
+      expect(candidate_kinds).to match_array(Asset.kinds.keys)
+    end
+  end
+
   it "DBで許可された追加roleをすべて保存できる" do
     %w[standing panel sound_effect].each do |role|
       usage = create(:usage, role: role)
