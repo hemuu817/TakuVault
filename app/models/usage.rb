@@ -15,6 +15,16 @@ class Usage < ApplicationRecord
 
   DISPLAY_ROLE_ORDER = %w[background standing cutin panel bgm sound_effect other].freeze
 
+  ROLE_KIND_CANDIDATES = {
+    "background" => %w[image],
+    "standing" => %w[image],
+    "cutin" => %w[image],
+    "panel" => %w[image],
+    "bgm" => %w[audio],
+    "sound_effect" => %w[audio],
+    "other" => %w[image audio other]
+  }.transform_values(&:freeze).freeze
+
   scope :for_where_used, ->(user) {
     eager_load(:session, :scene)
       .where(sessions: { user_id: user.id })
