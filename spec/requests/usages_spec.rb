@@ -40,6 +40,38 @@ RSpec.describe "Usages", type: :request do
       expect(Usage.pluck(:role)).to contain_exactly("standing", "standing")
     end
 
+    it "異なるkindのAssetを混在させても一括作成できる" do
+      image_asset = create(:asset, user: user)
+      audio_asset = create(:asset, user: user)
+      audio_asset.update_columns(kind: Asset.kinds.fetch("audio"))
+
+      post usages_path, params: {
+        usage_mode: "bulk",
+        asset_ids: [ image_asset.id, audio_asset.id ],
+        session_id: session_record.id,
+        scene_id: scene.id,
+        role: "other"
+      }
+
+      expect(response).to redirect_to(uncategorized_assets_path)
+      expect(Usage.where(asset: [ image_asset, audio_asset ]).pluck(:role)).to contain_exactly("other", "other")
+    end
+
+    it "kindと一致しないroleでも一括作成できる" do
+      image_asset = create(:asset, user: user)
+
+      post usages_path, params: {
+        usage_mode: "bulk",
+        asset_ids: [ image_asset.id ],
+        session_id: session_record.id,
+        scene_id: scene.id,
+        role: "bgm"
+      }
+
+      expect(response).to redirect_to(uncategorized_assets_path)
+      expect(Usage.find_by!(asset: image_asset).role).to eq("bgm")
+    end
+
     it "creates one usage from an asset detail form" do
       asset = create(:asset, user: user)
 
@@ -238,8 +270,35 @@ RSpec.describe "Usages", type: :request do
   end
 
   describe "GET /assets/uncategorized" do
+    it "kind順と同一kind内の作成日時・id降順で表示する" do
+      base_time = Time.zone.parse("2026-07-16 12:00:00")
+      image_old = create(:asset, user: user, display_name: "image-old")
+      image_new_low_id = create(:asset, user: user, display_name: "image-new-low-id")
+      image_new_high_id = create(:asset, user: user, display_name: "image-new-high-id")
+      audio = create(:asset, user: user, display_name: "audio")
+      other = create(:asset, user: user, display_name: "other")
+
+      image_old.update_columns(kind: Asset.kinds.fetch("image"), created_at: base_time)
+      image_new_low_id.update_columns(kind: Asset.kinds.fetch("image"), created_at: base_time + 1.hour)
+      image_new_high_id.update_columns(kind: Asset.kinds.fetch("image"), created_at: base_time + 1.hour)
+      audio.update_columns(kind: Asset.kinds.fetch("audio"), created_at: base_time + 2.hours)
+      other.update_columns(kind: Asset.kinds.fetch("other"), created_at: base_time + 3.hours)
+
+      post user_session_path, params: { user: { email: user.email, password: "password" } }
+      get uncategorized_assets_path
+
+      asset_ids = response.body.scan(/data-asset-id="(\d+)"/).flatten.map(&:to_i)
+      expect(asset_ids).to eq([
+        image_new_high_id.id,
+        image_new_low_id.id,
+        image_old.id,
+        audio.id,
+        other.id
+      ])
+    end
+
     it "renders session-scoped scene select wiring" do
-      create(:asset, user: user)
+      asset = create(:asset, user: user)
       session_record
       other_session = create(:session, user: user)
       other_scene = other_session.scenes.find_by!(position: Scene::DEFAULT_POSITION)
@@ -248,9 +307,15 @@ RSpec.describe "Usages", type: :request do
       get uncategorized_assets_path
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include('data-controller="scene-select"')
+      expect(response.body).to include('data-controller="scene-select uncategorized-kind"')
       expect(response.body).to include('data-scene-select-target="session"')
       expect(response.body).to include('data-scene-select-target="scene"')
+      expect(response.body).to include('data-uncategorized-kind-target="list"')
+      expect(response.body).to include('data-uncategorized-kind-target="row"')
+      expect(response.body).to include('data-uncategorized-kind-target="checkbox"')
+      expect(response.body).to include('data-action="uncategorized-kind#selectionChanged"')
+      expect(response.body).to include('data-asset-kind="image"')
+      expect(response.body).to include("data-asset-id=\"#{asset.id}\"")
       expect(response.body).to include("data-session-id=\"#{session_record.id}\"")
       expect(response.body).to include("data-session-id=\"#{other_session.id}\"")
       expect(response.body).to include(other_scene.name)
@@ -261,6 +326,28 @@ RSpec.describe "Usages", type: :request do
       expect(response.body).to include("効果音")
       expect(response.body).to include("詳細を一括作成")
       expect(response.body).not_to include("Usage")
+    end
+
+    it "role optionへ候補kindを出力する" do
+      create(:asset, user: user)
+
+      post user_session_path, params: { user: { email: user.email, password: "password" } }
+      get uncategorized_assets_path
+
+      document = Capybara.string(response.body)
+      options = document.all("option[data-candidate-kinds]").to_h do |option|
+        [ option["value"], option["data-candidate-kinds"] ]
+      end
+
+      expect(options).to include(
+        "background" => "image",
+        "standing" => "image",
+        "cutin" => "image",
+        "panel" => "image",
+        "bgm" => "audio",
+        "sound_effect" => "audio",
+        "other" => "image audio other"
+      )
     end
   end
 end

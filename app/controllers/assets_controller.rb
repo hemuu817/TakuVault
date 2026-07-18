@@ -12,7 +12,8 @@ class AssetsController < ApplicationController
       .left_outer_joins(:usages)
       .where(usages: { id: nil })
       .with_attached_file
-      .order(created_at: :desc)
+      .in_order_of(:kind, %w[image audio other])
+      .order(assets: { created_at: :desc, id: :desc })
     @sessions = policy_scope(Session).includes(:scenes).order(created_at: :desc)
     @roles = Usage::DISPLAY_ROLE_ORDER
   end

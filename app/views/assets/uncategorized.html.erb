@@ -10,7 +10,10 @@
 </div>
 
 <% if @assets.any? %>
-  <%= form_with url: usages_path, method: :post, data: { controller: "scene-select" }, html: { class: "space-y-6" } do |form| %>
+  <%= form_with url: usages_path,
+                method: :post,
+                data: { controller: "scene-select uncategorized-kind" },
+                html: { class: "space-y-6" } do |form| %>
     <%= hidden_field_tag :usage_mode, "bulk" %>
 
     <fieldset class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
@@ -44,17 +47,35 @@
       <div>
         <%= form.label :role, t("assets.common.kind", locale: :ja), class: "block text-sm font-medium text-gray-700" %>
         <%= form.select :role,
-                        @roles.map { |role| [ Usage.role_label(role), role ] },
+                        @roles.map { |role|
+                          [
+                            Usage.role_label(role),
+                            role,
+                            { data: { candidate_kinds: Usage::ROLE_KIND_CANDIDATES.fetch(role).join(" ") } }
+                          ]
+                        },
                         { prompt: t("assets.common.select_prompt", locale: :ja) },
+                        data: { uncategorized_kind_target: "roleSelect" },
                         class: "mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:border-orange-600 focus:outline-hidden focus:ring-2 focus:ring-orange-600" %>
       </div>
     </fieldset>
 
-    <ul class="grid gap-3 sm:grid-cols-2">
+    <ul class="grid gap-3 sm:grid-cols-2" data-uncategorized-kind-target="list">
       <% @assets.each do |asset| %>
-        <li class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+        <li class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+            data-uncategorized-kind-target="row"
+            data-asset-kind="<%= asset.kind %>"
+            data-asset-id="<%= asset.id %>">
           <div class="flex items-start gap-3">
-            <%= check_box_tag "asset_ids[]", asset.id, false, id: "asset_ids_#{asset.id}", class: "mt-1 h-4 w-4 rounded border-gray-300 text-orange-700 focus:ring-orange-600" %>
+            <%= check_box_tag "asset_ids[]",
+                              asset.id,
+                              false,
+                              id: "asset_ids_#{asset.id}",
+                              class: "mt-1 h-4 w-4 rounded border-gray-300 text-orange-700 focus:ring-orange-600",
+                              data: {
+                                uncategorized_kind_target: "checkbox",
+                                action: "uncategorized-kind#selectionChanged"
+                              } %>
           <%= label_tag "asset_ids_#{asset.id}",
                         t(".asset_option",
                           locale: :ja,

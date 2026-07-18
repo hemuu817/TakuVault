@@ -67,4 +67,6 @@ Rails.application.configure do
 
   # HostAuthorization: request spec のデフォルト host を許可
   config.hosts << "www.example.com"
+  # JavaScript system spec のCapybara test serverを許可
+  config.hosts << "localhost"
 end
