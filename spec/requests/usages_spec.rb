@@ -40,6 +40,38 @@ RSpec.describe "Usages", type: :request do
       expect(Usage.pluck(:role)).to contain_exactly("standing", "standing")
     end
 
+    it "異なるkindのAssetを混在させても一括作成できる" do
+      image_asset = create(:asset, user: user)
+      audio_asset = create(:asset, user: user)
+      audio_asset.update_columns(kind: Asset.kinds.fetch("audio"))
+
+      post usages_path, params: {
+        usage_mode: "bulk",
+        asset_ids: [ image_asset.id, audio_asset.id ],
+        session_id: session_record.id,
+        scene_id: scene.id,
+        role: "other"
+      }
+
+      expect(response).to redirect_to(uncategorized_assets_path)
+      expect(Usage.where(asset: [ image_asset, audio_asset ]).pluck(:role)).to contain_exactly("other", "other")
+    end
+
+    it "kindと一致しないroleでも一括作成できる" do
+      image_asset = create(:asset, user: user)
+
+      post usages_path, params: {
+        usage_mode: "bulk",
+        asset_ids: [ image_asset.id ],
+        session_id: session_record.id,
+        scene_id: scene.id,
+        role: "bgm"
+      }
+
+      expect(response).to redirect_to(uncategorized_assets_path)
+      expect(Usage.find_by!(asset: image_asset).role).to eq("bgm")
+    end
+
     it "creates one usage from an asset detail form" do
       asset = create(:asset, user: user)
 
