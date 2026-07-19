@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-07-18T15:30:10Z_
+_Generated (UTC): 2026-07-19T15:31:50Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -26,7 +26,7 @@ _Generated (UTC): 2026-07-18T15:30:10Z_
 | 20 | (15) Asset kind | CLOSED | 2026-07-05T08:59:44Z | https://github.com/hemuu817/TakuVault/issues/20 | [local](issues/0020.md) |
 | 21 | (16) Usage作成 | CLOSED | 2026-05-30T16:37:14Z | https://github.com/hemuu817/TakuVault/issues/21 | [local](issues/0021.md) |
 | 22 | (17) Asset詳細Where used | CLOSED | 2026-06-05T17:53:02Z | https://github.com/hemuu817/TakuVault/issues/22 | [local](issues/0022.md) |
-| 23 | (18) 素材一覧とセッション一覧の統合(spike) | OPEN | 2026-06-06T16:16:24Z | https://github.com/hemuu817/TakuVault/issues/23 | [local](issues/0023.md) |
+| 23 | (18) 素材一覧とセッション一覧の統合 | OPEN | 2026-07-19T08:18:41Z | https://github.com/hemuu817/TakuVault/issues/23 | [local](issues/0023.md) |
 | 24 | (19) Asset削除整合性 | CLOSED | 2026-06-01T13:07:54Z | https://github.com/hemuu817/TakuVault/issues/24 | [local](issues/0024.md) |
 | 25 | Epic H: Docs | CLOSED | 2026-01-10T08:58:08Z | https://github.com/hemuu817/TakuVault/issues/25 | [local](issues/0025.md) |
 | 26 | (32) README価値提案+MVP宣言 | CLOSED | 2026-01-15T12:41:05Z | https://github.com/hemuu817/TakuVault/issues/26 | [local](issues/0026.md) |
@@ -56,9 +56,9 @@ _Generated (UTC): 2026-07-18T15:30:10Z_
 | 141 | (37)Tailwind CSS導入・ビルド基盤整備 | CLOSED | 2026-06-11T16:20:10Z | https://github.com/hemuu817/TakuVault/issues/141 | [local](issues/0141.md) |
 | 142 | (38)既存ERB画面のTailwind retrofit | CLOSED | 2026-06-14T10:26:52Z | https://github.com/hemuu817/TakuVault/issues/142 | [local](issues/0142.md) |
 | 147 | (39)Brakeman EOLRails警告を期限付きで抑制 | CLOSED | 2026-06-17T06:20:18Z | https://github.com/hemuu817/TakuVault/issues/147 | [local](issues/0147.md) |
-| 149 | Epic I: Rails最新版への移行 | OPEN | 2026-06-17T07:01:55Z | https://github.com/hemuu817/TakuVault/issues/149 | [local](issues/0149.md) |
+| 149 | Epic I: Rails最新版への移行 | CLOSED | 2026-07-19T08:17:59Z | https://github.com/hemuu817/TakuVault/issues/149 | [local](issues/0149.md) |
 | 150 | (40)Rails 7.2.3 → Rails 8.0系 動作確認 | CLOSED | 2026-06-17T13:45:44Z | https://github.com/hemuu817/TakuVault/issues/150 | [local](issues/0150.md) |
 | 151 | (41)Rails 8.0系 → Rails 8.1系 段階移行 | CLOSED | 2026-06-20T13:44:29Z | https://github.com/hemuu817/TakuVault/issues/151 | [local](issues/0151.md) |
 | 152 | (42)Rails 8.x framework defaults 段階適用 | CLOSED | 2026-06-21T17:32:50Z | https://github.com/hemuu817/TakuVault/issues/152 | [local](issues/0152.md) |
-| 163 | (43)未整理（Usage0）一括割当の kind 連動UI補助 | OPEN | 2026-07-16T09:14:27Z | https://github.com/hemuu817/TakuVault/issues/163 | [local](issues/0163.md) |
+| 163 | (43)未整理（Usage0）一括割当の kind 連動UI補助 | CLOSED | 2026-07-19T08:16:57Z | https://github.com/hemuu817/TakuVault/issues/163 | [local](issues/0163.md) |
 | 164 | (44)Usage.role拡張 + 用途表示順固定化 | CLOSED | 2026-07-10T05:31:56Z | https://github.com/hemuu817/TakuVault/issues/164 | [local](issues/0164.md) |
