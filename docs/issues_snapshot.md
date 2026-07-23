@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-07-22T15:45:26Z_
+_Generated (UTC): 2026-07-23T15:48:02Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -26,7 +26,7 @@ _Generated (UTC): 2026-07-22T15:45:26Z_
 | 20 | (15) Asset kind | CLOSED | 2026-07-05T08:59:44Z | https://github.com/hemuu817/TakuVault/issues/20 | [local](issues/0020.md) |
 | 21 | (16) Usage作成 | CLOSED | 2026-05-30T16:37:14Z | https://github.com/hemuu817/TakuVault/issues/21 | [local](issues/0021.md) |
 | 22 | (17) Asset詳細Where used | CLOSED | 2026-06-05T17:53:02Z | https://github.com/hemuu817/TakuVault/issues/22 | [local](issues/0022.md) |
-| 23 | (18) 素材一覧とセッション一覧の統合 | OPEN | 2026-07-21T00:46:37Z | https://github.com/hemuu817/TakuVault/issues/23 | [local](issues/0023.md) |
+| 23 | (18) 素材一覧とセッション一覧の統合 | OPEN | 2026-07-23T04:51:49Z | https://github.com/hemuu817/TakuVault/issues/23 | [local](issues/0023.md) |
 | 24 | (19) Asset削除整合性 | CLOSED | 2026-06-01T13:07:54Z | https://github.com/hemuu817/TakuVault/issues/24 | [local](issues/0024.md) |
 | 25 | Epic H: Docs | CLOSED | 2026-01-10T08:58:08Z | https://github.com/hemuu817/TakuVault/issues/25 | [local](issues/0025.md) |
 | 26 | (32) README価値提案+MVP宣言 | CLOSED | 2026-01-15T12:41:05Z | https://github.com/hemuu817/TakuVault/issues/26 | [local](issues/0026.md) |
