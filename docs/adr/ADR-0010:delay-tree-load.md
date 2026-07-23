@@ -1,6 +1,6 @@
 # ADR-0010：Where used ツリー遅延ロード契約（Session/Scene/Usage）
 
-Status: Proposed
+Status: Superseded
 
 ## Context
 統合画面（#23）と絞り込み（#29）は、Where used ツリーの遅延ロードに関する共通契約（入力/出力/認可/再取得/空状態）を共有する。
@@ -82,3 +82,4 @@ Status: Proposed
 - ADR-0006：Usage割当ルール（D8にcreateのルーティング方針を記載）
 - ADR-0001：default_scene
 - ADR-0002：Asset.kind
+- ADR-0018：素材一覧・Session管理統合画面の表示・状態遷移・遅延ロード契約
