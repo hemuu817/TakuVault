@@ -5,7 +5,7 @@
 - 実装・設定の正本は ADR-0012 とする。
 - 環境呼称と実行モードの正本は ADR-0011 とする。
 - 受け入れ条件（AC/DoD）の正本は GitHub Issue 本文とする。
-- 進捗（Done / CLOSED）の正本は `docs/issues_snapshot.md` とする。
+- 進捗（Done / CLOSED）は、[GitHub Issues](https://github.com/hemuu817/TakuVault/issues) 上の対応IssueのStateを確認する。
 - 本runbookは実装ルールを追加しない。ADR / Issue に従って追随更新する。
 
 ## 対象
@@ -26,15 +26,15 @@
 - Redis + Sidekiq への移行
 - 容量/形式/413/422 の仕様本体
 - 削除整合の仕様本体
-- Epic G（docs/issues/0036.md〜0040.md）の変換機能
+- [GitHub Issue #36（Epic G）](https://github.com/hemuu817/TakuVault/issues/36) および配下Issue #37〜#40の変換機能
   - ここで扱う `variant(transform)` は ActiveStorage の派生処理であり、Epic G の変換機能とは別物
 
 ## 参照正本
 - ADR-0011: 環境の呼称・分離方針（単一環境 preview）
 - ADR-0012: ActiveStorage（R2）/ Solid Queue / Render運用の正本
 - ADR-0005: job基盤の一般方針と最小検証手順
-- GitHub #24 / docs/issues/0024.md: Asset削除整合性
-- GitHub #35 / docs/issues/0035.md: 容量/ファイル上限方針
+- [GitHub Issue #24](https://github.com/hemuu817/TakuVault/issues/24): Asset削除整合性
+- [GitHub Issue #35](https://github.com/hemuu817/TakuVault/issues/35): 容量/ファイル上限方針
 - README.md
 
 ## 事前前提チェック
@@ -77,7 +77,7 @@
 1. Asset を削除する
 2. 画面上で参照不能になることを確認する
 3. `purge_later` が完走していることをログで確認する
-4. 削除整合の詳細確認は GitHub #24 / docs/issues/0024.md の観点に従う
+4. 削除整合の詳細確認は [GitHub Issue #24](https://github.com/hemuu817/TakuVault/issues/24) の観点に従う
    - R2 上の実体削除確認
    - ActiveStorage（Blob / Attachment）非残骸化確認
 
@@ -103,7 +103,7 @@
 - Worker が停止していないか
 - queue の滞留がないか
 - `purge_later` 実行ログが出ているか
-- GitHub #24 / docs/issues/0024.md で定義した削除フローと実装がずれていないか
+- [GitHub Issue #24](https://github.com/hemuu817/TakuVault/issues/24) で定義した削除フローと実装がずれていないか
 
 ### 症状: 解析や派生生成が進まない
 確認点:
