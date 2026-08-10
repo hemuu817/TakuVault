@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-08-09T15:42:50Z_
+_Generated (UTC): 2026-08-10T07:32:43Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -35,7 +35,7 @@ _Generated (UTC): 2026-08-09T15:42:50Z_
 | 29 | (22) 絞り込み（kind/role/session） | OPEN | 2026-01-15T12:36:25Z | https://github.com/hemuu817/TakuVault/issues/29 | [local](issues/0029.md) |
 | 30 | (23) 未整理の素材ビュー | CLOSED | 2026-07-30T00:33:34Z | https://github.com/hemuu817/TakuVault/issues/30 | [local](issues/0030.md) |
 | 31 | Epic F : タグ機能 | OPEN | 2026-01-12T09:40:08Z | https://github.com/hemuu817/TakuVault/issues/31 | [local](issues/0031.md) |
-| 32 | (24) タグ付け（Tag + AssetTag） | OPEN | 2026-07-30T09:37:30Z | https://github.com/hemuu817/TakuVault/issues/32 | [local](issues/0032.md) |
+| 32 | (24) タグ付け（Tag + AssetTag） | OPEN | 2026-08-10T07:26:43Z | https://github.com/hemuu817/TakuVault/issues/32 | [local](issues/0032.md) |
 | 33 | Epic X : クラウド保管 | OPEN | 2026-01-12T11:44:11Z | https://github.com/hemuu817/TakuVault/issues/33 | [local](issues/0033.md) |
 | 34 | (26) 本番ストレージ構成（ActiveStorage + Cloudflare R2） | CLOSED | 2026-05-19T11:28:54Z | https://github.com/hemuu817/TakuVault/issues/34 | [local](issues/0034.md) |
 | 35 | (27) 容量/ファイル上限方針 | CLOSED | 2026-03-10T07:26:05Z | https://github.com/hemuu817/TakuVault/issues/35 | [local](issues/0035.md) |
