@@ -94,10 +94,18 @@ AssetTagは、少なくとも次の関係を保持する。
 
 `asset_tags.user_id`はAssetTag独自の所有権の正本ではなく、AssetとTagの所有者一致をDBで保証するための整合性キーとする。
 
+`asset_tags.asset_id`、`asset_tags.tag_id`および`asset_tags.user_id`は必須とし、
+DBの`NOT NULL`制約で保証する。
+
+特に`asset_tags.user_id`が`NULL`の場合、PostgreSQLの複合外部キーにおける
+デフォルトの`MATCH SIMPLE`動作によって所有者一致の検査を回避できるため、
+アプリケーションのvalidationだけに依存せず、DBで`NULL`を拒否する
+
 DBでは、次の関係を保証する。
 
 - `asset_tags`のAssetとUserが、実在する同一のAsset所有関係に対応する
 - `asset_tags`のTagとUserが、実在する同一のTag所有関係に対応する
+- `asset_tags.user_id`の、複合外部キーのNULLによる検査回避の不正を防止できる
 - 同一AssetとTagの関連は最大1件とする
 
 これにより、最終的に次の一致を保証する。
