@@ -1,8 +1,8 @@
-ADR-0019：Session一覧・Session詳細統合画面の表示・状態遷移・取得契約
+# ADR-0019：Session一覧・Session詳細統合画面の表示・状態遷移・取得契約
 
 Status: Accepted
 
-Context
+## Context
 
 TakuVaultでは、Assetを起点に素材を探す操作と、Sessionを起点にScene・Usage・使用素材を確認する操作では、必要とされる閲覧軸が異なる。
 
@@ -12,9 +12,9 @@ ADR-0018では、素材一覧を主画面としてSession管理を同一画面�
 
 そのため、本ADRはADR-0018を置き換え、素材一覧とSession画面を独立した主要画面として維持しながら、Session一覧とSession詳細を統合する画面構成、URL、状態遷移、更新境界、取得境界および認可境界を正本化する。
 
-Decision
+## Decision
 
-D1. 素材一覧とSession画面の責務
+### D1. 素材一覧とSession画面の責務
 
 - 素材一覧は、Assetを起点として素材を確認・管理する独立した主要画面として維持する。
 - Session画面は、Sessionを起点としてSession、Scene、Usageおよび使用素材を確認・管理する独立した主要画面として維持する。
@@ -25,7 +25,7 @@ D1. 素材一覧とSession画面の責務
 - root routeは、独立した素材一覧を指す状態を維持する。
 - 新しいdashboard専用画面およびdashboard専用routeは作成しない。
 
-D2. Session一覧とSession詳細の統合
+### D2. Session一覧とSession詳細の統合
 
 - Session画面は、Session一覧とSession詳細を同一画面内へ統合する。
 - 統合画面は、概念的に以下の二つの領域で構成する。
@@ -37,7 +37,7 @@ D2. Session一覧とSession詳細の統合
 - 狭い画面では配置方法を変更してよいが、Sessionの選択・管理および選択Sessionの詳細確認という責務は失わない。
 - Session詳細だけを表示し、Session一覧を含まない別の主要画面は作成しない。
 
-D3. URLと選択中Sessionの正本
+### D3. URLと選択中Sessionの正本
 
 - `/sessions`は、Session未選択状態の統合画面を表す。
 - `/sessions/:id`は、対象Sessionが選択された状態の統合画面を表す。
@@ -48,7 +48,7 @@ D3. URLと選択中Sessionの正本
 - URLと画面上の選択状態が一致しない場合は、URLを優先する。
 - Sessionが存在していても、`/sessions`へのアクセス時に先頭Sessionを自動選択しない。
 
-D4. Session切替とブラウザ履歴
+### D4. Session切替とブラウザ履歴
 
 - 統合画面内でSessionの切替を開始した時点では、現在のURL、Session一覧上の選択表示およびSession詳細を維持する。
 - Session切替が成功した時点で、URL、Session一覧上の選択表示およびSession詳細を、対象Sessionの状態へまとめて更新する。
@@ -59,7 +59,7 @@ D4. Session切替とブラウザ履歴
 - ブラウザバックは、統合画面へ遷移する前の画面へ戻る操作として扱う。
 - URL更新に使用する具体的なブラウザAPIまたはTurboの機構は、本ADRでは固定しない。
 
-D5. Session未選択状態、Sessionなし状態および不正なSession
+### D5. Session未選択状態、Sessionなし状態および不正なSession
 
 - `/sessions`では、Session一覧・管理領域を表示し、Session詳細領域は未選択状態として表示する。
 - Sessionが0件の場合は、Sessionが存在しないこととSession作成への導線を表示する。
@@ -67,7 +67,7 @@ D5. Session未選択状態、Sessionなし状態および不正なSession
 - 存在しないSession、削除済みSessionまたは他ユーザーが所有するSessionを指定した場合は、404相当とする。
 - 不正なSession IDを、Session未選択状態へ暗黙に読み替えない。
 
-D6. Session件数増加への対応
+### D6. Session件数増加への対応
 
 - 特定のSession件数だけを前提とする画面構造には固定しない。
 - 初期のSession上限が少数であっても、将来最大30件程度までSessionを選択できる構造を妨げない。
@@ -76,7 +76,7 @@ D6. Session件数増加への対応
 - Session件数増加に対応する検索、ページネーションまたは仮想表示は、本ADRでは固定しない。
 - プラン別上限、課金、上限到達時の作成制御およびプランダウン時の扱いは、本ADRの対象外とする。
 
-D7. Session切替時の更新境界
+### D7. Session切替時の更新境界
 
 - Session切替時の更新単位は、Session一覧・管理領域と選択Sessionの詳細領域を含むSession領域全体とする。
 - Session切替の成功時は、以下を同じ選択状態として整合させる。
@@ -89,7 +89,7 @@ D7. Session切替時の更新境界
 - 選択Sessionの詳細領域だけを更新し、URLまたはSession一覧上の選択表示と不一致になる状態を許容しない。
 - 更新に使用する具体的な部分更新機構は、本ADRでは固定しない。
 
-D8. Session切替中、通信失敗および競合時の状態
+### D8. Session切替中、通信失敗および競合時の状態
 
 - Session切替が成功するまでは、直前に正常表示されたSessionのURL、選択表示および詳細を維持する。
 - Session切替中であることを画面上で識別できる状態にする。
@@ -101,7 +101,7 @@ D8. Session切替中、通信失敗および競合時の状態
 - 最後に選択されたSessionより前に開始された応答は、完了順にかかわらず画面へ反映しない。
 - 古い応答を破棄する具体的な方法は、本ADRでは固定しない。
 
-D9. Session一覧・管理領域と選択Sessionの詳細領域
+### D9. Session一覧・管理領域と選択Sessionの詳細領域
 
 Session一覧・管理領域
 
@@ -130,7 +130,7 @@ Session一覧・管理領域
 - 選択Sessionの詳細表示は、Session一覧と組み合わせて再利用できる表示責務へ分離する。
 - 具体的なビュー分割方法は、本ADRでは固定しない。
 
-D10. Scene、UsageおよびAssetの取得境界
+### D10. Scene、UsageおよびAssetの取得境界
 
 - Session切替時は、選択された一つのSessionの詳細だけを取得する。
 - 統合画面の初期表示またはSession切替時に、全Session配下のScene、UsageおよびAssetを一括取得しない。
@@ -144,7 +144,7 @@ D10. Scene、UsageおよびAssetの取得境界
 - 他ユーザーが所有するAssetを表示対象に含めない。
 - 具体的な関連取得方法は、本ADRでは固定しない。
 
-D11. Session CRUD後の状態
+### D11. Session CRUD後の状態
 
 Session作成後
 
@@ -177,7 +177,7 @@ Session削除失敗時
 - 削除に失敗したことを表示する。
 - 削除導線の表示有無を認可の根拠にしない。
 
-D12. Scene CRUD後の状態
+### D12. Scene CRUD後の状態
 
 - Scene作成・編集・削除後は、親Sessionの`/sessions/:id`へ遷移する。
 - Scene CRUD後も、親Sessionの選択状態を維持する。
@@ -187,7 +187,7 @@ D12. Scene CRUD後の状態
 - Scene CRUD後は、Scene一覧とセッション素材一覧を既存の表示順に従って再構築する。
 - default_sceneの削除不可およびposition不変条件は、ADR-0001を正本とする。
 
-D13. Turboキャッシュと画面復元
+### D13. Turboキャッシュと画面復元
 
 - Turboキャッシュから復元した場合も、URLとSession一覧上の選択状態を一致させる。
 - `/sessions`では、Session未選択状態を復元する。
@@ -197,7 +197,7 @@ D13. Turboキャッシュと画面復元
 - loading中または通信失敗中の一時状態を、正常な表示状態としてキャッシュに残さない。
 - 削除済みSessionまたは削除済みSceneの表示を、正常な状態として復元しない。
 
-D14. 認可境界
+### D14. 認可境界
 
 - Session、Scene、UsageおよびAssetの所有権と認可境界は、ADR-0007を正本とする。
 - Session一覧と選択Sessionは、ADR-0007に従い、認可されたSessionの範囲から取得する。
@@ -207,14 +207,14 @@ D14. 認可境界
 - 所有権の伝播、混在禁止および取得起点は、ADR-0007を正本とする。
 - Assetの参照URLは認可済みAssetからのみ生成し、その生成制約はADR-0014を正本とする。
 
-D15. 大量Sceneの扱い
+### D15. 大量Sceneの扱い
 
 - 本ADRでは、Session配下に作成できるScene件数のハード上限を追加しない。
 - Scene件数にかかわらず、全件一括描画の性能を保証する契約は設けない。
 - 大量Sceneへのpagination、仮想表示、Scene単位の遅延ロードまたは作成件数制限は、別の設計判断およびIssueで扱う。
 - 本ADRでは、選択Sessionだけを取得対象とする境界、既存の表示順および関連件数に比例する追加問い合わせの防止を維持する。
 
-D16. 旧ADRの扱い
+### D16. 旧ADRの扱い
 
 - 本ADRはADR-0018を置き換える。
 - 本ADRがAcceptedになった場合、ADR-0018のStatusをSupersededへ変更し、本ADRへの参照を追記する。
@@ -228,7 +228,7 @@ D16. 旧ADRの扱い
     - Session切替開始時に直前Sessionの詳細を未取得状態へ置き換える契約
 - 検索、絞り込みおよびソートは、本ADRの対象外とする。
 
-Consequences
+## Consequences
 
 - 素材一覧とSession統合画面を異なる閲覧軸として分離できるため、それぞれの画面責務が明確になる。
 - root routeは素材一覧を指す状態を維持するため、既存の素材一覧への主要導線を変更せずにSession統合画面を追加できる。
@@ -249,11 +249,11 @@ Consequences
 - 本ADRは画面構成、状態遷移、取得境界および認可境界を扱う。具体的なビュー分割、部分更新機構、競合制御方法およびCSSは実装Issueで決定する。
 - Session、Scene、UsageおよびAssetのデータモデルは変更しない。
 
-Supersedes
+## Supersedes
 
 - ADR-0018：素材一覧・Session管理統合画面の表示・状態遷移・遅延ロード契約
 
-Related
+## Related
 
 - ADR-0001：default_scene（position=1固定・削除不可）
 - ADR-0007：所有権の正本と混在禁止
@@ -263,4 +263,4 @@ Related
 - ADR-0016：Session詳細「セッション素材一覧」表示仕様
 - ADR-0018：素材一覧・Session管理統合画面の表示・状態遷移・遅延ロード契約
 - Issue #23：素材一覧とSession管理の統合（旧方針）
-- Issue #174：（45）セッション画面の統合（作成後にGitHub Issue番号を追記）
+- Issue #174：（45）セッション画面の統合
