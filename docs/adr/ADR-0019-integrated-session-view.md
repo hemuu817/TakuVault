@@ -260,4 +260,4 @@ Related
 - ADR-0016：Session詳細「セッション素材一覧」表示仕様
 - ADR-0018：素材一覧・Session管理統合画面の表示・状態遷移・遅延ロード契約
 - Issue #23：素材一覧とSession管理の統合（旧方針）
-- 後継Issue：（45）セッション画面の統合（作成後にGitHub Issue番号を追記）
+- Issue #174：（45）セッション画面の統合（作成後にGitHub Issue番号を追記）
