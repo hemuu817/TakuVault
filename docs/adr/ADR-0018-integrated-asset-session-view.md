@@ -1,6 +1,6 @@
 ADR-0018：素材一覧・Session管理統合画面の表示・状態遷移・遅延ロード契約
 
-Status: Accepted
+Status: Superseded
 Context
 
 TakuVaultでは、素材一覧とSession一覧が独立した画面になっており、Assetを確認する操作とSession / Scene / Usageを確認・管理する操作の間に画面往復が発生している。
