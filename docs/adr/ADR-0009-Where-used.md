@@ -1,6 +1,6 @@
 # ADR-0009：ADR運用ルール（正本化・参照境界・改訂手順）
 
-Status: Proposed
+Status: Accepted
 
 ## Context
 TakuVaultはMVP締切までに「Where used成立」「所有権認可」「DB整合性」「アップロード安全性」を満たす必要がある。
