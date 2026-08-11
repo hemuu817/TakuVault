@@ -1,6 +1,6 @@
 ADR-0019：Session一覧・Session詳細統合画面の表示・状態遷移・取得契約
 
-Status: Proposed
+Status: Accepted
 
 Context
 
