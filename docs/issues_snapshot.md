@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-08-10T16:07:06Z_
+_Generated (UTC): 2026-08-11T14:18:54Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -26,7 +26,7 @@ _Generated (UTC): 2026-08-10T16:07:06Z_
 | 20 | (15) Asset kind | CLOSED | 2026-07-05T08:59:44Z | https://github.com/hemuu817/TakuVault/issues/20 | [local](issues/0020.md) |
 | 21 | (16) Usage作成 | CLOSED | 2026-05-30T16:37:14Z | https://github.com/hemuu817/TakuVault/issues/21 | [local](issues/0021.md) |
 | 22 | (17) Asset詳細Where used | CLOSED | 2026-06-05T17:53:02Z | https://github.com/hemuu817/TakuVault/issues/22 | [local](issues/0022.md) |
-| 23 | (18) 素材一覧とセッション一覧の統合 | OPEN | 2026-07-27T00:38:50Z | https://github.com/hemuu817/TakuVault/issues/23 | [local](issues/0023.md) |
+| 23 | (18) 素材一覧とセッション一覧の統合 | CLOSED | 2026-08-11T14:15:08Z | https://github.com/hemuu817/TakuVault/issues/23 | [local](issues/0023.md) |
 | 24 | (19) Asset削除整合性 | CLOSED | 2026-06-01T13:07:54Z | https://github.com/hemuu817/TakuVault/issues/24 | [local](issues/0024.md) |
 | 25 | Epic H: Docs | CLOSED | 2026-01-10T08:58:08Z | https://github.com/hemuu817/TakuVault/issues/25 | [local](issues/0025.md) |
 | 26 | (32) README価値提案+MVP宣言 | CLOSED | 2026-01-15T12:41:05Z | https://github.com/hemuu817/TakuVault/issues/26 | [local](issues/0026.md) |
@@ -62,3 +62,4 @@ _Generated (UTC): 2026-08-10T16:07:06Z_
 | 152 | (42)Rails 8.x framework defaults 段階適用 | CLOSED | 2026-06-21T17:32:50Z | https://github.com/hemuu817/TakuVault/issues/152 | [local](issues/0152.md) |
 | 163 | (43)未整理（Usage0）一括割当の kind 連動UI補助 | CLOSED | 2026-07-19T08:16:57Z | https://github.com/hemuu817/TakuVault/issues/163 | [local](issues/0163.md) |
 | 164 | (44)Usage.role拡張 + 用途表示順固定化 | CLOSED | 2026-07-10T05:31:56Z | https://github.com/hemuu817/TakuVault/issues/164 | [local](issues/0164.md) |
+| 174 | (45) セッション画面の統合 | OPEN | 2026-08-11T14:12:48Z | https://github.com/hemuu817/TakuVault/issues/174 | [local](issues/0174.md) |
