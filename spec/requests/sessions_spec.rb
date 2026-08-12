@@ -21,6 +21,8 @@ RSpec.describe "Sessions", type: :request do
       expect(response.body).to include("セッションが選択されていません")
       expect(response.body.index(newer.name)).to be < response.body.index(older.name)
       expect(response.body).not_to include("aria-current=\"page\"")
+      expect(response.body).to include("href=\"#{uncategorized_assets_path}\"")
+      expect(response.body).to include("未整理の素材")
     end
 
     it "renders the empty state and creation link when there are no sessions" do
