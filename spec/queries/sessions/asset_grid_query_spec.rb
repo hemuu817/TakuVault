@@ -1,6 +1,16 @@
 require "rails_helper"
 
 RSpec.describe Sessions::AssetGridQuery do
+  def sql_count
+    count = 0
+    subscriber = lambda do |_name, _started, _finished, _unique_id, payload|
+      count += 1 unless payload[:name].in?(%w[SCHEMA TRANSACTION]) || payload[:cached]
+    end
+
+    ActiveSupport::Notifications.subscribed(subscriber, "sql.active_record") { yield }
+    count
+  end
+
   describe "#call" do
     it "returns scenes, roles, and cell usages in the expected order" do
       user = create(:user)
@@ -56,6 +66,22 @@ RSpec.describe Sessions::AssetGridQuery do
       expect(usage.association(:asset)).to be_loaded
       expect(asset.association(:file_attachment)).to be_loaded
       expect(asset.file_attachment.association(:blob)).to be_loaded
+    end
+
+    it "does not add SQL queries in proportion to usage and asset counts" do
+      user = create(:user)
+      session = create(:session, user: user)
+      scene = session.scenes.find_by!(position: Scene::DEFAULT_POSITION)
+      create(:usage, asset: create(:asset, user: user), session: session, scene: scene, role: :background)
+
+      baseline_count = sql_count { described_class.new(session: session.reload).call }
+
+      5.times do
+        create(:usage, asset: create(:asset, user: user), session: session, scene: scene, role: :standing)
+      end
+      expanded_count = sql_count { described_class.new(session: session.reload).call }
+
+      expect(expanded_count).to be <= baseline_count
     end
   end
 end
