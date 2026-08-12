@@ -9,11 +9,13 @@ export default class extends Controller {
     this.requestToken = 0
     this.abortController = null
     this.retryUrl = null
+    this.beforeCache = this.cleanup.bind(this)
+    document.addEventListener("turbo:before-cache", this.beforeCache)
   }
 
   disconnect() {
-    ++this.requestToken
-    this.abortController?.abort()
+    document.removeEventListener("turbo:before-cache", this.beforeCache)
+    this.cleanup()
   }
 
   select(event) {
@@ -126,6 +128,14 @@ export default class extends Controller {
 
   isCurrent(token) {
     return token === this.requestToken
+  }
+
+  cleanup() {
+    ++this.requestToken
+    this.abortController?.abort()
+    this.abortController = null
+    this.retryUrl = null
+    this.setTemporaryState({ loading: false, error: false, retry: false })
   }
 
   setTemporaryState({ loading, error, retry }) {
