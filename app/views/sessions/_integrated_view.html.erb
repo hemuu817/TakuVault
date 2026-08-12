@@ -4,6 +4,26 @@
          aria-label="セッションワークスペース">
   <%= render "layouts/flash" %>
 
+  <div class="rounded-md border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800"
+       data-session-switcher-target="loading"
+       role="status"
+       hidden>
+    セッションを読み込んでいます…
+  </div>
+  <div class="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+       data-session-switcher-target="error"
+       role="alert"
+       hidden>
+    セッションを読み込めませんでした。
+  </div>
+  <button type="button"
+          class="inline-flex items-center rounded-md border border-red-300 bg-white px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
+          data-session-switcher-target="retry"
+          data-action="session-switcher#retry"
+          hidden>
+    再試行
+  </button>
+
   <div class="grid gap-6 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)]">
     <%= render "session_list", sessions: @sessions, selected_session: @session %>
     <%= render "session_detail", session: @session, asset_grid: @asset_grid %>
