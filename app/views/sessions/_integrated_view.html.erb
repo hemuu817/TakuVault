@@ -1,0 +1,10 @@
+<section id="session-workspace"
+         class="space-y-4"
+         aria-label="セッションワークスペース">
+  <%= render "layouts/flash" %>
+
+  <div class="grid gap-6 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)]">
+    <%= render "session_list", sessions: @sessions, selected_session: @session %>
+    <%= render "session_detail", session: @session, asset_grid: @asset_grid %>
+  </div>
+</section>

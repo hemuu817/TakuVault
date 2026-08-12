@@ -1,0 +1,71 @@
+<div class="min-w-0">
+  <% if session %>
+    <h2 class="mb-4 text-2xl font-semibold text-gray-900">セッション詳細</h2>
+
+    <div class="mb-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <p class="text-sm text-gray-700">
+        セッション名:
+        <span class="font-medium text-gray-900"><%= session.name %></span>
+      </p>
+      <% if session.room_url.present? %>
+        <p class="mt-2 text-sm text-gray-700">
+          部屋URL:
+          <%= link_to session.room_url, session.room_url,
+                      target: "_blank", rel: "noopener noreferrer",
+                      class: "break-all text-orange-700 hover:text-orange-800 hover:underline" %>
+        </p>
+      <% end %>
+    </div>
+
+    <div class="mb-8 flex flex-wrap gap-3">
+      <%= link_to "編集",
+                  edit_game_session_path(session),
+                  class: "inline-flex items-center rounded-md bg-orange-700 px-4 py-2 text-sm font-medium text-white hover:bg-orange-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
+    </div>
+
+    <h2 class="mb-3 text-lg font-semibold text-gray-900">シーン</h2>
+    <div class="mb-4">
+      <%= link_to "シーンを追加",
+                  new_game_session_scene_path(session),
+                  class: "inline-flex items-center rounded-md bg-orange-700 px-4 py-2 text-sm font-medium text-white hover:bg-orange-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
+    </div>
+
+    <% if asset_grid.scenes.any? %>
+      <ul class="mb-8 space-y-3">
+        <% asset_grid.scenes.each do |scene| %>
+          <li class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+            <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <span class="text-sm text-gray-500"><%= scene.position %>.</span>
+                <%= link_to scene.name,
+                            game_session_scene_path(session, scene),
+                            class: "font-medium text-orange-700 hover:text-orange-800 hover:underline" %>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <%= link_to "編集",
+                            edit_game_session_scene_path(session, scene),
+                            class: "inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2" %>
+                <% unless scene.default_scene? %>
+                  <%= button_to "削除", game_session_scene_path(session, scene),
+                                method: :delete,
+                                data: { turbo_confirm: "削除しますか？" },
+                                form: { class: "inline" },
+                                class: "inline-flex items-center rounded-md border border-red-300 bg-white px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2" %>
+                <% end %>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="mb-8 rounded-md border border-gray-200 bg-white px-4 py-6 text-sm text-gray-600">シーンがありません。</p>
+    <% end %>
+
+    <%= render "asset_grid", session: session, asset_grid: asset_grid %>
+  <% else %>
+    <div class="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-6 py-12 text-center">
+      <h2 class="text-lg font-semibold text-gray-900">セッションが選択されていません</h2>
+      <p class="mt-2 text-sm text-gray-600">一覧からセッションを選択すると、シーンと使用素材を確認できます。</p>
+    </div>
+  <% end %>
+</div>

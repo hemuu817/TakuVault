@@ -42,9 +42,10 @@
       </div>
     </nav>
 
-    <% main_width_class = controller_path == "sessions" && action_name == "show" ? "max-w-7xl" : "max-w-5xl" %>
+    <% session_workspace = controller_path == "sessions" && action_name.in?(%w[index show]) %>
+    <% main_width_class = session_workspace ? "max-w-7xl" : "max-w-5xl" %>
     <main class="mx-auto <%= main_width_class %> px-4 py-6">
-      <%= render "layouts/flash" %>
+      <%= render "layouts/flash" unless session_workspace %>
 
       <%= yield %>
     </main>

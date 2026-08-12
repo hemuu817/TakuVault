@@ -4,11 +4,12 @@ class SessionsController < ApplicationController
 
   def index
     authorize Session, :index?
-    @sessions = policy_scope(Session).order(created_at: :desc)
+    @sessions = session_list_scope
   end
 
   def show
     authorize @session
+    @sessions = session_list_scope
     @asset_grid = Sessions::AssetGridQuery.new(session: @session).call
   end
 
@@ -60,5 +61,9 @@ class SessionsController < ApplicationController
 
   def session_params
     params.require(:session).permit(:name, :room_url)
+  end
+
+  def session_list_scope
+    policy_scope(Session).select(:id, :name, :created_at).order(created_at: :desc)
   end
 end
