@@ -139,9 +139,18 @@ RSpec.describe "Sessions", type: :system do
       expect(page).to have_link("装飾パネル素材.png", href: asset_path(panel_asset))
       expect(page).to have_link("音声素材.mp3", href: asset_path(audio_asset))
       expect(page).to have_link("効果音素材.mp3", href: asset_path(sound_effect_asset))
-      expect(page).to have_css("img[alt='画像素材.png']")
-      expect(page).to have_css("img[alt='音声素材.mp3'][src*='audio-placeholder']")
-      expect(page).to have_css("img[alt='効果音素材.mp3'][src*='audio-placeholder']")
+      within("a[href='#{asset_path(image_asset)}']") do
+        expect(page).to have_css("img[alt='']")
+        expect(page).to have_css("span", exact_text: "画像素材.png")
+      end
+      within("a[href='#{asset_path(audio_asset)}']") do
+        expect(page).to have_css("img[alt=''][src*='audio-placeholder']")
+        expect(page).to have_css("span", exact_text: "音声素材.mp3")
+      end
+      within("a[href='#{asset_path(sound_effect_asset)}']") do
+        expect(page).to have_css("img[alt=''][src*='audio-placeholder']")
+        expect(page).to have_css("span", exact_text: "効果音素材.mp3")
+      end
       expect(page).not_to have_content("他人素材.png")
       expect(page).not_to have_css("audio")
     end
@@ -215,6 +224,28 @@ RSpec.describe "Sessions", type: :system do
 
 
   context "with JavaScript", js: true do
+    it "allows keyboard focus and horizontal arrow-key scrolling when the asset grid has no usages" do
+      session_record = create(:session, user: user, name: "空グリッドキーボード操作")
+      login(user)
+      page.current_window.resize_to(360, 800)
+      visit game_session_path(session_record)
+
+      region = find("[role='region'][tabindex='0'][aria-labelledby='session-assets-heading']")
+      expect(region).not_to have_css("a[href^='/assets/']")
+      expect(page.evaluate_script("arguments[0].scrollWidth > arguments[0].clientWidth", region)).to be(true)
+
+      page.execute_script("arguments[0].focus()", region)
+      expect(page.evaluate_script("document.activeElement === arguments[0]", region)).to be(true)
+      initial_scroll_left = page.evaluate_script("arguments[0].scrollLeft", region)
+
+      region.native.send_keys(:arrow_right)
+      Selenium::WebDriver::Wait.new(timeout: Capybara.default_max_wait_time).until do
+        page.evaluate_script("arguments[0].scrollLeft", region) > initial_scroll_left
+      end
+    ensure
+      page.current_window.resize_to(1400, 1400) if page.driver.is_a?(Capybara::Selenium::Driver)
+    end
+
     it "keeps the previous state while loading and commits URL, selection, detail, flash, and history together" do
       first = create(:session, user: user, name: "切替前セッション")
       second = create(:session, user: user, name: "切替先セッション")

@@ -103,6 +103,30 @@ RSpec.describe "Sessions", type: :request do
       expect(frames.first.css("[data-session-switcher-target='list'], [data-session-switcher-target='detail']")).to be_empty
     end
 
+    it "renders an accessible asset grid with labelled scrolling and decorative thumbnails" do
+      selected = create(:session, user: user, name: "アクセシブルグリッド")
+      scene = selected.scenes.find_by!(position: Scene::DEFAULT_POSITION)
+      asset = create(:asset, user: user, display_name: "画像素材.png")
+      create(:usage, asset: asset, session: selected, scene: scene, role: :background)
+
+      get game_session_path(selected)
+
+      document = Nokogiri::HTML5(response.body)
+      heading = document.at_css("h2#session-assets-heading")
+      region = document.at_css("[role='region'][tabindex='0']")
+      table = region.at_css("table")
+      asset_link = table.at_css("a[href='#{asset_path(asset)}']")
+
+      expect(heading.text.strip).to eq("セッション素材一覧")
+      expect(region["aria-labelledby"]).to eq(heading["id"])
+      expect(region["class"]).to include("overflow-x-auto", "focus-visible:ring-2")
+      expect(table.at_css("caption").text.strip).to eq("シーン別・用途別のセッション素材")
+      expect(table.css("thead th").map { |header| header["scope"] }).to all(eq("col"))
+      expect(table.css("tbody th").map { |header| header["scope"] }).to all(eq("row"))
+      expect(asset_link.at_css("img")["alt"]).to eq("")
+      expect(asset_link.at_css("span").text.strip).to eq(asset.display_name)
+    end
+
     it "disables Turbo caching" do
       selected = create(:session, user: user)
 

@@ -1,20 +1,24 @@
-<h2 class="mb-3 text-lg font-semibold text-gray-900">セッション素材一覧</h2>
-
 <section class="space-y-4">
-  <div class="overflow-x-auto">
+  <h2 id="session-assets-heading" class="text-lg font-semibold text-gray-900">セッション素材一覧</h2>
+
+  <div class="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2"
+       role="region"
+       tabindex="0"
+       aria-labelledby="session-assets-heading">
     <table class="w-full border-collapse text-sm">
+      <caption class="sr-only">シーン別・用途別のセッション素材</caption>
       <thead>
         <tr>
-          <th class="border-b border-gray-200 px-3 py-2 text-left text-sm font-medium text-gray-600">シーン</th>
+          <th scope="col" class="border-b border-gray-200 px-3 py-2 text-left text-sm font-medium text-gray-600">シーン</th>
           <% asset_grid.roles.each do |role| %>
-            <th class="border-b border-gray-200 px-3 py-2 text-left text-sm font-medium text-gray-600"><%= Usage.role_label(role) %></th>
+            <th scope="col" class="border-b border-gray-200 px-3 py-2 text-left text-sm font-medium text-gray-600"><%= Usage.role_label(role) %></th>
           <% end %>
         </tr>
       </thead>
       <tbody>
         <% asset_grid.scenes.each do |scene| %>
           <tr class="border border-gray-200 bg-white">
-            <th class="border-b border-gray-200 px-4 py-3 text-left text-base font-semibold text-gray-900"><%= scene.name %></th>
+            <th scope="row" class="border-b border-gray-200 px-4 py-3 text-left text-base font-semibold text-gray-900"><%= scene.name %></th>
             <% asset_grid.roles.each do |role| %>
               <td class="min-w-40 border-b border-gray-100 px-3 py-3 align-top">
                 <% asset_grid.usages_for(scene, role).each do |usage| %>
@@ -23,7 +27,7 @@
                               class: "mb-2 inline-flex flex-col items-start gap-1 rounded-md border border-gray-200 bg-white p-2 hover:shadow-md" do %>
                     <% if thumbnail_src.present? %>
                       <%= image_tag thumbnail_src,
-                                    alt: usage.asset.display_name,
+                                    alt: "",
                                     class: "h-16 w-16 rounded object-cover" %>
                     <% end %>
                     <span class="text-sm font-medium text-orange-700 hover:text-orange-800 hover:underline"><%= usage.asset.display_name %></span>
