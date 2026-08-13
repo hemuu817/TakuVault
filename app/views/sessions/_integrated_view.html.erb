@@ -2,10 +2,15 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 
-<section id="session-workspace"
-         data-controller="session-switcher"
-         class="space-y-4"
-         aria-label="セッションワークスペース">
+<%= turbo_frame_tag "session-workspace",
+                    target: "_top",
+                    data: {
+                      controller: "session-switcher",
+                      turbo_action: "replace",
+                      action: "turbo:before-fetch-request->session-switcher#loading turbo:frame-load->session-switcher#loaded turbo:fetch-request-error->session-switcher#failed turbo:frame-missing->session-switcher#failed"
+                    },
+                    class: "block space-y-4",
+                    aria: { label: "セッションワークスペース" } do %>
   <%= render "layouts/flash" %>
 
   <div class="rounded-md border border-orange-200 bg-orange-50 px-4 py-3 text-sm text-orange-800"
@@ -18,18 +23,16 @@
        data-session-switcher-target="error"
        role="alert"
        hidden>
-    セッションを読み込めませんでした。
+    <span>セッションを読み込めませんでした。</span>
+    <button type="button"
+            class="ml-2 inline-flex items-center rounded-md border border-red-300 bg-white px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
+            data-action="session-switcher#retry">
+      再試行
+    </button>
   </div>
-  <button type="button"
-          class="inline-flex items-center rounded-md border border-red-300 bg-white px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
-          data-session-switcher-target="retry"
-          data-action="session-switcher#retry"
-          hidden>
-    再試行
-  </button>
 
   <div class="grid gap-6 lg:grid-cols-[minmax(16rem,20rem)_minmax(0,1fr)]">
     <%= render "session_list", sessions: @sessions, selected_session: @session %>
     <%= render "session_detail", session: @session, asset_grid: @asset_grid %>
   </div>
-</section>
+<% end %>

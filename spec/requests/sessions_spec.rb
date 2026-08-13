@@ -17,7 +17,8 @@ RSpec.describe "Sessions", type: :request do
       get game_sessions_path
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("id=\"session-workspace\"")
+      expect(response.body).to include("<!DOCTYPE html>", "<body")
+      expect(Nokogiri::HTML5(response.body).at_css("turbo-frame#session-workspace")).to be_present
       expect(response.body).to include("セッションが選択されていません")
       expect(response.body.index(newer.name)).to be < response.body.index(older.name)
       expect(response.body).not_to include("aria-current=\"page\"")
@@ -48,6 +49,20 @@ RSpec.describe "Sessions", type: :request do
 
       expect(response.body).to include('<meta name="turbo-cache-control" content="no-cache">')
     end
+
+    it "returns the complete unselected workspace in a Turbo Frame response" do
+      create(:session, user: user, name: "一覧セッション")
+
+      get game_sessions_path, headers: { "Turbo-Frame" => "session-workspace" }
+
+      document = Nokogiri::HTML5(response.body)
+      frames = document.css("turbo-frame#session-workspace")
+      expect(response).to have_http_status(:ok)
+      expect(frames.one?).to be(true)
+      expect(frames.first.text).to include("一覧セッション", "セッションが選択されていません")
+      expect(frames.first["data-turbo-action"]).to eq("replace")
+      expect(frames.first["target"]).to eq("_top")
+    end
   end
 
   describe "GET /sessions/:id" do
@@ -61,8 +76,25 @@ RSpec.describe "Sessions", type: :request do
       get game_session_path(selected)
 
       expect(response).to have_http_status(:ok)
+      expect(response.body).to include("<!DOCTYPE html>", "<body")
       expect(response.body).to include(selected.name, another.name, "セッション詳細")
       expect(response.body).to include("aria-current=\"page\"")
+    end
+
+    it "returns the selected list and detail as one Turbo Frame" do
+      selected = create(:session, user: user, name: "Frame選択中")
+      another = create(:session, user: user, name: "Frame一覧項目")
+
+      get game_session_path(selected), headers: { "Turbo-Frame" => "session-workspace" }
+
+      document = Nokogiri::HTML5(response.body)
+      frames = document.css("turbo-frame#session-workspace")
+      expect(response).to have_http_status(:ok)
+      expect(frames.one?).to be(true)
+      expect(frames.first.text).to include(selected.name, another.name, "セッション詳細")
+      expect(frames.first.at_css("a[aria-current='page']").text).to include(selected.name)
+      expect(frames.first.at_css("a[href='#{game_session_path(another)}']")["data-turbo-frame"]).to eq("session-workspace")
+      expect(frames.first.css("[data-session-switcher-target='list'], [data-session-switcher-target='detail']")).to be_empty
     end
 
     it "disables Turbo caching" do
