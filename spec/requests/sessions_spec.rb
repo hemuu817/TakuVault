@@ -75,10 +75,16 @@ RSpec.describe "Sessions", type: :request do
 
       get game_session_path(selected)
 
+      document = Nokogiri::HTML5(response.body)
+      selected_link = document.at_css("a[href='#{game_session_path(selected)}']")
+      another_link = document.at_css("a[href='#{game_session_path(another)}']")
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("<!DOCTYPE html>", "<body")
       expect(response.body).to include(selected.name, another.name, "セッション詳細")
-      expect(response.body).to include("aria-current=\"page\"")
+      expect(document.css("a[aria-current='page']")).to contain_exactly(selected_link)
+      expect(selected_link["aria-current"]).to eq("page")
+      expect(another_link.key?("aria-current")).to be(false)
+      expect(document.css("li[aria-current]")).to be_empty
     end
 
     it "returns the selected list and detail as one Turbo Frame" do

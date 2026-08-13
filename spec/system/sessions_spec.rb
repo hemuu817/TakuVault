@@ -230,12 +230,16 @@ RSpec.describe "Sessions", type: :system do
       click_link second.name
 
       expect(page).to have_current_path(game_session_path(first))
-      expect(page).to have_css("[aria-current='page']", text: first.name)
+      expect(page).to have_css("a[href='#{game_session_path(first)}'][aria-current='page']", text: first.name)
+      expect(page).not_to have_css("a[href='#{game_session_path(second)}'][aria-current]")
+      expect(page).not_to have_css("li[aria-current]")
       expect(page).to have_content("セッション名: #{first.name}")
       expect(page).to have_content("セッションを読み込んでいます…")
 
       expect(page).to have_current_path(game_session_path(second))
-      expect(page).to have_css("[aria-current='page']", text: second.name)
+      expect(page).to have_css("a[href='#{game_session_path(second)}'][aria-current='page']", text: second.name)
+      expect(page).not_to have_css("a[href='#{game_session_path(first)}'][aria-current]")
+      expect(page).not_to have_css("li[aria-current]")
       expect(page).to have_content("セッション名: #{second.name}")
       expect(page).not_to have_content("セッションを更新しました。")
       expect(page).not_to have_content("セッションを読み込んでいます…")
@@ -255,7 +259,7 @@ RSpec.describe "Sessions", type: :system do
       click_link second.name
 
       expect(page).to have_current_path(game_session_path(first))
-      expect(page).to have_css("[aria-current='page']", text: first.name)
+      expect(page).to have_css("a[aria-current='page']", text: first.name)
       expect(page).to have_content("セッション名: #{first.name}")
       expect(page).to have_content("セッションを読み込めませんでした。")
       expect(page).to have_button("再試行", visible: true)
@@ -264,7 +268,7 @@ RSpec.describe "Sessions", type: :system do
       page.execute_script("arguments[0].click()", find_button("再試行"))
 
       expect(page).to have_current_path(game_session_path(second))
-      expect(page).to have_css("[aria-current='page']", text: second.name)
+      expect(page).to have_css("a[aria-current='page']", text: second.name)
       expect(page).to have_content("セッション名: #{second.name}")
       expect(page).not_to have_content("セッションを読み込めませんでした。")
     ensure
@@ -281,7 +285,7 @@ RSpec.describe "Sessions", type: :system do
       click_link second.name
 
       expect(page).to have_current_path(game_session_path(first))
-      expect(page).to have_css("[aria-current='page']", text: first.name)
+      expect(page).to have_css("a[aria-current='page']", text: first.name)
       expect(page).to have_content("セッション名: #{first.name}")
       expect(page).to have_content("セッションを読み込めませんでした。")
       expect(page).to have_button("再試行")
@@ -304,7 +308,7 @@ RSpec.describe "Sessions", type: :system do
       click_link last.name
 
       expect(page).to have_current_path(game_session_path(last))
-      expect(page).to have_css("[aria-current='page']", text: last.name)
+      expect(page).to have_css("a[aria-current='page']", text: last.name)
       expect(page).to have_content("セッション名: #{last.name}")
       expect(page).not_to have_content("セッション名: #{middle.name}")
 
@@ -327,7 +331,7 @@ RSpec.describe "Sessions", type: :system do
 
       page.refresh
       expect(page).to have_current_path(game_session_path(second))
-      expect(page).to have_css("[aria-current='page']", text: second.name)
+      expect(page).to have_css("a[aria-current='page']", text: second.name)
       expect(page).to have_content("セッション名: #{second.name}")
       expect(page).not_to have_content("セッションを読み込んでいます…")
       expect(page).not_to have_content("セッションを読み込めませんでした。")
@@ -350,7 +354,7 @@ RSpec.describe "Sessions", type: :system do
 
       within_window new_window do
         expect(page).to have_current_path(game_session_path(second))
-        expect(page).to have_css("[aria-current='page']", text: second.name)
+        expect(page).to have_css("a[aria-current='page']", text: second.name)
         expect(page).to have_content("セッション名: #{second.name}")
       end
     end
