@@ -293,10 +293,10 @@ RSpec.describe "Sessions", type: :system do
       expect(page).to have_css("a[aria-current='page']", text: first.name)
       expect(page).to have_content("セッション名: #{first.name}")
       expect(page).to have_content("セッションを読み込めませんでした。")
-      expect(page).to have_button("再試行", visible: true)
+      retry_button = find_button("再試行", visible: true)
 
       page.driver.browser.network_conditions = { offline: false }
-      page.execute_script("arguments[0].click()", find_button("再試行"))
+      page.execute_script("arguments[0].click()", retry_button)
 
       expect(page).to have_current_path(game_session_path(second))
       expect(page).to have_css("a[aria-current='page']", text: second.name)
