@@ -4,7 +4,9 @@
   <div class="overflow-x-auto rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-600 focus-visible:ring-offset-2"
        role="region"
        tabindex="0"
-       aria-labelledby="session-assets-heading">
+       aria-labelledby="session-assets-heading"
+       data-controller="horizontal-scroll"
+       data-action="keydown->horizontal-scroll#scrollWithArrowKey">
     <table class="w-full border-collapse text-sm">
       <caption class="sr-only">シーン別・用途別のセッション素材</caption>
       <thead>

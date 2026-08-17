@@ -224,7 +224,7 @@ RSpec.describe "Sessions", type: :system do
 
 
   context "with JavaScript", js: true do
-    it "allows keyboard focus and horizontal arrow-key scrolling when the asset grid has no usages" do
+    it "allows keyboard focus and horizontal scrolling in both arrow-key directions when the asset grid has no usages" do
       session_record = create(:session, user: user, name: "空グリッドキーボード操作")
       login(user)
       page.current_window.resize_to(360, 800)
@@ -241,6 +241,12 @@ RSpec.describe "Sessions", type: :system do
       region.native.send_keys(:arrow_right)
       Selenium::WebDriver::Wait.new(timeout: Capybara.default_max_wait_time).until do
         page.evaluate_script("arguments[0].scrollLeft", region) > initial_scroll_left
+      end
+      right_scroll_left = page.evaluate_script("arguments[0].scrollLeft", region)
+
+      region.native.send_keys(:arrow_left)
+      Selenium::WebDriver::Wait.new(timeout: Capybara.default_max_wait_time).until do
+        page.evaluate_script("arguments[0].scrollLeft", region) < right_scroll_left
       end
     ensure
       page.current_window.resize_to(1400, 1400) if page.driver.is_a?(Capybara::Selenium::Driver)
