@@ -6,7 +6,7 @@ Capybara.server_host = "localhost"
 
 Capybara.register_driver :taku_vault_selenium_chrome_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new
-  options.add_argument("--headless=new")
+  options.add_argument("--headless=new") unless ENV["CHROME_HEADLESS"] == "false"
   options.add_argument("--no-sandbox")
   options.add_argument("--disable-dev-shm-usage")
   options.add_argument("--window-size=1400,1400")
