@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe "Sessions", type: :system do
+  include Warden::Test::Helpers
+
   let(:modern_user_agent) do
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 " \
     "(KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
@@ -14,10 +16,15 @@ RSpec.describe "Sessions", type: :system do
   end
 
   def login(u)
-    visit new_user_session_path
-    fill_in "user_email", with: u.email
-    fill_in "user_password", with: "password"
-    click_button "Log in"
+    if page.driver.is_a?(Capybara::Selenium::Driver)
+      login_as u, scope: :user
+      visit assets_path
+    else
+      visit new_user_session_path
+      fill_in "user_email", with: u.email
+      fill_in "user_password", with: "password"
+      click_button "Log in"
+    end
     expect(page).to have_css("h1", text: "素材一覧")
   end
 
@@ -224,6 +231,10 @@ RSpec.describe "Sessions", type: :system do
 
 
   context "with JavaScript", js: true do
+    after do
+      Warden.test_reset!
+    end
+
     it "allows keyboard focus and horizontal scrolling in both arrow-key directions when the asset grid has no usages" do
       region = nil
       session_record = create(:session, user: user, name: "空グリッドキーボード操作")
