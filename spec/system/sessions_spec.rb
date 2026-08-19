@@ -225,12 +225,30 @@ RSpec.describe "Sessions", type: :system do
 
   context "with JavaScript", js: true do
     it "allows keyboard focus and horizontal scrolling in both arrow-key directions when the asset grid has no usages" do
+      region = nil
       session_record = create(:session, user: user, name: "空グリッドキーボード操作")
       login(user)
       page.current_window.resize_to(360, 800)
       visit game_session_path(session_record)
 
       region = find("[role='region'][tabindex='0'][aria-labelledby='session-assets-heading']")
+      page.execute_script(<<~JS, region)
+        const region = arguments[0]
+        window.__arrowKeyDiagnostics = { capture: [], bubble: [] }
+        const snapshot = (event) => ({
+          key: event.key,
+          code: event.code,
+          targetIsRegion: event.target === region,
+          defaultPrevented: event.defaultPrevented,
+          scrollLeft: region.scrollLeft
+        })
+        region.addEventListener("keydown", (event) => {
+          window.__arrowKeyDiagnostics.capture.push(snapshot(event))
+        }, true)
+        region.addEventListener("keydown", (event) => {
+          window.__arrowKeyDiagnostics.bubble.push(snapshot(event))
+        })
+      JS
       expect(region).not_to have_css("a[href^='/assets/']")
       expect(page.evaluate_script("arguments[0].scrollWidth > arguments[0].clientWidth", region)).to be(true)
 
@@ -249,7 +267,27 @@ RSpec.describe "Sessions", type: :system do
         page.evaluate_script("arguments[0].scrollLeft", region) < right_scroll_left
       end
     ensure
-      page.current_window.resize_to(1400, 1400) if page.driver.is_a?(Capybara::Selenium::Driver)
+      begin
+        if region
+          diagnostics = page.evaluate_script(<<~JS, region)
+            ({
+              active: document.activeElement === arguments[0],
+              scrollLeft: arguments[0].scrollLeft,
+              scrollWidth: arguments[0].scrollWidth,
+              clientWidth: arguments[0].clientWidth,
+              dataController: arguments[0].dataset.controller,
+              dataAction: arguments[0].dataset.action,
+              events: window.__arrowKeyDiagnostics
+            })
+          JS
+          diagnostics["capabilities"] = page.driver.browser.capabilities.as_json
+          warn "ARROW_KEY_DIAGNOSTICS=#{JSON.generate(diagnostics)}"
+        end
+      rescue StandardError => diagnostic_error
+        warn "ARROW_KEY_DIAGNOSTICS_ERROR=#{diagnostic_error.class}: #{diagnostic_error.message}"
+      ensure
+        page.current_window.resize_to(1400, 1400) if page.driver.is_a?(Capybara::Selenium::Driver)
+      end
     end
 
     it "keeps the previous state while loading and commits URL, selection, detail, flash, and history together" do

@@ -112,6 +112,16 @@ jobs:
           R2_SECRET_ACCESS_KEY: "dummy-secret"
           APP_HOST: "localhost"
 
+      - name: Log browser versions
+        run: |
+          google-chrome --version
+          if command -v chromedriver; then
+            command -v chromedriver
+            chromedriver --version
+          else
+            echo "chromedriver is not available on PATH"
+          fi
+
       - name: Run RSpec
         env:
           RAILS_ENV: test
