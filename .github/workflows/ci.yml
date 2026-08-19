@@ -77,14 +77,15 @@ jobs:
 
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y curl jq libjemalloc2 libvips postgresql-client unzip
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client unzip
 
       - name: Install matching Chrome for Testing pair
         run: |
           cft_dir="${RUNNER_TEMP}/chrome-for-testing"
-          cft_json="$(curl --fail --silent --show-error --location https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json)"
-          chrome_url="$(jq --raw-output '.channels.Stable.downloads.chrome[] | select(.platform == "linux64") | .url' <<< "${cft_json}")"
-          chromedriver_url="$(jq --raw-output '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url' <<< "${cft_json}")"
+          cft_version="151.0.7922.76"
+          cft_base_url="https://storage.googleapis.com/chrome-for-testing-public/${cft_version}/linux64"
+          chrome_url="${cft_base_url}/chrome-linux64.zip"
+          chromedriver_url="${cft_base_url}/chromedriver-linux64.zip"
 
           mkdir -p "${cft_dir}"
           curl --fail --silent --show-error --location "${chrome_url}" --output "${cft_dir}/chrome.zip"
