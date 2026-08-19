@@ -151,7 +151,7 @@ jobs:
           R2_ACCESS_KEY_ID: "dummy-key-id"
           R2_SECRET_ACCESS_KEY: "dummy-secret"
           APP_HOST: "localhost"
-        run: xvfb-run --auto-servernum bundle exec rspec
+        run: bundle exec rspec
 
       - name: Compare headed Chrome under Xvfb
         if: failure()
@@ -166,6 +166,7 @@ jobs:
           R2_SECRET_ACCESS_KEY: "dummy-secret"
           APP_HOST: "localhost"
           CHROME_HEADLESS: "false"
+          CHROMEDRIVER_VERBOSE: "true"
         run: xvfb-run --auto-servernum bundle exec rspec spec/system/sessions_spec.rb:227
 
       - name: Keep screenshots from failed system specs
