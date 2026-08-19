@@ -151,6 +151,7 @@ jobs:
           R2_ACCESS_KEY_ID: "dummy-key-id"
           R2_SECRET_ACCESS_KEY: "dummy-secret"
           APP_HOST: "localhost"
+          CHROMEDRIVER_VERBOSE: "true"
         run: bundle exec rspec
 
       - name: Inspect headless ChromeDriver key dispatch
