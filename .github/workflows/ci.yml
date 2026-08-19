@@ -55,6 +55,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      CHROME_FOCUS_EMULATION: "true"
 
     services:
       postgres:
@@ -77,7 +79,24 @@ jobs:
 
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips postgresql-client
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client unzip xvfb
+
+      - name: Install matching Chrome for Testing pair
+        run: |
+          cft_dir="${RUNNER_TEMP}/chrome-for-testing"
+          cft_version="151.0.7922.76"
+          cft_base_url="https://storage.googleapis.com/chrome-for-testing-public/${cft_version}/linux64"
+          chrome_url="${cft_base_url}/chrome-linux64.zip"
+          chromedriver_url="${cft_base_url}/chromedriver-linux64.zip"
+
+          mkdir -p "${cft_dir}"
+          curl --fail --silent --show-error --location "${chrome_url}" --output "${cft_dir}/chrome.zip"
+          curl --fail --silent --show-error --location "${chromedriver_url}" --output "${cft_dir}/chromedriver.zip"
+          unzip -q "${cft_dir}/chrome.zip" -d "${cft_dir}"
+          unzip -q "${cft_dir}/chromedriver.zip" -d "${cft_dir}"
+
+          echo "CHROME_BIN=${cft_dir}/chrome-linux64/chrome" >> "${GITHUB_ENV}"
+          echo "CHROMEDRIVER_PATH=${cft_dir}/chromedriver-linux64/chromedriver" >> "${GITHUB_ENV}"
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -112,7 +131,18 @@ jobs:
           R2_SECRET_ACCESS_KEY: "dummy-secret"
           APP_HOST: "localhost"
 
-      - name: Run RSpec
+      - name: Log browser versions
+        run: |
+          chrome_version="$("${CHROME_BIN}" --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)"
+          chromedriver_version="$("${CHROMEDRIVER_PATH}" --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)"
+
+          echo "Chrome binary: ${CHROME_BIN}"
+          "${CHROME_BIN}" --version
+          echo "ChromeDriver binary: ${CHROMEDRIVER_PATH}"
+          "${CHROMEDRIVER_PATH}" --version
+          test "${chrome_version}" = "${chromedriver_version}"
+
+      - name: Run RSpec under Xvfb
         env:
           RAILS_ENV: test
           RACK_ENV: test
@@ -123,12 +153,45 @@ jobs:
           R2_ACCESS_KEY_ID: "dummy-key-id"
           R2_SECRET_ACCESS_KEY: "dummy-secret"
           APP_HOST: "localhost"
-        run: bundle exec rspec
+          CHROME_HEADLESS: "false"
+          CHROMEDRIVER_VERBOSE: "true"
+        run: xvfb-run --auto-servernum bundle exec rspec
+
+      - name: Inspect headless ChromeDriver key dispatch
+        if: failure()
+        env:
+          RAILS_ENV: test
+          RACK_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/taku_vault_test
+          R2_ENDPOINT: "https://dummy.r2.example.com"
+          R2_BUCKET: "dummy-bucket"
+          R2_REGION: "auto"
+          R2_ACCESS_KEY_ID: "dummy-key-id"
+          R2_SECRET_ACCESS_KEY: "dummy-secret"
+          APP_HOST: "localhost"
+          CHROMEDRIVER_VERBOSE: "true"
+        run: bundle exec rspec spec/system/sessions_spec.rb:238
+
+      - name: Compare headed Chrome under Xvfb
+        if: failure()
+        env:
+          RAILS_ENV: test
+          RACK_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/taku_vault_test
+          R2_ENDPOINT: "https://dummy.r2.example.com"
+          R2_BUCKET: "dummy-bucket"
+          R2_REGION: "auto"
+          R2_ACCESS_KEY_ID: "dummy-key-id"
+          R2_SECRET_ACCESS_KEY: "dummy-secret"
+          APP_HOST: "localhost"
+          CHROME_HEADLESS: "false"
+          CHROMEDRIVER_VERBOSE: "true"
+        run: xvfb-run --auto-servernum bundle exec rspec spec/system/sessions_spec.rb:238
 
       - name: Keep screenshots from failed system specs
         uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: screenshots
-          path: ${{ github.workspace }}/tmp/screenshots
+          path: ${{ github.workspace }}/tmp/capybara
           if-no-files-found: ignore
