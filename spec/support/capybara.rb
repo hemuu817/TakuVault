@@ -15,7 +15,7 @@ Capybara.register_driver :taku_vault_selenium_chrome_headless do |app|
   service_options = {}
   service_options[:path] = ENV["CHROMEDRIVER_PATH"] if ENV["CHROMEDRIVER_PATH"].present?
   if ENV["CHROMEDRIVER_VERBOSE"] == "true"
-    service_options[:args] = ["--verbose"]
+    service_options[:args] = [ "--verbose" ]
     service_options[:log] = :stderr
   end
   service = Selenium::WebDriver::Service.chrome(**service_options)
