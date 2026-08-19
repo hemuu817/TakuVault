@@ -20,7 +20,11 @@ Capybara.register_driver :taku_vault_selenium_chrome_headless do |app|
   end
   service = Selenium::WebDriver::Service.chrome(**service_options)
 
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options, service: service)
+  driver = Capybara::Selenium::Driver.new(app, browser: :chrome, options: options, service: service)
+  if ENV["CHROME_FOCUS_EMULATION"] == "true"
+    driver.browser.execute_cdp("Emulation.setFocusEmulationEnabled", enabled: true)
+  end
+  driver
 end
 
 RSpec.configure do |config|

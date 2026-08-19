@@ -55,6 +55,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      CHROME_FOCUS_EMULATION: "true"
 
     services:
       postgres:
