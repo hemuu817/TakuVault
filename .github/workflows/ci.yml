@@ -77,7 +77,23 @@ jobs:
 
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips postgresql-client
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y curl jq libjemalloc2 libvips postgresql-client unzip
+
+      - name: Install matching Chrome for Testing pair
+        run: |
+          cft_dir="${RUNNER_TEMP}/chrome-for-testing"
+          cft_json="$(curl --fail --silent --show-error --location https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json)"
+          chrome_url="$(jq --raw-output '.channels.Stable.downloads.chrome[] | select(.platform == "linux64") | .url' <<< "${cft_json}")"
+          chromedriver_url="$(jq --raw-output '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64") | .url' <<< "${cft_json}")"
+
+          mkdir -p "${cft_dir}"
+          curl --fail --silent --show-error --location "${chrome_url}" --output "${cft_dir}/chrome.zip"
+          curl --fail --silent --show-error --location "${chromedriver_url}" --output "${cft_dir}/chromedriver.zip"
+          unzip -q "${cft_dir}/chrome.zip" -d "${cft_dir}"
+          unzip -q "${cft_dir}/chromedriver.zip" -d "${cft_dir}"
+
+          echo "CHROME_BIN=${cft_dir}/chrome-linux64/chrome" >> "${GITHUB_ENV}"
+          echo "CHROMEDRIVER_PATH=${cft_dir}/chromedriver-linux64/chromedriver" >> "${GITHUB_ENV}"
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -114,13 +130,14 @@ jobs:
 
       - name: Log browser versions
         run: |
-          google-chrome --version
-          if command -v chromedriver; then
-            command -v chromedriver
-            chromedriver --version
-          else
-            echo "chromedriver is not available on PATH"
-          fi
+          chrome_version="$("${CHROME_BIN}" --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)"
+          chromedriver_version="$("${CHROMEDRIVER_PATH}" --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n 1)"
+
+          echo "Chrome binary: ${CHROME_BIN}"
+          "${CHROME_BIN}" --version
+          echo "ChromeDriver binary: ${CHROMEDRIVER_PATH}"
+          "${CHROMEDRIVER_PATH}" --version
+          test "${chrome_version}" = "${chromedriver_version}"
 
       - name: Run RSpec
         env:
