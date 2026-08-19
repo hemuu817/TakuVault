@@ -82,7 +82,7 @@ jobs:
       - name: Install matching Chrome for Testing pair
         run: |
           cft_dir="${RUNNER_TEMP}/chrome-for-testing"
-          cft_version="150.0.7871.124"
+          cft_version="151.0.7922.76"
           cft_base_url="https://storage.googleapis.com/chrome-for-testing-public/${cft_version}/linux64"
           chrome_url="${cft_base_url}/chrome-linux64.zip"
           chromedriver_url="${cft_base_url}/chromedriver-linux64.zip"
@@ -151,7 +151,7 @@ jobs:
           R2_ACCESS_KEY_ID: "dummy-key-id"
           R2_SECRET_ACCESS_KEY: "dummy-secret"
           APP_HOST: "localhost"
-        run: bundle exec rspec
+        run: xvfb-run --auto-servernum bundle exec rspec
 
       - name: Compare headed Chrome under Xvfb
         if: failure()
