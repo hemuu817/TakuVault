@@ -142,7 +142,7 @@ jobs:
           "${CHROMEDRIVER_PATH}" --version
           test "${chrome_version}" = "${chromedriver_version}"
 
-      - name: Run RSpec
+      - name: Run RSpec under Xvfb
         env:
           RAILS_ENV: test
           RACK_ENV: test
@@ -153,8 +153,9 @@ jobs:
           R2_ACCESS_KEY_ID: "dummy-key-id"
           R2_SECRET_ACCESS_KEY: "dummy-secret"
           APP_HOST: "localhost"
+          CHROME_HEADLESS: "false"
           CHROMEDRIVER_VERBOSE: "true"
-        run: bundle exec rspec
+        run: xvfb-run --auto-servernum bundle exec rspec
 
       - name: Inspect headless ChromeDriver key dispatch
         if: failure()
