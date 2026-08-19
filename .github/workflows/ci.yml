@@ -170,7 +170,7 @@ jobs:
           R2_SECRET_ACCESS_KEY: "dummy-secret"
           APP_HOST: "localhost"
           CHROMEDRIVER_VERBOSE: "true"
-        run: bundle exec rspec spec/system/sessions_spec.rb:227
+        run: bundle exec rspec spec/system/sessions_spec.rb:238
 
       - name: Compare headed Chrome under Xvfb
         if: failure()
@@ -186,12 +186,12 @@ jobs:
           APP_HOST: "localhost"
           CHROME_HEADLESS: "false"
           CHROMEDRIVER_VERBOSE: "true"
-        run: xvfb-run --auto-servernum bundle exec rspec spec/system/sessions_spec.rb:227
+        run: xvfb-run --auto-servernum bundle exec rspec spec/system/sessions_spec.rb:238
 
       - name: Keep screenshots from failed system specs
         uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: screenshots
-          path: ${{ github.workspace }}/tmp/screenshots
+          path: ${{ github.workspace }}/tmp/capybara
           if-no-files-found: ignore
