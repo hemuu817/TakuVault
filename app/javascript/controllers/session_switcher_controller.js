@@ -8,7 +8,9 @@ export default class extends Controller {
     this.element.reload()
   }
 
-  loading() {
+  loading(event) {
+    if (event.target !== this.element) return
+
     this.loadingTarget.hidden = false
     this.errorTarget.hidden = true
   }

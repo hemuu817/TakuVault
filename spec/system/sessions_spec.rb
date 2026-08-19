@@ -375,6 +375,13 @@ RSpec.describe "Sessions", type: :system do
       expect(page).to have_content("セッション名: #{first.name}")
       expect(page).to have_content("セッションを読み込めませんでした。")
       expect(page).to have_button("再試行")
+
+      find_link("未整理の素材").hover
+      sleep 0.2
+
+      expect(page).to have_css("[data-session-switcher-target='error']", visible: true)
+      expect(page).to have_no_css("[data-session-switcher-target='loading']", visible: true)
+      expect(page).to have_button("再試行")
     end
 
     it "applies only the final rapid selection" do
