@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-09-06T17:35:48Z_
+_Generated (UTC): 2026-09-07T19:07:17Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -63,3 +63,4 @@ _Generated (UTC): 2026-09-06T17:35:48Z_
 | 163 | (43)未整理（Usage0）一括割当の kind 連動UI補助 | CLOSED | 2026-07-19T08:16:57Z | https://github.com/hemuu817/TakuVault/issues/163 | [local](issues/0163.md) |
 | 164 | (44)Usage.role拡張 + 用途表示順固定化 | CLOSED | 2026-07-10T05:31:56Z | https://github.com/hemuu817/TakuVault/issues/164 | [local](issues/0164.md) |
 | 174 | (45) セッション画面の統合 | CLOSED | 2026-08-22T07:58:43Z | https://github.com/hemuu817/TakuVault/issues/174 | [local](issues/0174.md) |
+| 180 | （46）JavaScriptテスト基盤導入 | OPEN | 2026-09-07T08:40:37Z | https://github.com/hemuu817/TakuVault/issues/180 | [local](issues/0180.md) |
