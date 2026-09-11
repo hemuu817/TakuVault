@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-09-10T18:22:19Z_
+_Generated (UTC): 2026-09-11T18:25:55Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -65,3 +65,4 @@ _Generated (UTC): 2026-09-10T18:22:19Z_
 | 174 | (45) セッション画面の統合 | CLOSED | 2026-08-22T07:58:43Z | https://github.com/hemuu817/TakuVault/issues/174 | [local](issues/0174.md) |
 | 180 | （46）JavaScriptテスト基盤導入 | OPEN | 2026-09-07T08:40:37Z | https://github.com/hemuu817/TakuVault/issues/180 | [local](issues/0180.md) |
 | 181 | （47）既存System Specの責務再配置 | OPEN | 2026-09-09T16:05:16Z | https://github.com/hemuu817/TakuVault/issues/181 | [local](issues/0181.md) |
+| 184 | （48）Session統合画面のTurboキャッシュ復元修正 | OPEN | 2026-09-11T04:06:00Z | https://github.com/hemuu817/TakuVault/issues/184 | [local](issues/0184.md) |
