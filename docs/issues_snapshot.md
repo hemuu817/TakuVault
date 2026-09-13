@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-09-12T17:44:23Z_
+_Generated (UTC): 2026-09-13T18:07:44Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -66,3 +66,4 @@ _Generated (UTC): 2026-09-12T17:44:23Z_
 | 180 | （46）JavaScriptテスト基盤導入 | OPEN | 2026-09-07T08:40:37Z | https://github.com/hemuu817/TakuVault/issues/180 | [local](issues/0180.md) |
 | 181 | （47）既存System Specの責務再配置 | OPEN | 2026-09-09T16:05:16Z | https://github.com/hemuu817/TakuVault/issues/181 | [local](issues/0181.md) |
 | 184 | （48）Session統合画面のTurboキャッシュ復元修正 | OPEN | 2026-09-11T04:06:00Z | https://github.com/hemuu817/TakuVault/issues/184 | [local](issues/0184.md) |
+| 185 | (49)RSpec System Spec CI実行環境の見直しとXvfb依存の再評価 | OPEN | 2026-09-13T17:42:16Z | https://github.com/hemuu817/TakuVault/issues/185 | [local](issues/0185.md) |
