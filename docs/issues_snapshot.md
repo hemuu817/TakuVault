@@ -1,6 +1,6 @@
 # Issue snapshot
 
-_Generated (UTC): 2026-09-18T18:22:49Z_
+_Generated (UTC): 2026-09-19T17:58:04Z_
 
 | # | Title | State | UpdatedAt | URL | Local |
 |---:|---|---|---|---|---|
@@ -47,7 +47,7 @@ _Generated (UTC): 2026-09-18T18:22:49Z_
 | 41 | (9)画面一覧＆画面遷移図 | CLOSED | 2026-01-15T12:29:15Z | https://github.com/hemuu817/TakuVault/issues/41 | [local](issues/0041.md) |
 | 42 | (20) Demo用seed & 初期データ | OPEN | 2026-01-15T12:35:33Z | https://github.com/hemuu817/TakuVault/issues/42 | [local](issues/0042.md) |
 | 61 | (4)RSpecの設定 | OPEN | 2026-01-15T12:24:49Z | https://github.com/hemuu817/TakuVault/issues/61 | [local](issues/0061.md) |
-| 65 | (25)タグスイッチ絞り込み（Tag filter） | OPEN | 2026-01-15T12:37:29Z | https://github.com/hemuu817/TakuVault/issues/65 | [local](issues/0065.md) |
+| 65 | (25)タグスイッチ絞り込み（Tag filter） | OPEN | 2026-09-19T14:37:19Z | https://github.com/hemuu817/TakuVault/issues/65 | [local](issues/0065.md) |
 | 68 | (33)素材詳細のモーダル化 | OPEN | 2026-01-15T12:41:25Z | https://github.com/hemuu817/TakuVault/issues/68 | [local](issues/0068.md) |
 | 69 | (34)素材アップロードのモーダル化 | OPEN | 2026-06-05T17:54:32Z | https://github.com/hemuu817/TakuVault/issues/69 | [local](issues/0069.md) |
 | 70 | (35)フッター＋静的ページ群 | OPEN | 2026-01-15T12:41:45Z | https://github.com/hemuu817/TakuVault/issues/70 | [local](issues/0070.md) |
