@@ -2,9 +2,7 @@
 
 ## Status
 
-Proposed
-
-既存の設計・実装で採用されているスキーマ保存方式を記録するための草案。
+Accepted
 
 ## Context
 
