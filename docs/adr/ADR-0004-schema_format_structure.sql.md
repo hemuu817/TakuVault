@@ -4,8 +4,6 @@
 
 Accepted
 
-既存の設計・実装で採用されているスキーマ保存方式を記録するための草案。
-
 ## Context
 
 TakuVaultはPostgreSQLを使用し、NOT NULL、一意制約、CHECK、外部キーなどによってDBの整合性を保証している。
