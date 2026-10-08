@@ -8,14 +8,14 @@ Status: Superseded
 よって、遅延ロード契約をADRとして正本化し、IssueはADR参照に寄せる。
 
 ## Decision
-### 0) 運用（ADR-0005準拠：Accepted化の条件）
+### 0) 運用（ADR-0009準拠：Accepted化の条件）
 - 本ADRは Proposed の間は参照してよいが、**本ADRを前提とする実装（#23/#29）は開始しない**。
 - 本ADRを Accepted にする条件（全部満たすこと）：
   - [ ] 遅延ロードの出力形式を **HTML partial** に固定する（本ADRのまま）ことに合意している
   - [ ] エンドポイント（path）と partial名（view）を固定している（2)〜3)に記載）
   - [ ] 認可適用方針（policy_scope + authorize の適用箇所）を固定している（6)に記載）
   - [ ] #23/#29 から共通契約の重複記載を削除し、`Relates to: ADR-0010` に置換するPRを用意している（同一PRでよい）
-- Accepted 以降、仕様変更（意味が変わる変更）は新ADRでSuperseded運用とする（ADR-0005）。
+- Accepted 以降、仕様変更（意味が変わる変更）は新ADRでSuperseded運用とする（ADR-0009）。
 
 ### 1) 取得対象と主語
 - 遅延ロードの取得単位は **Scene配下のUsage一覧** とする。
@@ -78,7 +78,7 @@ Status: Superseded
 ## Related
 - Issue: #23（素材一覧・ツリー基盤）
 - Issue: #29（絞り込み：kind/role/session）
-- ADR-0005：ADR運用ルール（正本化・参照境界・改訂手順）
+- ADR-0009：ADR運用ルール（正本化・参照境界・改訂手順）
 - ADR-0006：Usage割当ルール（D8にcreateのルーティング方針を記載）
 - ADR-0001：default_scene
 - ADR-0002：Asset.kind

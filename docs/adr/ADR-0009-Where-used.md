@@ -1,6 +1,6 @@
 # ADR-0009：ADR運用ルール（正本化・参照境界・改訂手順）
 
-Status: Accepted
+Status: Superseded
 
 ## Context
 TakuVaultはMVP締切までに「Where used成立」「所有権認可」「DB整合性」「アップロード安全性」を満たす必要がある。
@@ -63,4 +63,5 @@ TakuVaultはMVP締切までに「Where used成立」「所有権認可」「DB�
 - ADR-0002：Asset.kind（content_type自動判定、手動変更なし、enum値固定）
 - ADR-0004：schema_format（structure.sql）
 - ADR-0006：Usage割当ルール（未整理一括付与、重複スキップ、混在fail-closed）
+- (後続ADR)ADR-0022：ADR運用ルール（本文テンプレートと利用説明の整備、ADR-0009の全面的置換）
 - （推奨）docs/issues/INDEX.md：Issue番号と(A-1〜H-27)の対応表
