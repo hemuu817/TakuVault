@@ -1,4 +1,4 @@
-# ADR-00XX：Asset.kind（content_type 自動判定・分類責務の明確化）
+# ADR-0017：Asset.kind（content_type 自動判定・分類責務の明確化）
 
 ## Status
 Accepted
@@ -91,7 +91,7 @@ TakuVaultでは Asset 一覧、未整理導線、Where used入力補助で「素
 ### D11. 旧ADRの扱い
 
 - 本ADRは ADR-0002 を置き換える。
-- 本ADRが Accepted になった場合、旧 ADR-0002 の Status は Superseded に更新し、本ADRへの参照を追記する。
+- 本ADRの Accepted 化に伴い、旧 ADR-0002 の Status は Superseded に更新し、本ADRへの参照を追記する。
 - 旧 ADR-0002 の履歴は削除しない。
 
 ## Consequences
@@ -115,5 +115,5 @@ TakuVaultでは Asset 一覧、未整理導線、Where used入力補助で「素
 - ADR-0006：Usage割当ルール（未整理一括割当 / 冪等 / 所有権整合）
 - ADR-0009：ADR運用ルール（正本化・参照境界・改訂手順）
 - ADR-0014：許可形式・判定方式・エラーハンドリング
-- ADR-00XX：Session詳細「セッション素材一覧」表示仕様（用途表示順の固定化）
+- ADR-0016：Session詳細「セッション素材一覧」表示仕様（用途表示順の固定化）
 - ADR-0010：Where used ツリー遅延ロード契約（Proposed。表示・絞り込み側の参考）

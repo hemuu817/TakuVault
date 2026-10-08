@@ -1,8 +1,8 @@
-# ADR-XXXX：ADR運用ルール（正本・記述形式・採用・改訂・置換）
+# ADR-0022：ADR運用ルール（正本・記述形式・採用・改訂・置換）
 
 ## Status
 
-Proposed
+Accepted on: 2026-10-01
 
 ## Context
 

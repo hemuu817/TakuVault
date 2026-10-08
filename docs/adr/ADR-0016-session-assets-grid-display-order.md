@@ -1,4 +1,4 @@
-# ADR-00XX：Session詳細「セッション素材一覧」表示仕様（用途表示順の固定化）
+# ADR-0016：Session詳細「セッション素材一覧」表示仕様（用途表示順の固定化）
 
 Status: Accepted
 
@@ -84,7 +84,7 @@ Session詳細は、当該セッション内で素材（Asset）が「どのシ�
 ### D9. 旧ADRの扱い
 
 - 本ADRは ADR-0008 を置き換える。
-- 本ADRが Accepted になった場合、旧 ADR-0008 の Status は Superseded に更新し、本ADRへの参照を追記する。
+- 本ADRの Accepted 化に伴い、旧 ADR-0008 の Status は Superseded に更新し、本ADRへの参照を追記する。
 - 旧 ADR-0008 の履歴は削除しない。
 
 ## Consequences
